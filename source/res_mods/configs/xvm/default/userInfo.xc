@@ -31,7 +31,7 @@
     //    "awards"     - страница "Награды"
     //    "statistics" - страница "Статистика"
     //    "vehicles"   - страница "Техника"
-    "contactsStartPage": "summary",
+    "contactsStartPage": "vehicles",
     // true - show xTE column in the vehicle list.
     // true - показывать колонку xTE в списке техники.
     "showXTEColumn": true,

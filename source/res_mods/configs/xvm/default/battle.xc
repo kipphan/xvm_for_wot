@@ -12,14 +12,14 @@
     "showPostmortemTips": true,
     // false - disable pop-up panel with a dog tag.
     // false - отключить всплывающую внизу панель с личным жетоном.
-    "showPostmortemDogtag": true,
+    "showPostmortemTips": false,
     // false - disable highlighting of own vehicle icon and squad.
     // false - отключить подсветку иконки своего танка и взвода.
     "highlightVehicleIcon": true,
     // Format of clock on the Debug Panel (near FPS).
     // Формат часов на экране панели отладки (возле FPS).
     // http://php.net/date
-    "clockFormat": "H:i",
+    "clockFormat": "H:i:s",
     // Path to clan icons folder relative to res_mods/mods/shared_resources/xvm/res.
     // Путь к папке иконок кланов относительно res_mods/mods/shared_resources/xvm/res.
     "clanIconsFolder": "clanicons/",
@@ -28,7 +28,7 @@
     "sixthSenseIcon": "xvm://res/SixthSense.png",
     // Duration of the sixth sense indicator (msec).
     // Длительность отображения индикатора 6-го чувства (мсек).
-    "sixthSenseDuration": 2000,
+    "sixthSenseDuration": 3000,
     // true - hide the tips in battle.
     // true - скрыть подсказки в бою.
     "battleHint": {

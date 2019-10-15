@@ -12,22 +12,22 @@
     "showPremiumShopButton": true,
     // true - show "Create squad" text on the squad creation button.
     // true - показать текст "Создать взвод" на кнопке создания взвода.
-    "showCreateSquadButtonText": true,
+    "showCreateSquadButtonText": false,
     // true - show selected battle mode text.
     // true - показать текст с названием выбранного режима боя.
-    "showBattleTypeSelectorText": true,
+    "showBattleTypeSelectorText": false,
     // true - show "Referral Program" button.
     // true - показать кнопку "Реферальная программа".
     "showReferralButton": true,
     // true - show "General chat" button.
     // true - показать кнопку "Общий чат".
-    "showGeneralChatButton": true,
+    "showGeneralChatButton": false,
     // false - disable display promo of premium vehicle (on the background in the hangar).
     // false - отключить отображение рекламы премиум техники (на фоне в ангаре).
-    "showPromoPremVehicle": true,
+    "showPromoPremVehicle": false,
     // true - show info window with list of received awards for "Reward for Merit".
     // true - показывать информационное окно с перечнем полученных наград за "Довольствие".
-    "showRewardWindow": true,
+    "showRewardWindow": false,
     // "Combat Intelligence" - show/hide notifications in the main window and counters in the menu.
     // "Полевая почта" - показывать/прятать уведомления в главном окне и счетчики в меню.
     "combatIntelligence": {
@@ -53,13 +53,13 @@
     "showDogtagWidget": true,
     // true - enable locker for gold.
     // true - включить замок для золота.
-    "enableGoldLocker": false,
+    "enableGoldLocker": true,
     // true - enable locker for free XP.
     // true - включить замок для свободного опыта.
-    "enableFreeXpLocker": false,
+    "enableFreeXpLocker": true,
     // true - enable locker for bonds.
     // true - включить замок для бонов.
-    "enableCrystalLocker": false,
+    "enableCrystalLocker": true,
     // Show/hide server info or change its parameters.
     // Показать/спрятать информацию о сервере, или изменить ее параметры.
     "serverInfo": {
@@ -84,7 +84,7 @@
     "enableCrewAutoReturn": true,
     // true - return crew check box is selected by default.
     // true - включить галочку возврата экипажа по умолчанию.
-    "crewReturnByDefault": false,
+    "crewReturnByDefault": true,
     // Number of perks to show without grouping.
     // Количество перков, которые отображаются без группировки.
     "crewMaxPerksCount": 8,
@@ -147,13 +147,13 @@
     },
     // true - enable removable equipment auto return (Camouflage net, Stereoscope, Toolbox).
     // true - включить автовозврат съемного оборудования (Маскировочная сеть, Стереотруба, Ящик с инструментами).
-    "enableEquipAutoReturn": false,
+    "enableEquipAutoReturn": true,
     // true - make vehicle not ready for battle if low ammo.
     // true - сделать машину не готовой к битве если мало снарядов.
     "blockVehicleIfLowAmmo": false,
     // Below this percentage, ammo is low. (0 - 100)
     // Ниже этого процента, снарядов считается мало. (0 - 100)
-    "lowAmmoPercentage": 20,
+    "lowAmmoPercentage": 50,
     // Behavior of the system channel notifications button on new notifications:
     //   none  - do nothing;
     //   blink - blink button;
@@ -165,13 +165,13 @@
     "notificationsButtonType": "full",
     // true - hide price button in tech tree.
     // true - прятать кнопку с ценой в дереве исследований.
-    "hidePricesInTechTree": false,
+    "hidePricesInTechTree": true,
     // true - show mastery mark in tech tree.
     // true - показывать знак мастерства в дереве исследований.
     "masteryMarkInTechTree": true,
     // true - allow to consider the exchange of experience with gold in tech tree.
     // true - разрешить учитывать обмен опыта за золото в дереве исследований.
-    "allowExchangeXPInTechTree": true,
+    "allowExchangeXPInTechTree": false,
     // true - show flags in barracks.
     // true - показывать флаги в казарме.
     "barracksShowFlags": true,
@@ -180,16 +180,16 @@
     "barracksShowSkills": true,
     // true - restore selected battle type on switching to another server (only random, frontline and rank battle modes).
     // true - восстанавливать выбранный тип боя при переключении на другой сервер (только рандом, Линия Фронта и ранговые бои).
-    "restoreBattleType": false,
+    "restoreBattleType": true,
     // Ping servers.
     // Пинг серверов.
     "pingServers": {
       // true - enable display of ping to the servers.
       // true - показывать пинг до серверов.
-      "enabled": false,
+      "enabled": true,
       // Update interval, in ms.
       // Интервал обновления, в мс.
-      "updateInterval": 10000,
+      "updateInterval": 3000,
       // Axis field coordinates.
       // Положение поля по осям.
       "x": 85,
@@ -271,13 +271,13 @@
       "threshold": {
         // Below this value response is great.
         // До этого значения отклик отличный.
-        "great": 35,
+        "great": 30,
         // Below this value response is good.
         // До этого значения отклик хороший.
-        "good": 60,
+        "good": 50,
         // Below this value response is poor.
         // До этого значения отклик так себе.
-        "poor": 100
+        "poor": 70
         // Values above define bad response.
         // Значения более считаются плохим откликом.
       },
@@ -298,7 +298,7 @@
     "onlineServers": {
       // true - enable display online of servers.
       // true - показывать онлайн серверов.
-      "enabled": false,
+      "enabled": true,
       // Axis field coordinates.
       // Положение поля по осям.
       "x": -3,
