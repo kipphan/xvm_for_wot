@@ -91,7 +91,7 @@
       {
         "enabled": true,
         "x": 17, "y": 28,
-        "format": "<b><font face='$FieldFont' size='12' color='{{v.c_xtdb|#CFCFCF}}'>{{v.tdb%d}}</font></b>",
+        "format": "<b><font face='$FieldFont' size='11' color='{{v.c_xtdb|#CFCFCF}}'>{{v.tdb%d}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
       },
       // Sign of mastery.
@@ -100,6 +100,19 @@
         "enabled": true,
         "x": 1, "y": 12, "width": 23, "height": 23,
         "src": "img://gui/maps/icons/library/proficiency/class_icons_{{v.mastery}}.png"
+      },
+      // Marks of Excellence.
+      // Знаки отличия.
+      {
+        "enabled": true,
+        "x": 1, "y": 46, "width": 13, "height": 13, "alpha": "{{v.damageRating?|0}}",
+        "src": "xvm://res/icons/carousel/gunmark/moe_{{v.marksOnGun?x|x}}.png"
+      },
+      {
+        "enabled": true,
+        "x": 17, "y": 42,
+        "format": "<b><font face='$FieldFont' size='11' color='{{v.c_damageRating|#CFCFCF}}'>{{v.damageRating%-3.1f~%}}</font></b>",
+        "shadow": ${ "def.textFieldShadow" }
       },
       // Battles count.
       // Количество боёв.
@@ -111,7 +124,7 @@
       {
         "enabled": true,
         "x": 145, "y": 14, "align": "right",
-        "format": "<b><font face='$FieldFont' size='12' color='#CFCFCF' alpha='#F0'>{{v.battles}}</font></b>",
+        "format": "<b><font face='$FieldFont' size='11' color='#CFCFCF' alpha='#F0'>{{v.battles}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
       },
       // Winrate.
@@ -124,7 +137,7 @@
       {
         "enabled": true,
         "x": 145, "y": 28, "align": "right",
-        "format": "<b><font face='$FieldFont' size='12' color='{{v.c_winrate|#CFCFCF}}'>{{v.winrate%2d~%}}</font></b>",
+        "format": "<b><font face='$FieldFont' size='11' color='{{v.c_winrate|#CFCFCF}}'>{{v.winrate%-3.1f~%}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
       }
     ]
