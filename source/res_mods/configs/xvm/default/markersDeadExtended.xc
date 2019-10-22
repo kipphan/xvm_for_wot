@@ -124,7 +124,7 @@
     // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
       // false - disable / не отображать.
-      "enabled": false,
+      "enabled": true,
       // true - show speaker even if enabled=false.
       // true - показывать спикер, даже если enabled=false.
       "showSpeaker": false,
@@ -152,8 +152,8 @@
       "x": -41,                         // положение по оси X
       "y": -33,                         // положение по оси Y
       "alpha": 100,                     // прозрачность (допускается использование динамической прозрачности, см. macros.txt)
-      "color": "0x2ecc71",              // цвет основной (допускается использование динамического цвета, см. macros.txt)
-      "lcolor": "0x27ae60",             // цвет дополнительный (для градиента)
+      "color": null,                    // цвет основной (допускается использование динамического цвета, см. macros.txt)
+      "lcolor": null,                   // цвет дополнительный (для градиента)
       "width": 80,                      // ширина полосы здоровья
       "height": 12,                     // высота полосы здоровья
       // Substrate and frame parameters.
@@ -268,8 +268,8 @@
       "x": -41,
       "y": -33,
       "alpha": 100,
-      "color": "0xe74c3c",
-      "lcolor": "0xc0392b",
+      "color": null,
+      "lcolor": null,
       "width": 80,
       "height": 12,
       "border": {

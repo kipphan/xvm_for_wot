@@ -102,7 +102,7 @@
       "textFormat": {
         "font": "$FieldFont",
         "size": 11,
-        "color": "0xE0E0E0",
+        "color": "0xD9D9D9",
         "bold": true,
         "italic": false
       },
@@ -180,8 +180,8 @@
       "x": -36,                         // положение по оси X
       "y": -33,                         // положение по оси Y
       "alpha": 100,                     // прозрачность (допускается использование динамической прозрачности, см. macros.txt)
-      "color": "0x2ECC71",              // цвет основной (допускается использование динамического цвета, см. macros.txt)
-      "lcolor": "0x27AE60",             // цвет дополнительный (для градиента)
+      "color": null,                    // цвет основной (допускается использование динамического цвета, см. macros.txt)
+      "lcolor": null,                   // цвет дополнительный (для градиента)
       "width": 70,                      // ширина полосы здоровья
       "height": 12,                     // высота полосы здоровья
       // Substrate and frame parameters.
@@ -281,7 +281,7 @@
     // Type of vehicle icon (HT/MT/LT/TD/Arty).
     // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
-      "enabled": false,
+      "enabled": true,
       "showSpeaker": false,
       "x": 0,
       "y": -16,
@@ -297,8 +297,8 @@
       "x": -36,
       "y": -33,
       "alpha": 100,
-      "color": "0xE74C3C",
-      "lcolor": "0xC0392B",
+      "color": null,
+      "lcolor": null,
       "width": 70,
       "height": 12,
       "border": {
