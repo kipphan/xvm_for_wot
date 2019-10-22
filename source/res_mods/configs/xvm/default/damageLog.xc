@@ -54,7 +54,7 @@
   "damageLog": {
     // false - disable.
     // false - отключить.
-    "enabled": false,
+    "enabled": true,
     // true - disable standard detailed damage.
     // true - отключить стандартный детальный урон.
     "disabledDetailStats": true,
@@ -101,7 +101,7 @@
       // Цвет по типу полученного урона (макрос {{c:dmg-kind}}).
       "c:dmg-kind": {
         "shot": "{{c:hit-effects}}",       // shot / попадание.
-        "fire": "#FF9800",                 // fire / пожар.
+        "fire": "#FF6655",                 // fire / пожар.
         "ramming": "#998855",              // ramming / таран.
         "world_collision": "#228855",      // world collision / столкновение с объектами, падение.
         "drowning": "#CCCCCC",             // drowning / утопление.
@@ -150,9 +150,9 @@
       // Color by vehicle type (macro {{c:vtype}}).
       // Цвет по типу техники (макрос {{c:vtype}}).
       "c:vtype": {
-        "HT": "#FFF198",         // heavy tank / тяжёлый танк.
-        "MT": "#A2FF9A",         // medium tank / средний танк.
-        "LT": "#FFACAC",         // light tank / лёгкий танк.
+        "HT": "#FFACAC",         // heavy tank / тяжёлый танк.
+        "MT": "#FFF198",         // medium tank / средний танк.
+        "LT": "#A2FF9A",         // light tank / лёгкий танк.
         "TD": "#A0CFFF",         // tank destroyer / ПТ-САУ.
         "SPG": "#EFAEFF",        // SPG / САУ.
         "not_vehicle": "#CCCCCC" // another source of damage / другой источник урона.
@@ -312,7 +312,7 @@
       "showHitNoDamage": true,
       // Display duration (seconds).
       // Продолжительность отображения (секунды).
-      "timeDisplayLastHit": 6,
+      "timeDisplayLastHit": 5,
       // Shadow settings.
       // Настройки тени.
       "shadow": {
