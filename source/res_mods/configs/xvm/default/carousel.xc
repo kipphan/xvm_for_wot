@@ -75,7 +75,7 @@
     "nations_order": [],
     // Order of types of vehicles.
     // Порядок классов техники.
-    "types_order":   [],
+    "types_order": [],
     // Tank sorting criteria, available options: (minus = reverse order)
     // Критерии сортировки танков, доступные значения: (минус = в обратном порядке)
     // "nation", "type", "level", "-level", "maxBattleTier", "-maxBattleTier", "premium", "-premium",
