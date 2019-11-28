@@ -64,7 +64,7 @@
     // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
       // false - disable / не отображать
-      "enabled": false,
+      "enabled": true,
       // true - show speaker even if enabled=false.
       // true - показывать спикер, даже если enabled=false.
       "showSpeaker": false,

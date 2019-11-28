@@ -36,10 +36,10 @@
     "scrollingSpeed": 1,
     // true - hide cell "Buy vehicle".
     // true - скрыть ячейку "Купить машину".
-    "hideBuyTank": true,
+    "hideBuyTank": false,
     // true - hide cell "Buy slot".
     // true - скрыть ячейку "Купить слот".
-    "hideBuySlot": true,
+    "hideBuySlot": false,
     // true - hide cell "Restore Tank".
     // true - скрыть ячейку "Восстановить машину".
     "hideRestoreTank": false,
