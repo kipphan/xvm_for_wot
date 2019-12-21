@@ -1,4 +1,17 @@
-﻿XVM-8.2.1:
+﻿XVM-8.2.3:
+  [GENERAL]
+  * Fix fonts loading
+
+XVM-8.2.2:
+  [GENERAL]
+  * Fixed incompability with modifications which uses battle results
+  * Various bugs fixed
+
+  [BATTLE]
+  * Added macro:
+      {{my-anonym}} - returns 'anonym' for the player if anonymizer is enabled in the game, ' ' - if not
+
+XVM-8.2.1:
   [KNOWN ISSUES]
   * No indicator of the player's name hiding enabled in the players panel
 
