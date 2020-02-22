@@ -1,4 +1,25 @@
-﻿XVM-8.2.3:
+﻿XVM-8.3.1:
+  [GENERAL]
+  * World of Tanks 1.7.1.2
+
+  [MARKERS]
+  * Added macro:
+      {{dmg-kind-key}} - damage kind table key value (attack, fire, ramming, ...)
+
+XVM-8.3.0:
+  [GENERAL]
+  * World of Tanks 1.7.1.1
+
+  [BATTLE]
+  * The macro {{my-anonym}} has been renamed to {{anonym}}, the description in the documentation has been updated
+
+  [MARKERS]
+  * The macro {{dmg}} sums the value, in a time span of less than 400 ms
+
+  [PLAYERS PANEL]
+  * Fixed macros {{nick}}, {{name}}, {{clan}}, {{clannb}} for platoon with an anonymous player
+
+XVM-8.2.3:
   [GENERAL]
   * Fix fonts loading
 
