@@ -104,7 +104,7 @@
     "Avg level": "Средний уровень",
     "WTR": "WTR",
     "WN8": "WN8",
-    "EFF": "РЭ",
+    "EFF": "EFF",
     "WGR": "ЛРИ",
     "updated": "обновлено",
     "toWithSpaces": " до ",
@@ -166,14 +166,6 @@
     "(sec)": "(сек)",
     "(m)": "(м)",
 
-    // Squad
-    "Squad battle tiers": "Уровень боев взвода",
-    "Squad tanks battle tiers difference": "Разница уровней боев танков взвода",
-    "Vehicle": "Танк",
-    "Battle tiers": "Уровень боёв",
-    "Type": "Тип",
-    "Nation": "Нация",
-
     // Nation
     "ussr": "СССР",
     "germany": "Германия",
@@ -205,12 +197,18 @@
 
     // Token
     "token/services_unavailable": "Сетевые сервисы недоступны.&nbsp;&nbsp;<a href='#XVM_SITE_UNAVAILABLE#'><font size='11'>подробнее</font></a>",
-    "token/services_inactive": "Сетевые сервисы неактивны.&nbsp;&nbsp;<a href='#XVM_SITE_INACTIVE#'><font size='11'>включить</font></a>",
+    "token/services_inactive": "Сетевые сервисы неактивны.<br><a href='#XVM_SITE_INACTIVE#'><font size='12'>Активировать</font></a>&nbsp;&nbsp;&nbsp;<a href='#XVM_CHECK_ACTIVATION#'><font size='12'>Проверить активацию</font></a>",
+    "token/services_not_activated": "Не удалось активировать сетевые сервисы. Перед проверкой активируйте сервисы в личном кабинете на сайте XVM.<br><a href='#XVM_SITE_INACTIVE#'><font size='12'>Активировать</font></a>&nbsp;&nbsp;&nbsp;<a href='#XVM_CHECK_ACTIVATION#'><font size='12'>Проверить активацию</font></a>",
     "token/blocked": "Статус: <font color='#FF0000'>Заблокирован</font>&nbsp;&nbsp;<a href='#XVM_SITE_BLOCKED#'><font size='11'>подробнее</font></a>",
     "token/active": "Статус:<tab/><font color='#00FF00'>Активен</font>",
     "token/time_left": "<tab/><font color='#EEEEEE'>{0}д. {1}ч. {2}м.</font>",
     "token/time_left_warn": "<tab/><font color='#EEEEEE'>{0}д. {1}ч. {2}м.</font>\n<tab/><a href='#XVM_SITE#'>Продлить</a>",
     "token/unknown_status": "Неизвестный статус",
+
+    // Stats link
+    "stats_link/svcmsg": "<a href='event:https://stats.modxvm.com/ru/stats/players/{0}#svcmsg'><font color='#E2D2A2'>Ваша статистика на сайте XVM</font></a>",
+    "stats_link/profile_self": "<a href='event:https://stats.modxvm.com/ru/stats/players/{0}#profile'><font face='$FieldFont' size='14' color='#E2D2A2'><u>Ваша статистика на сайте XVM</u></font></a>",
+    "stats_link/profile": "<a href='event:https://stats.modxvm.com/ru/stats/players/{0}#profile'><font face='$FieldFont' size='14' color='#E2D2A2'><u>Статистика игрока на сайте XVM</u></font></a>",
 
     // Lobby header
     "lobby/header/gold_locked_tooltip": "Золото заблокировано",
@@ -227,9 +225,9 @@
     "Premium": "Премиум",
     "PremiumTooltipHeader": "Премиум техника",
     "PremiumTooltipBody": "Отображать только премиум технику.",
-    "Special": "Акционная (наградная)",
-    "SpecialTooltipHeader": "Акционная (наградная) техника",
-    "SpecialTooltipBody": "Отображать только акционную (наградную) технику.",
+    "Special": "Наградная",
+    "SpecialTooltipHeader": "Наградная техника",
+    "SpecialTooltipBody": "Отображать только наградную технику.",
     "Normal": "Обычная",
     "NormalTooltipHeader": "Обычная техника",
     "NormalTooltipBody": "Отображать только обычную (не премиум) технику.",

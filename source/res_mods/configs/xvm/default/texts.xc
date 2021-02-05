@@ -131,11 +131,20 @@
       // Frontline (training).
       // Линия фронта (тренировка).
       "epic_battle_training": "",
+      // Steel Hunter (solo).
+      // Стальной охотник (соло).
+      "battle_royale_solo": "",
+      // Steel Hunter (squad).
+      // Стальной охотник (взвод).
+      "battle_royale_squad": "",
       // Tournament (event).
       // Турнир (ивент).
       "tournament_event": "",
-      // «Brawl» mode.
-      // Режим «Схватка».
+      // ?.
+      // ?.
+      "event_random": "",
+      // «Team Clash», «Brawl» mode.
+      // Режим «Битва блогеров», «Схватка».
       "bob": ""
     },
     // Text for {{topclan}} macro.

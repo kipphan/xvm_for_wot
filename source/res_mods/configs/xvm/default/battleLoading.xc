@@ -61,46 +61,46 @@
     "nameFieldWidthDeltaRight": 0,
     // X offset for allies vehicle names field.
     // Смещение по оси X поля названия танка союзников.
-    "vehicleFieldOffsetXLeft": 0,
+    "vehicleFieldOffsetXLeft": 26,
     // Width delta for allies vehicle names field.
     // Изменение ширины поля названия танка союзников.
     "vehicleFieldWidthDeltaLeft": 0,
     // X offset for enemies vehicle names field.
     // Смещение по оси X поля названия танка противников.
-    "vehicleFieldOffsetXRight": 0,
+    "vehicleFieldOffsetXRight": 23,
     // Width delta for enemies vehicle names field.
     // Изменение ширины поля названия танка противников.
     "vehicleFieldWidthDeltaRight": 0,
     // X offset for allies vehicle icons.
     // Смещение по оси X иконки танка союзников.
-    "vehicleIconOffsetXLeft": 0,
+    "vehicleIconOffsetXLeft": 23,
     // X offset for enemies vehicle icons.
     // Смещение по оси X иконки танка противников.
-    "vehicleIconOffsetXRight": 0,
+    "vehicleIconOffsetXRight": 20,
     // false - disable highlight of icons during battle start depends on ready state.
     // false - отключить затемнение иконки не загрузившегося игрока.
     "darkenNotReadyIcon": true,
     // Display format for the left panel (macros allowed, see macros.txt).
-    // Формат отображения для левой панели (допускаются макроподстановки, см. macros.txt).
+    // Формат отображения для левой панели (допускаются макроподстановки, см. macros_ru.txt).
     "formatLeftNick": "<img src='xvm://res/icons/flags/{{flag|default}}.png' width='16' height='13' vspace='-2'> <img src='xvm://res/icons/xvm/xvm-user-{{xvm-user|none}}.png'> {{name%.15s~..}} <font alpha='#A0'>{{clan}}</font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    // Формат отображения для правой панели (допускаются макроподстановки, см. macros.txt).
+    // Формат отображения для правой панели (допускаются макроподстановки, см. macros_ru.txt).
     "formatRightNick": "<font alpha='#A0'>{{clan}}</font> {{name%.15s~..}} <img src='xvm://res/icons/xvm/xvm-user-{{xvm-user|none}}.png'> <img src='xvm://res/icons/flags/{{flag|default}}.png' width='16' height='13' vspace='-2'>",
     // Display format for the left panel (macros allowed, see macros.txt).
-    // Формат отображения для левой панели (допускаются макроподстановки, см. macros.txt).
+    // Формат отображения для левой панели (допускаются макроподстановки, см. macros_ru.txt).
     "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    // Формат отображения для правой панели (допускаются макроподстановки, см. macros.txt).
+    // Формат отображения для правой панели (допускаются макроподстановки, см. macros_ru.txt).
     "formatRightVehicle": "<font face='mono' size='{{xvm-stat?13|0}}'><font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> </font>{{vehicle}}",
     // Extra fields. Fields are placed one above the other.
     // Дополнительные поля. Поля располагаются друг над другом.
     // Set of formats for left panel (extended format supported, see extra-field.txt).
-    // Набор форматов для левой панели (поддерживается расширенный формат, см. extra-field.txt).
+    // Набор форматов для левой панели (поддерживается расширенный формат, см. extra-field_ru.txt).
     "extraFieldsLeft": [
       ${"templates.clanIcon"}
     ],
     // Set of formats for right panel (extended format supported, see extra-field.txt).
-    // Набор форматов для правой панели (поддерживается расширенный формат, см. extra-field.txt).
+    // Набор форматов для правой панели (поддерживается расширенный формат, см. extra-field_ru.txt).
     "extraFieldsRight": [
       ${"templates.clanIcon"}
     ]

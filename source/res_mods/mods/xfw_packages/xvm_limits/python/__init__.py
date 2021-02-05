@@ -1,4 +1,4 @@
-﻿""" XVM (c) https://modxvm.com 2013-2020 """
+﻿""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # constants
@@ -16,7 +16,8 @@ import traceback
 
 import BigWorld
 import game
-from gui import ingame_shop
+from gui import shop
+from gui.impl import backport
 from gui.shared import g_eventBus, tooltips
 from gui.shared.gui_items import GUI_ITEM_TYPE
 from gui.shared.money import Currency
@@ -24,13 +25,13 @@ from gui.shared.utils.requesters.StatsRequester import StatsRequester
 from gui.Scaleform.daapi.view.lobby.techtree.settings import UNKNOWN_VEHICLE_LEVEL
 from gui.Scaleform.daapi.view.lobby.techtree.techtree_page import TechTree
 from gui.Scaleform.daapi.view.lobby.techtree.research_page import Research
-from gui.Scaleform.daapi.view.lobby.hangar.TechnicalMaintenance import TechnicalMaintenance
-from gui.Scaleform.daapi.view.lobby.PremiumWindow import PremiumWindow
-from gui.Scaleform.daapi.view.lobby.store.Shop import Shop
 from gui.Scaleform.daapi.view.lobby.recruitWindow.RecruitWindow import RecruitWindow
 from gui.Scaleform.daapi.view.lobby.PersonalCase import PersonalCase
 from gui.Scaleform.daapi.view.lobby.exchange.ExchangeFreeToTankmanXpWindow import ExchangeFreeToTankmanXpWindow
 from gui.Scaleform.daapi.view.lobby.customization.main_view import MainView
+from gui.Scaleform.genConsts.CURRENCIES_CONSTANTS import CURRENCIES_CONSTANTS
+from gui.shared.formatters import text_styles
+from gui.shared.tooltips.common import HeaderMoneyAndXpTooltipData
 from helpers import dependency
 from skeletons.gui.shared import IItemsCache
 
@@ -54,8 +55,6 @@ crystal_enable = True
 TechTree_handler = None
 Research_handler = None
 TechnicalMaintenance_handler = None
-PremiumWindow_handler = None
-Shop_handler = None
 RecruitWindow_handler = None
 PersonalCase_handlers = []
 ExchangeFreeToTankmanXpWindow_handlers = []
@@ -97,24 +96,21 @@ def onXfwCommand(cmd, *args):
             gold_enable = not args[0]
             handlersInvalidate('invalidateGold()', TechTree_handler, Research_handler)
             handlersInvalidate('onGoldChange(0)', TechnicalMaintenance_handler)
-            handlersInvalidate('_PremiumWindow__onUpdateHandler()', PremiumWindow_handler)
             handlersInvalidate('onGoldChange(0)', RecruitWindow_handler)
-            handlersInvalidate('_update()', Shop_handler)
-            handlersInvalidate("onClientChanged({'stats': 'gold'})", PersonalCase_handlers)
+            handlersInvalidate("_PersonalCase__onClientChanged({'stats': 'gold'})", PersonalCase_handlers)
             handlersInvalidate("_MainView__setBuyingPanelData()", MainView_handler)
             return (None, True)
         elif cmd == XVM_LIMITS_COMMAND.SET_FREEXP_LOCK_STATUS:
             global freeXP_enable
             freeXP_enable = not args[0]
             handlersInvalidate('invalidateFreeXP()', TechTree_handler, Research_handler)
-            handlersInvalidate("onClientChanged({'stats': 'freeXP'})", PersonalCase_handlers)
+            handlersInvalidate("_PersonalCase__onClientChanged({'stats': 'freeXP'})", PersonalCase_handlers)
             handlersInvalidate('_ExchangeFreeToTankmanXpWindow__onFreeXpChanged()', ExchangeFreeToTankmanXpWindow_handlers)
             return (None, True)
         elif cmd == XVM_LIMITS_COMMAND.SET_CRYSTAL_LOCK_STATUS:
             global crystal_enable
             crystal_enable = not args[0]
-            handlersInvalidate('_update()', Shop_handler)
-            handlersInvalidate("onClientChanged({'stats': 'crystal'})", PersonalCase_handlers)
+            handlersInvalidate("_PersonalCase__onClientChanged({'stats': 'crystal'})", PersonalCase_handlers)
             return (None, True)
     except Exception, ex:
         err(traceback.format_exc())
@@ -141,13 +137,13 @@ def handlersInvalidate(function, *handlers):
 # handlers
 
 # enable or disable active usage of gold
-@overrideMethod(ingame_shop, 'canBuyGoldForItemThroughWeb')
+@overrideMethod(shop, 'canBuyGoldForItemThroughWeb')
 def canBuyGoldForItemThroughWeb(base, itemID, *args, **kwargs):
     if not cfg_hangar_enableGoldLocker or gold_enable:
         return base(itemID, *args, **kwargs)
     return False
 
-@overrideMethod(ingame_shop, 'canBuyGoldForVehicleThroughWeb')
+@overrideMethod(shop, 'canBuyGoldForVehicleThroughWeb')
 def canBuyGoldForVehicleThroughWeb(base, vehicle, *args, **kwargs):
     if not cfg_hangar_enableGoldLocker or gold_enable:
         return base(vehicle, *args, **kwargs)
@@ -174,6 +170,20 @@ def StatsRequester_crystal(base, self):
         return max(self.actualCrystal, 0)
     return 0
 
+@overrideMethod(HeaderMoneyAndXpTooltipData, '_getValue')
+def _getValue(base, self):
+    valueStr = '0'
+    if self._btnType == CURRENCIES_CONSTANTS.GOLD:
+        valueStr = text_styles.gold(backport.getIntegralFormat(max(self.itemsCache.items.stats.actualGold, 0)))
+    elif self._btnType == CURRENCIES_CONSTANTS.CREDITS:
+        valueStr = text_styles.credits(backport.getIntegralFormat(max(self.itemsCache.items.stats.actualCredits, 0)))
+    elif self._btnType == CURRENCIES_CONSTANTS.CRYSTAL:
+        valueStr = text_styles.crystal(backport.getIntegralFormat(max(self.itemsCache.items.stats.actualCrystal, 0)))
+    elif self._btnType == CURRENCIES_CONSTANTS.EVENT_COIN:
+        valueStr = text_styles.eventCoin(backport.getIntegralFormat(max(self.itemsCache.items.stats.actualEventCoin, 0)))
+    elif self._btnType == CURRENCIES_CONSTANTS.FREE_XP:
+        valueStr = text_styles.expText(backport.getIntegralFormat(max(self.itemsCache.items.stats.actualFreeXP, 0)))
+    return valueStr
 
 ##############################################################
 # handlers of windows that use gold/freeXP/crystal
@@ -197,36 +207,6 @@ def Research_populate(self, *args, **kwargs):
 def Research_dispose(self, *args, **kwargs):
     global Research_handler
     Research_handler = None
-
-@registerEvent(TechnicalMaintenance, '_populate')
-def TechnicalMaintenance_populate(self, *args, **kwargs):
-    global TechnicalMaintenance_handler
-    TechnicalMaintenance_handler = self
-
-@registerEvent(TechnicalMaintenance, '_dispose')
-def TechnicalMaintenance_dispose(self, *args, **kwargs):
-    global TechnicalMaintenance_handler
-    TechnicalMaintenance_handler = None
-
-@registerEvent(PremiumWindow, '_populate')
-def PremiumWindow_populate(self, *args, **kwargs):
-    global PremiumWindow_handler
-    PremiumWindow_handler = self
-
-@registerEvent(PremiumWindow, '_dispose')
-def PremiumWindow_dispose(self, *args, **kwargs):
-    global PremiumWindow_handler
-    PremiumWindow_handler = None
-
-@registerEvent(Shop, '_populate')
-def Shop_populate(self, *args, **kwargs):
-    global Shop_handler
-    Shop_handler = self
-
-@registerEvent(Shop, '_dispose')
-def Shop_dispose(self, *args, **kwargs):
-    global Shop_handler
-    Shop_handler = None
 
 @registerEvent(RecruitWindow, '_populate')
 def RecruitWindow_populate(self, *args, **kwargs):

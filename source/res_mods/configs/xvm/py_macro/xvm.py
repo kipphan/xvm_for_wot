@@ -15,7 +15,6 @@ import datetime
 import locale
 from helpers import dependency
 from skeletons.gui.app_loader import IAppLoader
-from gui.shared.formatters import time_formatters
 
 _defaultlocale = locale.getdefaultlocale()[1]
 _DIRECTIVES = [ 'au', 'al', 'Au', 'Al', 'bu', 'bl', 'Bu', 'Bl', # double
@@ -45,7 +44,7 @@ def xvm_formatDate(formatDate):
                 return ''
 
     def processDirective(value, formatDate):
-        directive = '%'+value
+        directive = '%' + value
         if directive in formatDate:
             isUpper = False
             isLower = False
@@ -148,6 +147,23 @@ def xvm_screenVCenter():
 def xvm_screenHCenter():
     return BigWorld.screenWidth() // 2
 
+
+@xvm.export('xvm.XFromRight', deterministic=False)
+def xvm_XFromRight(x=0):
+    screenWidth = BigWorld.screenWidth()
+    try:
+        return screenWidth - float(x)
+    except ValueError:
+        return screenWidth
+
+
+@xvm.export('xvm.YFromBottom', deterministic=False)
+def xvm_YFromBottom(y=0):
+    screenHeight = BigWorld.screenHeight()
+    try:
+        return screenHeight - float(y)
+    except ValueError:
+        return screenHeight
 
 # xvm2sup
 

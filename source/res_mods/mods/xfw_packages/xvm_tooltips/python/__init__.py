@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # imports
@@ -29,12 +29,8 @@ from gui.Scaleform.locale.STORAGE import STORAGE
 from gui.Scaleform.locale.RES_ICONS import RES_ICONS
 from gui.Scaleform.genConsts.TOOLTIPS_CONSTANTS import TOOLTIPS_CONSTANTS
 from gui.Scaleform.framework.tooltip_mgr import ToolTip
-from gui.Scaleform.daapi.view.battle.shared.consumables_panel import ConsumablesPanel
-from gui.Scaleform.daapi.view.meta.ModuleInfoMeta import ModuleInfoMeta
 from gui.shared.tooltips.module import ModuleBlockTooltipData
 from gui.impl.backport.backport_system_locale import getNiceNumberFormat
-from helpers import dependency
-from skeletons.gui.shared import IItemsCache
 import ResMgr
 import nations
 import BigWorld
@@ -53,7 +49,6 @@ from xvm_main.python.xvm import l10n
 #####################################################################
 # globals
 
-shells_vehicles_compatibility = {}
 carousel_tooltips_cache = {}
 styles_templates = {}
 toolTipDelayIntervalId = None
@@ -105,8 +100,9 @@ def _ToolTip_onCreateTypedTooltip(base, self, type, *args):
     except Exception as ex:
         err(traceback.format_exc())
 
-    if args and XVM_TOOLTIPS.HIDE not in args[0]:
-        _createTooltip(self, lambda: _onCreateTypedTooltip_callback(base, self, type, *args))
+    if isinstance(args[0], basestring) and XVM_TOOLTIPS.HIDE in args[0]:
+        return
+    _createTooltip(self, lambda: _onCreateTypedTooltip_callback(base, self, type, *args))
 
 @overrideMethod(ToolTip, 'onHideTooltip')
 def _ToolTip_onHideTooltip(base, self, tooltipId):
@@ -164,6 +160,13 @@ def VehicleInfoTooltipData_packBlocks(base, self, *args, **kwargs):
 def SimplifiedStatsBlockConstructor_construct(base, self):
     if config.get('tooltips/hideSimplifiedVehParams'):
         return []
+    else:
+        return base(self)
+
+@overrideMethod(tooltips_vehicle.CrystalBlockConstructor, 'construct')
+def CrystalBlockConstructor_construct(base, self):
+    if config.get('tooltips/hideCrystalBlock'):
+        return [], None
     else:
         return base(self)
 
@@ -461,7 +464,7 @@ def CommonStatsBlockConstructor_construct(base, self):
             # optional devices icons, must be in the end
             if 'optDevicesIcons' in params_list:
                 optDevicesIcons_arr = []
-                for key in vehicle.optDevices:
+                for key in vehicle.optDevices.installed.getItems():
                     if key:
                         imgPath = 'img://gui' + key.icon.lstrip('.')
                     else:
@@ -473,13 +476,13 @@ def CommonStatsBlockConstructor_construct(base, self):
             # equipment icons, must be in the end
             if 'equipmentIcons' in params_list:
                 equipmentIcons_arr = []
-                for key in vehicle.equipment.regularConsumables.getInstalledItems():
+                for key in vehicle.consumables.installed.getItems():
                     if key:
                         imgPath = 'img://gui' + key.icon.lstrip('.')
                     else:
                         imgPath = 'img://gui/maps/icons/artefact/empty.png'
                     equipmentIcons_arr.append('<img src="%s" height="16" width="16">' % imgPath)
-                for key in vehicle.equipment.battleBoosterConsumables.getInstalledItems():
+                for key in vehicle.battleBoosters.installed.getItems():
                     if key:
                         imgPath = 'img://gui' + key.icon.lstrip('.')
                     else:
@@ -511,32 +514,6 @@ def CommonStatsBlockConstructor_construct(base, self):
         err(traceback.format_exc())
         return base(self)
 
-
-# in battle, add tooltip for HE shells - explosion radius
-@overrideMethod(ConsumablesPanel, '_ConsumablesPanel__makeShellTooltip')
-def ConsumablesPanel__makeShellTooltip(base, self, descriptor, piercingPower):
-    result = base(self, descriptor, piercingPower)
-    try:
-        if descriptor.kind == SHELL_TYPES.HIGH_EXPLOSIVE:
-            key_str = i18n.makeString(MENU.TANK_PARAMS_EXPLOSIONRADIUS)
-            result = result.replace('{/BODY}', '\n%s: %s{/BODY}' % (key_str, formatNumber(descriptor.type.explosionRadius)))
-    except Exception as ex:
-        err(traceback.format_exc())
-    return result
-
-# show compatible vehicles for shells info window in warehouse and shop
-@overrideMethod(ModuleInfoMeta, 'as_setModuleInfoS')
-def ModuleInfoMeta_as_setModuleInfoS(base, self, moduleInfo):
-    try:
-        if moduleInfo.get('type') == 'shell':
-            if not shells_vehicles_compatibility:
-                relate_shells_vehicles()
-            if self.moduleCompactDescr in shells_vehicles_compatibility:
-                moduleInfo['compatible'].append({'type': i18n.makeString(MENU.MODULEINFO_COMPATIBLE_VEHICLES), 'value': ', '.join(shells_vehicles_compatibility[self.moduleCompactDescr])})
-    except Exception as ex:
-        err(traceback.format_exc())
-    base(self, moduleInfo)
-
 # # add '#menu:moduleInfo/params/weightTooHeavy' (red 'weight (kg)')
 # @overrideMethod(i18n, 'makeString')
 # def makeString(base, key, *args, **kwargs):
@@ -551,13 +528,13 @@ def ModuleInfoMeta_as_setModuleInfoS(base, self, moduleInfo):
 # paint 'weight (kg)' with red if module does not fit due to overweight
 
 @overrideMethod(param_formatter, 'formatModuleParamName')
-def formatters_formatModuleParamName(base, paramName):
+def formatters_formatModuleParamName(base, paramName, vDescr=None):
     builder = text_styles.builder()
     if weightTooHeavy and paramName == 'weight':
         builder.addStyledText(text_styles.error, MENU.moduleinfo_params(paramName))
         builder.addStyledText(text_styles.error, param_formatter.MEASURE_UNITS.get(paramName, ''))
         return builder.render()
-    return base (paramName)
+    return base(paramName, vDescr)
 
 @overrideMethod(ModuleBlockTooltipData, '_packBlocks')
 def ModuleBlockTooltipData_packBlocks(base, self, *args, **kwargs):
@@ -586,29 +563,6 @@ def gold_pad(text):
 
 def red_pad(text):
     return "<font color='#FF0000'>%s</font>" % text
-
-# make dict: shells => compatible vehicles
-def relate_shells_vehicles():
-    global shells_vehicles_compatibility
-    try:
-        shells_vehicles_compatibility = {}
-        itemsCache = dependency.instance(IItemsCache)
-        for vehicle in itemsCache.items.getVehicles().values():
-            if vehicle.name.find('_IGR') > 0 or vehicle.name.find('_training') > 0:
-                continue
-            for turrets in vehicle.descriptor.type.turrets:
-                for turret in turrets:
-                    for gun in turret.guns:
-                        for shot in gun.shots:
-                            shell_id = shot.shell.compactDescr
-                            if shell_id in shells_vehicles_compatibility:
-                                if vehicle.userName not in shells_vehicles_compatibility[shell_id]:
-                                    shells_vehicles_compatibility[shell_id].append(vehicle.userName)
-                            else:
-                                shells_vehicles_compatibility[shell_id] = [vehicle.userName]
-    except Exception as ex:
-        err(traceback.format_exc())
-        shells_vehicles_compatibility = {}
 
 
 @registerEvent(ItemsRequester, '_invalidateItems')

@@ -26,24 +26,17 @@
     // false - отключить отображение рекламы премиум техники (на фоне в ангаре).
     "showPromoPremVehicle": false,
     // true - show info windows with the battle results in the "Ranked battle" mode.
-    // true - показывать информационные окна результатов боя в режиме "Ранговый бой".
+    // true - показывать информационное окно результатов боя в режиме "Ранговый бой".
     "showRankedBattleResults": true,
+    // true - show info windows when receiving progressive decals.
+    // true - показывать информационное окно при получении этапной декали.
+    "showProgressiveDecalsWindow": true,
     // true - show widget "Daily Quests" in the hangar.
     // true - показывать виджет "Ежедневные задачи" в ангаре.
     "showDailyQuestWidget": true,
-    // true - show widget "World of Tanks' 10th Anniversary" in the hangar.
-    // true - показывать виджет "Десятилетие World of Tanks" в ангаре.
-    "showTenYearsWidget": true,
-    // Consumables panel - show/hide the number of consumables and directives.
-    // Панель снаряжения - показывать/прятать количество снаряжения и инструкций.
-    "equipmentPanel": {
-      //true - show the remaining quantity of consumables in depot.
-      //true - показать оставшиеся количество снаряжения на складе.
-      "showConsumablesCount": true,
-      //true - show the remaining quantity of directives in depot.
-      //true - показать оставшиеся количество инструкций на складе.
-      "showDirectivesCount": false
-    },
+    // true - show banner of various events in the hangar.
+    // true - показывать баннер различных событий в ангаре.
+    "showEventBanner": true,
     // "Combat Intelligence" - show/hide notifications in the main window and counters in the menu.
     // "Полевая почта" - показывать/прятать уведомления в главном окне и счетчики в меню.
     "combatIntelligence": {
@@ -92,8 +85,8 @@
       // Смещение по оси Y.
       "offsetY": 0
     },
-    // true - enable crew auto return function.
-    // true - включить функцию автовозврата экипажа.
+    // true - enable crew auto return function (the option works if there are free places in the barracks).
+    // true - включить функцию автовозврата экипажа (опция работает при наличии свободных мест в казарме).
     "enableCrewAutoReturn": true,
     // true - return crew check box is selected by default.
     // true - включить галочку возврата экипажа по умолчанию.
@@ -158,9 +151,6 @@
       // Смещение по оси Y.
       "offsetY": 0
     },
-    // true - enable removable equipment auto return (Camouflage net, Stereoscope, Toolbox).
-    // true - включить автовозврат съемного оборудования (Маскировочная сеть, Стереотруба, Ящик с инструментами).
-    "enableEquipAutoReturn": true,
     // true - make vehicle not ready for battle if low ammo.
     // true - сделать машину не готовой к битве если мало снарядов.
     "blockVehicleIfLowAmmo": false,
@@ -191,9 +181,9 @@
     // true - show skills in barracks.
     // true - показывать умения в казарме.
     "barracksShowSkills": true,
-    // true - restore selected battle type on switching to another server (only random, frontline and rank battle modes).
-    // true - восстанавливать выбранный тип боя при переключении на другой сервер (только рандом, Линия Фронта и ранговые бои).
-    "restoreBattleType": true,
+    // true - restore selected battle type on switching to another server, at the next login to the client.
+    // true - восстанавливать выбранный тип боя при переключении на другой сервер, при следующем входе в клиент.
+    "restoreBattleType": false,
     // Ping servers.
     // Пинг серверов.
     "pingServers": {
@@ -232,8 +222,8 @@
       // Leading between lines.
       // Пространство между строками.
       "leading": 2,
-      // layer - "bottom", "normal" (default), "top".
-      // слой - "bottom", "normal" (по-умолчанию), "top".
+      // Layer - "bottom", "normal" (default), "top".
+      // Слой - "bottom", "normal" (по-умолчанию), "top".
       "layer": "normal",
       // true - show title "Ping".
       // true - показывать заголовок "Пинг".
@@ -241,14 +231,14 @@
       // true - show server names in list.
       // true - показывать названия серверов в списке.
       "showServerName": true,
-      // expand server names to this amount of symbols. recommended to use monospace font if this option is set.
-      // расширить названия серверов до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      // Expand server names to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить названия серверов до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
       "minimalNameLength": 4,
-      // expand values to this amount of symbols. recommended to use monospace font if this option is set.
-      // расширить значения до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      // Expand values to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить значения до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
       "minimalValueLength": 0,
-      // text to show in case of error.
-      // текст показываемый в случае ошибки.
+      // Text to show in case of error.
+      // Текст показываемый в случае ошибки.
       "errorString": "--",
       // List of ignored servers, for example, ["RU1", "RU3"].
       // Список игнорируемых серверов, например, ["RU1", "RU3"].
@@ -256,14 +246,14 @@
       // Text style.
       // Стиль текста.
       "fontStyle": {
-        // Font name
-        // Название шрифта
+        // Font name.
+        // Название шрифта.
         "name": "$FieldFont",
-        "size": 12,            // Размер
-        "bold": false,         // Жирный
-        "italic": false,       // Курсив
-        // Different colors depending on people online.
-        // Разные цвета в зависимости от количества игроков.
+        "size": 12,      // Размер
+        "bold": false,   // Жирный
+        "italic": false, // Курсив
+        // Different colors depending on server response time.
+        // Разные цвета в зависимости от времени отклика сервера.
         "color": {
           "great": "0xFFCC66", // Отличный
           "good":  "0xE5E4E1", // Хороший
@@ -341,8 +331,8 @@
       // Leading between lines.
       // Пространство между строками.
       "leading": 0,
-      // layer - "bottom", "normal" (default), "top".
-      // слой - "bottom", "normal" (по-умолчанию), "top".
+      // Layer - "bottom", "normal" (default), "top".
+      // Слой - "bottom", "normal" (по-умолчанию), "top".
       "layer": "normal",
       // true - show title "Online".
       // true - показывать заголовок "Онлайн".
@@ -350,27 +340,27 @@
       // true - show server names in list.
       // true - показывать названия серверов в списке.
       "showServerName": true,
-      // expand server names to this amount of symbols. recommended to use monospace font if this option is set.
-      // расширить названия серверов до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      // Expand server names to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить названия серверов до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
       "minimalNameLength": 4,
-      // expand values to this amount of symbols. recommended to use monospace font if this option is set.
-      // расширить значения до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      // Expand values to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить значения до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
       "minimalValueLength": 0,
-      // text to show in case of error.
-      // текст показываемый в случае ошибки.
+      // Text to show in case of error.
+      // Текст показываемый в случае ошибки.
       "errorString": "--k",
-      // List of ignored servers, for example, ["RU1", "RU2"].
-      // Список игнорируемых серверов, например, ["RU1", "RU2"].
+      // List of ignored servers, for example, ["RU1", "RU3"].
+      // Список игнорируемых серверов, например, ["RU1", "RU3"].
       "ignoredServers": [],
       // Text style.
       // Стиль текста.
       "fontStyle": {
-        // Font name
-        // Название шрифта
+        // Font name.
+        // Название шрифта.
         "name": "$FieldFont",
-        "size": 12,            // Размер
-        "bold": false,         // Жирный
-        "italic": false,       // Курсив
+        "size": 12,      // Размер
+        "bold": false,   // Жирный
+        "italic": false, // Курсив
         // Different colors depending on people online.
         // Разные цвета в зависимости от количества игроков.
         "color": {
@@ -394,8 +384,8 @@
         "great": 30000,
         "good": 10000,
         "poor": 3000
-        //below this value the queue might be long.
-        //ниже этого значения очередь может быть долгой.
+        // Below this value the queue might be long.
+        // Ниже этого значения очередь может быть долгой.
       },
       // Shadow options.
       // Параметры тени.
@@ -412,11 +402,17 @@
     // Show/hide notifications counters in the main menu.
     // Показывать/прятать счетчики уведомлений в главном меню.
     "notificationCounter": {
-      "store": true,                        // Store          / Магазин
-      "missions": true,                     // Missions       / Задачи
-      "profile": true,                      // Service Record / Достижения
-      "PersonalMissionOperationsPage": true // Campaigns      / Кампании
+      "storage": true,                       // Storage        / Склад
+      "store": true,                         // Store          / Магазин
+      "missions": true,                      // Missions       / Задачи
+      "PersonalMissionOperationsPage": true, // Campaigns      / Кампании      
+      "profile": true,                       // Service Record / Достижения
+      "barracks": true,                      // Barracks       / Казарма
+      "StrongholdView": true                 // Clan           / Клан
     },
+    // true - show notifications counters in the window and on the button "Exterior".
+    // true - показать счетчики уведомлений в окне и на кнопке "Внешний вид".
+    "showCustomizationCounter": true,
     // Parameters of sorting tankmen in barracks.
     // Параметры сортировки танкистов в казарме.
     "barracks": {

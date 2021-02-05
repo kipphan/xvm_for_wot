@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # imports
@@ -29,8 +29,9 @@ from gui.Scaleform.daapi.view.battle.shared.damage_panel import DamagePanel
 from gui.Scaleform.daapi.view.battle.shared.markers2d import settings as markers2d_settings
 from gui.Scaleform.daapi.view.battle.shared.minimap.plugins import ArenaVehiclesPlugin
 from gui.Scaleform.daapi.view.battle.shared.page import SharedPage
-from gui.Scaleform.daapi.view.battle.shared.stats_exchage import BattleStatisticsDataController
-from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin
+from gui.Scaleform.daapi.view.battle.shared.postmortem_panel import PostmortemPanel
+from gui.Scaleform.daapi.view.battle.shared.stats_exchange import BattleStatisticsDataController
+from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin, RadarHintPlugin
 from helpers import dependency
 from skeletons.gui.app_loader import IAppLoader
 
@@ -50,7 +51,9 @@ import xmqp_events
 
 NOT_SUPPORTED_BATTLE_TYPES = [constants.ARENA_GUI_TYPE.TUTORIAL,
                            constants.ARENA_GUI_TYPE.EVENT_BATTLES,
-                           constants.ARENA_GUI_TYPE.BOOTCAMP]
+                           constants.ARENA_GUI_TYPE.BOOTCAMP,
+                           constants.ARENA_GUI_TYPE.BATTLE_ROYALE,
+                           constants.ARENA_GUI_TYPE.BOB]
 
 #####################################################################
 # initialization/finalization
@@ -160,7 +163,7 @@ def _PlayerAvatar_vehicle_onEnterWorld(self, vehicle):
 
 # any vehicle health changed
 @registerEvent(Vehicle, 'onHealthChanged')
-def onHealthChanged(self, newHealth, attackerID, attackReasonID):
+def onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
     # update only for player vehicle, others handled on vehicle feedback event
     if self.isPlayerVehicle:
         g_battle.onVehicleHealthChanged(self.id, newHealth, attackerID, attackReasonID)
@@ -185,7 +188,7 @@ def _DamagePanel_updateDeviceState(self, value):
     except:
         err(traceback.format_exc())
 
-@registerEvent(ArenaVehiclesPlugin, '_ArenaVehiclesPlugin__setInAoI')
+@registerEvent(ArenaVehiclesPlugin, '_setInAoI')
 def _ArenaVehiclesPlugin_setInAoI(self, entry, isInAoI):
     try:
         for vehicleID, entry2 in self._entries.iteritems():
@@ -212,27 +215,51 @@ def _BattleStatisticsDataController_as_setQuestsInfoS(base, self, data, setForce
 
 @overrideMethod(TrajectoryViewHintPlugin, '_TrajectoryViewHintPlugin__addHint')
 def addHint(base, self):
-    if config.get('battle/battleHint/hideTrajectoryView'):
+    if not config.get('battle/showBattleHint'):
         return
     base(self)
 
 @overrideMethod(SiegeIndicatorHintPlugin, '_SiegeIndicatorHintPlugin__updateHint')
 def updateHint(base, self):
-    if config.get('battle/battleHint/hideSiegeIndicator'):
+    if not config.get('battle/showBattleHint'):
         return
     base(self)
 
 @overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayQuestHint')
 def canDisplayQuestHint(base, self):
-    if config.get('battle/battleHint/hideQuestProgress'):
+    if not config.get('battle/showBattleHint'):
         return False
     base(self)
 
 @overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayHelpHint')
 def canDisplayHelpHint(base, self, typeDescriptor):
-    if config.get('battle/battleHint/hideHelpScreen'):
+    if not config.get('battle/showBattleHint'):
         return False
     base(self, typeDescriptor)
+
+@overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayBattleCommunicationHint')
+def canDisplayBattleCommunicationHint(base, self):
+    if not config.get('battle/showBattleHint'):
+        return False
+    base(self)
+
+@overrideMethod(RadarHintPlugin, '_RadarHintPlugin__areOtherIndicatorsShown')
+def areOtherIndicatorsShown(base, self):
+    if not config.get('battle/showBattleHint'):
+        return True
+    base(self)
+
+@overrideMethod(PostmortemPanel, 'onDogTagKillerInPlaySound')
+def onDogTagKillerInPlaySound(base, self):
+    if not config.get('battle/showPostmortemDogTag', True) or not config.get('battle/showPostmortemTips', True):
+        return
+    base(self)
+
+@overrideMethod(PostmortemPanel, '_PostmortemPanel__onKillerDogTagSet')
+def onKillerDogTagSet(base, self, dogTagInfo):
+    if not config.get('battle/showPostmortemDogTag', True):
+        return
+    base(self, dogTagInfo)
 
 
 #####################################################################
@@ -270,7 +297,8 @@ class Battle(object):
         if view and view.uniqueName in [VIEW_ALIAS.CLASSIC_BATTLE_PAGE,
                                         VIEW_ALIAS.EPIC_RANDOM_PAGE,
                                         VIEW_ALIAS.EPIC_BATTLE_PAGE,
-                                        VIEW_ALIAS.RANKED_BATTLE_PAGE]:
+                                        VIEW_ALIAS.RANKED_BATTLE_PAGE,
+                                        VIEW_ALIAS.BATTLE_ROYALE_PAGE]:
             self.battle_page = weakref.proxy(view)
 
     def onStartBattle(self):
@@ -294,7 +322,7 @@ class Battle(object):
             (newHealth, aInfo, attackReasonID) = value
             attackerID = aInfo.vehicleID if aInfo is not None else -1
             self.onVehicleHealthChanged(vehicleID, newHealth, attackerID, attackReasonID)
-        elif eventID == FEEDBACK_EVENT_ID.VEHICLE_IN_FOCUS:
+        elif eventID == FEEDBACK_EVENT_ID.ENTITY_IN_FOCUS:
             self.targetVehicleID = vehicleID
             if self.updateTargetCallbackID:
                 BigWorld.cancelCallback(self.updateTargetCallbackID)
@@ -309,13 +337,13 @@ class Battle(object):
                 self.is_moving = is_moving
                 as_xfw_cmd(XVM_BATTLE_COMMAND.AS_MOVING_STATE_CHANGED, is_moving)
 
-    def onOptionalDeviceAdded(self, intCD, descriptor, isOn):
-        if intCD == INT_CD.STEREOSCOPE:
-            as_xfw_cmd(XVM_BATTLE_COMMAND.AS_STEREOSCOPE_TOGGLED, isOn)
+    def onOptionalDeviceAdded(self, optDeviceInBattle):
+        if optDeviceInBattle.getIntCD() in INT_CD.STEREOSCOPE:
+            as_xfw_cmd(XVM_BATTLE_COMMAND.AS_STEREOSCOPE_TOGGLED, bool(optDeviceInBattle.getStatus()))
 
-    def onOptionalDeviceUpdated(self, intCD, isOn):
-        if intCD == INT_CD.STEREOSCOPE:
-            as_xfw_cmd(XVM_BATTLE_COMMAND.AS_STEREOSCOPE_TOGGLED, isOn)
+    def onOptionalDeviceUpdated(self, optDeviceInBattle):
+        if optDeviceInBattle.getIntCD() in INT_CD.STEREOSCOPE:
+            as_xfw_cmd(XVM_BATTLE_COMMAND.AS_STEREOSCOPE_TOGGLED, bool(optDeviceInBattle.getStatus()))
 
     def onVehicleHealthChanged(self, vehicleID, newHealth, attackerID, attackReasonID):
         inv = INV.CUR_HEALTH
@@ -334,6 +362,8 @@ class Battle(object):
         try:
             data = {}
 
+            arenaDP = self.sessionProvider.getArenaDP()
+
             if targets & INV.SPOTTED_STATUS:
                 data['spottedStatus'] = self.getSpottedStatus(vehicleID)
 
@@ -348,15 +378,17 @@ class Battle(object):
                         data['curHealth'] = entity.health
 
                 if targets & INV.MAX_HEALTH:
-                    if entity and hasattr(entity, 'typeDescriptor'):
-                        data['maxHealth'] = entity.typeDescriptor.maxHealth
+                    vInfoVO = arenaDP.getVehicleInfo(vehicleID)
+                    if vInfoVO:
+                        data['maxHealth'] = vInfoVO.vehicleType.maxHealth
+                    elif entity and hasattr(entity, 'maxHealth'):
+                        data['maxHealth'] = entity.maxHealth
 
                 if targets & INV.MARKS_ON_GUN:
                     if entity and hasattr(entity, 'publicInfo'):
                         data['marksOnGun'] = entity.publicInfo.marksOnGun
 
             if targets & (INV.ALL_VINFO | INV.ALL_VSTATS):
-                arenaDP = self.sessionProvider.getArenaDP()
                 if targets & INV.ALL_VINFO:
                     vInfoVO = arenaDP.getVehicleInfo(vehicleID)
                 if targets & INV.ALL_VSTATS:
@@ -395,7 +427,10 @@ class Battle(object):
                     battleLoading = self.battle_page.getComponent(BATTLE_VIEW_ALIASES.BATTLE_LOADING)
                     if battleLoading:
                         battle_loading._setBattleLoading(False)
-                        battleLoading.invalidateArenaInfo()
+                        try:
+                            battleLoading.invalidateArenaInfo()
+                        except Exception:
+                            err(traceback.format_exc())
             ctrl = self.battle_page.getComponent(BATTLE_VIEW_ALIASES.BATTLE_STATISTIC_DATA_CONTROLLER)
             if ctrl and not isinstance(ctrl, EpicStatisticsDataController):
                 ctrl._dispose()

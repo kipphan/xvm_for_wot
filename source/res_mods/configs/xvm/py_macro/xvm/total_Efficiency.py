@@ -11,7 +11,6 @@ from gui.Scaleform.daapi.view.battle.shared.ribbons_panel import BattleRibbonsPa
 from gui.Scaleform.daapi.view.battle.shared.ribbons_aggregator import RibbonsAggregator
 from gui.Scaleform.daapi.view.battle.classic.stats_exchange import FragsCollectableStats
 
-
 from xfw import *
 from xfw_actionscript.python import *
 from xvm_main.python.logger import *
@@ -111,9 +110,10 @@ def totalEfficiency_updatePlayerStatus(self, **kwargs):
     if battle.isBattleTypeSupported and _player is not None and kwargs.get('isSquadMan', False):
         isPlayerVehicle = (self.vehicleID == _player.playerVehicleID)
         isPlayerInSquad |= isPlayerVehicle
-        if isPlayerInSquad:
+        if isPlayerInSquad and arenaDP.isSquadMan(vID=self.vehicleID):
             vehicles = arenaDP.getVehiclesStatsIterator()
-            fragsSquad_dict = {stats.vehicleID: stats.frags for stats in vehicles if not isPlayerVehicle and arenaDP.isSquadMan(vID=stats.vehicleID)}
+            fragsSquad_dict = {stats.vehicleID: stats.frags for stats in vehicles
+                               if (_player.playerVehicleID != stats.vehicleID) and arenaDP.isSquadMan(vID=stats.vehicleID)}
             fragsSquad = sum(fragsSquad_dict.itervalues())
             if not isPlayerVehicle:
                 damagesSquad += alliesDamage[self.vehicleID]
@@ -272,7 +272,7 @@ def BattleRibbonsPanel__onRibbonAdded(self, ribbon):
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def onHealthChanged(self, newHealth, attackerID, attackReasonID):
+def onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
     global enemiesHealth, numberHitsDealt, damageReceived, numberDamagesDealt, numberDamagedVehicles, dmgAlly, damageKind, damagesSquad
     if not battle.isBattleTypeSupported:
         return
@@ -325,6 +325,7 @@ def onEnterWorld(self, prereqs):
         maxHealth = self.health
         isStuns = 'st' if self.typeDescriptor.shot.shell.hasStun else None
 
+
 @registerEvent(FragsCollectableStats, 'addVehicleStatusUpdate')
 def FragsCollectableStats_addVehicleStatusUpdate(self, vInfoVO):
     global enemyVehiclesMaxHP, enemyVehiclesSumMaxHP, _player, arenaDP
@@ -334,6 +335,7 @@ def FragsCollectableStats_addVehicleStatusUpdate(self, vInfoVO):
     if vInfoVO.vehicleID not in enemyVehiclesMaxHP and vInfoVO.team != _player.team:
         enemyVehiclesMaxHP[vInfoVO.vehicleID] = vInfoVO.vehicleType.maxHealth if vInfoVO.vehicleType.maxHealth is not None else 0
         enemyVehiclesSumMaxHP = sum(enemyVehiclesMaxHP.values())
+
 
 @registerEvent(PlayerAvatar, '_PlayerAvatar__destroyGUI')
 def totalEfficiency_destroyGUI(self):
@@ -401,5 +403,3 @@ def suspend(base, self):
         self.resume()
     else:
         base(self)
-
-

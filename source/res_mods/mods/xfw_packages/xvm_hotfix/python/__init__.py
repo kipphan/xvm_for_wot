@@ -1,7 +1,7 @@
 """
 This file is part of the XVM project.
 
-Copyright (c) 2013-2020 XVM Team.
+Copyright (c) 2013-2021 XVM Team.
 
 XVM is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import traceback
 
 import base64
+import debug_utils
 from account_helpers.CustomFilesCache import CustomFilesCache
 
 from xfw import *
@@ -43,3 +44,13 @@ def _CustomFilesCache__onReadLocalFile(base, self, url, showImmediately):
             base(self, url, showImmediately)
         except Exception:
             err(traceback.format_exc())
+
+# uncomment on Common Test
+"""
+@overrideMethod(debug_utils, '_doLog')
+def _doLog(base, category, msg, *args, **kwargs):
+    if category == 'DEBUG':
+        if msg == '_updateToLatestVersion':
+            return
+    base(category, msg, args, kwargs)
+"""

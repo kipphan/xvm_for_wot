@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 """
 @author Omegaice
 @author Maxim Schedriviy <max(at)modxvm.com>
@@ -249,7 +249,7 @@ class _MinimapCircles(object):
 
     # cola, chocolate etc.
     def _isStimulatorEquipped(self):
-        for item in self.vehicleItem._equipmentLayout.regularConsumables:
+        for item in self.vehicleItem.consumables.installed:
             # debug(vars(item))
             if item is not None and item.isStimulator:
                 return True

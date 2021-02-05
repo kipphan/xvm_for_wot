@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # imports
@@ -15,7 +15,7 @@ from gui import g_guiResetters
 from gui.battle_control import avatar_getter
 from gui.battle_control.battle_constants import FEEDBACK_EVENT_ID
 from gui.Scaleform.daapi.view.battle.classic.stats_exchange import FragsCollectableStats
-from gui.Scaleform.daapi.view.battle.shared.markers2d.plugins import VehicleMarkerPlugin
+from gui.Scaleform.daapi.view.battle.shared.markers2d.vehicle_plugins import VehicleMarkerPlugin
 from gui.shared import g_eventBus, events, EVENT_BUS_SCOPE
 from helpers import dependency
 from skeletons.gui.app_loader import IAppLoader, GuiGlobalSpaceID
@@ -155,7 +155,7 @@ def _FragCorrelationPanel_getTotalStats(base, self, arenaVisitor, sessionProvide
     base(self, arenaVisitor, sessionProvider)
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def onHealthChanged(self, newHealth, attackerID, attackReasonID):
+def onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
     # update only for player vehicle, others handled on vehicle feedback event
     if self.isPlayerVehicle:
         update_hp(self.id, newHealth)
