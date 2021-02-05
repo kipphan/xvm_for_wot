@@ -2,6 +2,7 @@
 # ktulho <https://kr.cm/f/p/17624/>
 
 import BigWorld
+import game
 import ResMgr
 import nations
 from Avatar import PlayerAvatar
@@ -46,6 +47,7 @@ BATTLE_TYPE = {ARENA_GUI_TYPE.UNKNOWN: "unknown",
                ARENA_GUI_TYPE.EPIC_RANDOM_TRAINING: "epic_random_training",
                ARENA_GUI_TYPE.EPIC_BATTLE: "epic_battle",
                ARENA_GUI_TYPE.EPIC_TRAINING: "epic_battle",
+               ARENA_GUI_TYPE.BATTLE_ROYALE: "battle_royale",
                ARENA_GUI_TYPE.BOB: "bob"}
 
 HIT_LOG = 'hitLog/'
@@ -151,6 +153,7 @@ class Macros(dict):
         self['c:xwgr'] = readColor('x', xwgr)
         self['c:xte'] = readColor('x', value.get('xte', None))
         self['diff-masses'] = value.get('diff-masses', None)
+        self['shell-dmg'] = value.get('shellDamage', None)
         self['nation'] = value.get('nation', None)
         self['blownup'] = 'blownup' if value['blownup'] else None
         self['vehiclename'] = value.get('attackerVehicleName', None)
@@ -159,7 +162,6 @@ class Macros(dict):
 
 
 class DataHitLog(object):
-
     guiSessionProvider = dependency.descriptor(IBattleSessionProvider)
 
     def __init__(self):
@@ -193,6 +195,7 @@ class DataHitLog(object):
             'blownup': False,
             # 'hitEffect': None,
             'costShell': 'unknown',
+            'shellDamage': None,
             'shellKind': None,
             'splashHit': False,
             'criticalHit': False,
@@ -219,7 +222,7 @@ class DataHitLog(object):
         self.splashHit = False
 
     def setRatings(self):
-        if (_stat.resp is not None) and (self.data['name'] in _stat.resp['players']):
+        if (_stat.resp is not None) and ('players' in _stat.resp) and (self.data['name'] in _stat.resp['players']):
             stats = _stat.resp['players'][self.data['name']]
             self.data['wn8'] = stats.get('wn8', None)
             self.data['xwn8'] = stats.get('xwn8', None)
@@ -260,6 +263,7 @@ class DataHitLog(object):
         self.data['xte'] = None
         self.data['teamDmg'] = 'unknown'
         self.data['costShell'] = 'unknown'
+        self.data['shellDamage'] = None
         self.data['shellKind'] = 'not_shell'
         self.data['damageDeviation'] = None
 
@@ -306,6 +310,7 @@ class DataHitLog(object):
             _shells = self.shells[self.intCD]
             self.data['shellKind'] = _shells['shellKind']
             self.data['costShell'] = _shells['costShell']
+            self.data['shellDamage'] = _shells['shellDamage']
 
     def getDamageDeviation(self, newHealth):
         result = None
@@ -897,7 +902,7 @@ def _Vehicle_startVisual(self):
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def _Vehicle_onHealthChanged(self, newHealth, attackerID, attackReasonID):
+def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
     if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         if (g_dataHitLog.playerVehicleID == attackerID) and (self.id not in g_dataHitLog.vehDead or newHealth <= -5):
             attacked = g_dataHitLog.player.arena.vehicles.get(self.id)
@@ -923,24 +928,25 @@ def PlayerAvatar__destroyGUI(self):
         g_dataHitLog.reset()
 
 
-@registerEvent(PlayerAvatar, 'handleKey')
-def PlayerAvatar_handleKey(self, isDown, key, mods):
+@registerEvent(game, 'handleKeyEvent')
+def game_handleKeyEvent(event):
     if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
+        isDown, key, mods, isRepeat = game.convertKeyEvent(event)
         hotkey = _config.get('hotkeys/hitLogAltMode')
         if hotkey['enabled'] and (key == hotkey['keyCode']):
-            if isDown:
-                if hotkey['onHold']:
+            if hotkey['onHold']:
+                if isDown:
                     if not g_hitLogs.isDownAlt:
                         g_hitLogs.isDownAlt = True
                         as_event(ON_HIT_LOG)
                 else:
-                    g_hitLogs.isDownAlt = not g_hitLogs.isDownAlt
-                    as_event(ON_HIT_LOG)
-            else:
-                if hotkey['onHold']:
                     if g_hitLogs.isDownAlt:
                         g_hitLogs.isDownAlt = False
                         as_event(ON_HIT_LOG)
+            else:
+                if isDown:
+                    g_hitLogs.isDownAlt = not g_hitLogs.isDownAlt
+                    as_event(ON_HIT_LOG)
 
 
 def hLog():

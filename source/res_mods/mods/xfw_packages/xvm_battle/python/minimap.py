@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # imports
@@ -7,6 +7,7 @@ import Math
 import math
 import traceback
 
+import BigWorld
 import constants
 import game
 from constants import VISIBILITY
@@ -94,8 +95,9 @@ def _MinimapComponent_addEntry(base, self, symbol, *args, **kwargs):
             symbol = XVM_ENTRY_SYMBOL_NAME.STRATEGIC_CAMERA
         elif symbol == ENTRY_SYMBOL_NAME.VIEW_RANGE_CIRCLES:
             symbol = XVM_ENTRY_SYMBOL_NAME.VIEW_RANGE_CIRCLES
-        elif symbol == ENTRY_SYMBOL_NAME.MARK_CELL:
-            symbol = XVM_ENTRY_SYMBOL_NAME.MARK_CELL
+        # TODO: 1.10.0
+        #elif symbol == ENTRY_SYMBOL_NAME.MARK_CELL:
+            #symbol = XVM_ENTRY_SYMBOL_NAME.MARK_CELL
         #else:
         #    debug('add minimap entry: ' + symbol)
     entryID = base(self, symbol, *args, **kwargs)
@@ -170,7 +172,8 @@ _CIRCLES_SETTINGS = (
     settings_constants.GAME.MINIMAP_DRAW_RANGE,
     settings_constants.GAME.MINIMAP_MAX_VIEW_RANGE,
     settings_constants.GAME.MINIMAP_VIEW_RANGE,
-    settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP)
+    settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP,
+    settings_constants.GAME.MINIMAP_MIN_SPOTTING_RANGE)
 _LINES_SETTINGS = (
     settings_constants.GAME.SHOW_VECTOR_ON_MAP,
     settings_constants.GAME.SHOW_SECTOR_ON_MAP)
@@ -183,6 +186,7 @@ _DEFAULTS = {
     settings_constants.GAME.MINIMAP_MAX_VIEW_RANGE: True,
     settings_constants.GAME.MINIMAP_VIEW_RANGE: True,
     settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP: False,
+    settings_constants.GAME.MINIMAP_MIN_SPOTTING_RANGE: False,
 }
 
 _in_PersonalEntriesPlugin_setSettings = False
@@ -243,6 +247,8 @@ def _PersonalEntriesPlugin_updateSettings(base, self, diff):
                 diff[settings_constants.GAME.MINIMAP_MAX_VIEW_RANGE] = _DEFAULTS[settings_constants.GAME.MINIMAP_MAX_VIEW_RANGE]
             if settings_constants.GAME.MINIMAP_VIEW_RANGE in diff:
                 diff[settings_constants.GAME.MINIMAP_VIEW_RANGE] = _DEFAULTS[settings_constants.GAME.MINIMAP_VIEW_RANGE]
+            if settings_constants.GAME.MINIMAP_MIN_SPOTTING_RANGE in diff:
+                diff[settings_constants.GAME.MINIMAP_MIN_SPOTTING_RANGE] = _DEFAULTS[settings_constants.GAME.MINIMAP_MIN_SPOTTING_RANGE]
     base(self, diff)
 
 @overrideMethod(ArenaVehiclesPlugin, 'setSettings')
@@ -271,14 +277,14 @@ def _ADDITIONAL_FEATURES_isOn(base, cls, mask):
 def _ADDITIONAL_FEATURES_isChanged(base, cls, mask):
     return False if g_minimap.active and g_minimap.opt_labelsEnabled else base(mask)
 
-@overrideMethod(PersonalEntriesPlugin, '_PersonalEntriesPlugin__onVehicleFeedbackReceived')
-def _PersonalEntriesPlugin__onVehicleFeedbackReceived(base, self, eventID, _, value):
+@overrideMethod(PersonalEntriesPlugin, '_onVehicleFeedbackReceived')
+def _PersonalEntriesPlugin_onVehicleFeedbackReceived(base, self, eventID, _, __):
     if g_minimap.active and g_minimap.opt_circlesEnabled:
         VISIBILITY.MAX_RADIUS = 1000
-        base(self, eventID, _, value)
+        base(self, eventID, _, __)
         VISIBILITY.MAX_RADIUS = 445
     else:
-        base(self, eventID, _, value)
+        base(self, eventID, _, __)
 
 
 #####################################################################
@@ -310,9 +316,16 @@ class _Minimap(object):
 
     def init(self, minimapComponent):
         self.initialized = True
-        arena = avatar_getter.getArena()
-        self.guiType = arena.guiType
-        self.battleType = arena.bonusType
+
+        avatar = BigWorld.player()
+        arena = None
+        if hasattr(avatar, 'arena'):
+            arena = avatar.arena
+
+        if arena is not None:
+            self.guiType = arena.guiType
+            self.battleType = arena.bonusType
+
         self.minimapComponent = minimapComponent
         self.entrySymbols = {}
 

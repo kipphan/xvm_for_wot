@@ -1,32 +1,31 @@
 # Addons: "DamageLog"
 # ktulho <https://kr.cm/f/p/17624/>
 
-import copy
-
 import BigWorld
+import game
 import ResMgr
 import nations
 from Avatar import PlayerAvatar
 from Vehicle import Vehicle
 from VehicleEffects import DamageFromShotDecoder
-from vehicle_systems.tankStructure import TankPartIndexes
 from constants import ITEM_DEFS_PATH, DAMAGE_INFO_CODES, VEHICLE_CLASSES
 from gui.Scaleform.daapi.view.battle.shared.damage_log_panel import DamageLogPanel
 from gui.Scaleform.daapi.view.meta.DamagePanelMeta import DamagePanelMeta
 from gui.shared.utils.TimeInterval import TimeInterval
-from items import vehicles, _xml
 from helpers import dependency
+from items import _xml
 from skeletons.gui.battle_session import IBattleSessionProvider
 from skeletons.gui.game_control import IBootcampController
+from vehicle_systems.tankStructure import TankPartIndexes
 
 from xfw.events import registerEvent, overrideMethod
 from xfw_actionscript.python import *
 
-from xvm_main.python.logger import *
-from xvm_main.python.stats import _stat
+import xvm_battle.python.battle as battle
 import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
-import xvm_battle.python.battle as battle
+from xvm_main.python.logger import *
+from xvm_main.python.stats import _stat
 
 import parser_addon
 
@@ -37,7 +36,6 @@ macros = None
 chooseRating = None
 isImpact = False
 isShowDamageLog = True
-
 
 ATTACK_REASONS = {
     0: 'shot',
@@ -55,9 +53,21 @@ ATTACK_REASONS = {
     12: 'recovery',
     13: 'artillery_eq',
     14: 'bomber_eq',
-    15: 'none',
-    24: 'art_attack',
-    25: 'air_strike'
+    15: 'minefield_eq',
+    16: 'none',
+    17: 'spawned_bot_explosion',
+    18: 'berserker_eq',
+    19: 'spawned_bot_ram',
+    20: 'smoke',
+    31: 'art_attack',
+    32: 'air_strike'
+}
+
+SHOT_EFFECTS_INDEXES = {
+    31: 31,
+    32: 32,
+    33: 31,
+    34: 32
 }
 
 VEHICLE_CLASSES_SHORT = {
@@ -159,6 +169,8 @@ damageInfoTANKMAN = ('TANKMAN_HIT',
                      'TANKMAN_HIT_AT_WORLD_COLLISION',
                      'TANKMAN_HIT_AT_DROWNING'
                      )
+
+
 class GROUP_DAMAGE(object):
     RAMMING_COLLISION = 'groupDamagesFromRamming_WorldCollision'
     FIRE = 'groupDamagesFromFire'
@@ -191,7 +203,8 @@ class DAMAGE_LOG_SECTIONS(object):
     LOG_BACKGROUND = DAMAGE_LOG + 'logBackground/'
     LOG_ALT_BACKGROUND = DAMAGE_LOG + 'logAltBackground/'
     LAST_HIT = DAMAGE_LOG + 'lastHit/'
-    SECTIONS = (LOG, LOG_ALT, LOG_BACKGROUND, LOG_ALT_BACKGROUND, LAST_HIT)
+    LAST_HIT_BACKGROUND = DAMAGE_LOG + 'lastHitBackground/'
+    SECTIONS = (LOG, LOG_ALT, LOG_BACKGROUND, LOG_ALT_BACKGROUND, LAST_HIT, LAST_HIT_BACKGROUND)
 
 
 def keyLower(_dict):
@@ -279,11 +292,12 @@ class Data(object):
                      'name': '',
                      'clanAbbrev': '',
                      'level': 1,
-                     'clanicon': '',
-                     'squadnum': 0,
+                     'clanicon': None,
+                     'squadnum': None,
                      'number': None,
                      'reloadGun': 0.0,
                      'caliber': None,
+                     'shellDamage': None,
                      'fireDuration': None,
                      'diff-masses': None,
                      'nation': None,
@@ -303,16 +317,30 @@ class Data(object):
         attackerID = self.data['attackerID']
         minutes, seconds = divmod(int(self.sessionProvider.shared.arenaPeriod.getEndTime() - BigWorld.serverTime()), 60)
         self.data['hitTime'] = '{:02d}:{:02d}'.format(minutes, seconds)
+        self.data['level'] = None
+        self.data['nation'] = None
+        self.data['diff-masses'] = None
+        self.data['wn8'] = None
+        self.data['xwn8'] = None
+        self.data['wtr'] = None
+        self.data['xwtr'] = None
+        self.data['eff'] = None
+        self.data['xeff'] = None
+        self.data['wgr'] = None
+        self.data['xwgr'] = None
+        self.data['xte'] = None
+        self.data['teamDmg'] = 'unknown'
+        self.data['attackerVehicleType'] = 'not_vehicle'
+        self.data['attackerVehicleName'] = ''
+        self.data['shortUserString'] = ''
+        self.data['name'] = ''
+        self.data['clanAbbrev'] = ''
+        self.data['clanicon'] = None
+        self.data['squadnum'] = None
         if attackerID:
-            self.data['teamDmg'] = 'unknown'
             attacker = player.arena.vehicles.get(attackerID)
             if attacker is not None:
-                if attacker['team'] != player.team:
-                    self.data['teamDmg'] = 'enemy-dmg'
-                elif attacker['name'] == player.name:
-                    self.data['teamDmg'] = 'player'
-                else:
-                    self.data['teamDmg'] = 'ally-dmg'
+                self.data['teamDmg'] = 'enemy-dmg' if attacker['team'] != player.team else 'player' if attacker['fakeName'] == player.name else 'ally-dmg'
                 vehicleType = attacker['vehicleType']
                 if vehicleType:
                     _type = vehicleType.type
@@ -323,18 +351,9 @@ class Data(object):
                     self.data['nation'] = nations.NAMES[_type.customizationNationID]
                     if self.data['attackReasonID'] == 2:
                         self.data['diff-masses'] = (player.vehicleTypeDescriptor.physics['weight'] - vehicleType.physics['weight']) / 1000.0
-                    elif self.data['diff-masses'] is not None:
-                        self.data['diff-masses'] = None
-                else:
-                    self.data['attackerVehicleType'] = 'not_vehicle'
-                    self.data['attackerVehicleName'] = ''
-                    self.data['shortUserString'] = None
-                    self.data['level'] = None
-                    self.data['nation'] = None
-                    self.data['diff-masses'] = None
-                self.data['name'] = attacker['name']
-                if (_stat.resp is not None) and (attacker['name'] in _stat.resp['players']):
-                    stats = _stat.resp['players'][attacker['name']]
+                self.data['name'] = attacker['fakeName']
+                if (_stat.resp is not None) and ('players' in _stat.resp) and (attacker['fakeName'] in _stat.resp['players']):
+                    stats = _stat.resp['players'][attacker['fakeName']]
                     self.data['wn8'] = stats.get('wn8', None)
                     self.data['xwn8'] = stats.get('xwn8', None)
                     self.data['wtr'] = stats.get('wtr', None)
@@ -344,52 +363,31 @@ class Data(object):
                     self.data['wgr'] = stats.get('wgr', None)
                     self.data['xwgr'] = stats.get('xwgr', None)
                     self.data['xte'] = stats.get('v').get('xte', None)
-                else:
-                    self.data['wn8'] = None
-                    self.data['xwn8'] = None
-                    self.data['wtr'] = None
-                    self.data['xwtr'] = None
-                    self.data['eff'] = None
-                    self.data['xeff'] = None
-                    self.data['wgr'] = None
-                    self.data['xwgr'] = None
-                    self.data['xte'] = None
                 self.data['clanAbbrev'] = attacker['clanAbbrev']
             self.data['clanicon'] = _stat.getClanIcon(attackerID)
-            self.data['squadnum'] = None
             arenaDP = self.sessionProvider.getArenaDP()
             if arenaDP is not None:
                 vInfo = arenaDP.getVehicleInfo(vID=attackerID)
                 self.data['squadnum'] = vInfo.squadIndex if vInfo.squadIndex != 0 else None
-        else:
-            self.data['teamDmg'] = 'unknown'
-            self.data['attackerVehicleType'] = 'not_vehicle'
-            self.data['attackerVehicleName'] = ''
-            self.data['shortUserString'] = ''
-            self.data['name'] = ''
-            self.data['clanAbbrev'] = ''
-            self.data['level'] = None
-            self.data['clanicon'] = None
-            self.data['squadnum'] = None
         self.updateLabels()
 
     def typeShell(self, effectsIndex):
         self.data['costShell'] = 'unknown'
         self.data['shellKind'] = 'not_shell'
+        self.data['caliber'] = None
+        self.data['shellDamage'] = None
         if (self.data['attackerID'] == 0) or (self.data['attackReasonID'] != 0):
             return
         player = BigWorld.player()
         attacker = player.arena.vehicles.get(self.data['attackerID'])
         if (attacker is None) or not attacker['vehicleType']:
-            self.data['shellKind'] = 'not_shell'
-            self.data['caliber'] = None
-            self.data['costShell'] = 'unknown'
             return
         for shot in attacker['vehicleType'].gun.shots:
             _shell = shot.shell
             if effectsIndex == _shell.effectsIndex:
                 self.data['shellKind'] = str(_shell.kind).lower()
                 self.data['caliber'] = _shell.caliber
+                self.data['shellDamage'] = _shell.damage[0]
                 _id = _shell.id
                 nation = nations.NAMES[_id[0]]
                 self.data['costShell'] = 'gold-shell' if _id[1] in self.shells[nation] else 'silver-shell'
@@ -418,11 +416,12 @@ class Data(object):
     def hitShell(self, attackerID, effectsIndex, damageFactor):
         self.data['stun-duration'] = None
         self.data['attackerID'] = attackerID
-        self.data['attackReasonID'] = effectsIndex if effectsIndex in [24, 25] else 0
+        # self.data['attackReasonID'] = effectsIndex if effectsIndex in [24, 25] else 0
+        self.data['attackReasonID'] = SHOT_EFFECTS_INDEXES.get(effectsIndex, 0)
         self.data['reloadGun'] = self.timeReload(attackerID)
         self.typeShell(effectsIndex)
         self.data['damage'] = 0
-        if self.data['isDamage']:
+        if damageFactor > 0:
             self.data['hitEffect'] = HIT_EFFECT_CODES[4]
         elif self.data['shells_stunning']:
             pass
@@ -437,6 +436,7 @@ class Data(object):
         _logAlt.output()
         _log.output()
         _lastHit.output()
+        _lastHitBackground.output()
         _logBackground.output()
         _logAltBackground.output()
         self.data['critDevice'] = 'no-critical'
@@ -444,6 +444,7 @@ class Data(object):
         self.data['isDamage'] = False
         self.data['hitEffect'] = 'unknown'
         self.data['splashHit'] = 'no-splash'
+        self.data['attackReasonID'] = 0
 
     def showDamageFromShot(self, vehicle, attackerID, points, effectsIndex, damageFactor):
         if not vehicle.isStarted:
@@ -460,7 +461,7 @@ class Data(object):
             self.data['compName'] = 'unknown'
 
         # self.data['criticalHit'] = (maxHitEffectCode == 5)
-        if not self.data['isDamage']:
+        if damageFactor == 0:
             self.data['hitEffect'] = HIT_EFFECT_CODES[min(3, maxHitEffectCode)]
             self.data['isAlive'] = bool(vehicle.isCrewActive)
         self.hitShell(attackerID, effectsIndex, damageFactor)
@@ -468,7 +469,7 @@ class Data(object):
     def showDamageFromExplosion(self, vehicle, attackerID, center, effectsIndex, damageFactor):
         self.data['splashHit'] = 'splash'
         # self.data['criticalHit'] = False
-        if not self.data['isDamage']:
+        if damageFactor == 0:
             self.data['hitEffect'] = HIT_EFFECT_CODES[3]
             self.data['isAlive'] = bool(vehicle.isCrewActive)
         self.hitShell(attackerID, effectsIndex, damageFactor)
@@ -521,19 +522,20 @@ class Data(object):
                 self.data['critDevice'] = DEVICES_TANKMAN[extra.name + '_destr'] if damageCode in damageInfoDestructions else DEVICES_TANKMAN[extra.name]
             self.data['criticalHit'] = True
 
-    def onHealthChanged(self, vehicle, newHealth, attackerID, attackReasonID):
+    def onHealthChanged(self, vehicle, newHealth, oldHealth, attackerID, attackReasonID):
         self.data['blownup'] = (newHealth <= -5)
         newHealth = max(0, newHealth)
         self.data['damage'] = self.data['oldHealth'] - newHealth
         self.data['oldHealth'] = newHealth
         if self.data['damage'] < 0:
             return
-        if (attackReasonID < 8) or (attackReasonID == 12):
-            self.data['attackReasonID'] = attackReasonID
-        elif attackReasonID in [9, 10, 13, 24]:
-            self.data['attackReasonID'] = 24
-        elif attackReasonID in [11, 14, 25]:
-            self.data['attackReasonID'] = 25
+        if self.data['attackReasonID'] == 0:
+            if (attackReasonID < 8) or (attackReasonID == 12):
+                self.data['attackReasonID'] = attackReasonID
+            elif attackReasonID in [9, 10, 13]:
+                self.data['attackReasonID'] = 31
+            elif attackReasonID in [11, 14]:
+                self.data['attackReasonID'] = 32
 
         self.data['isDamage'] = (self.data['damage'] > 0)
         self.data['isAlive'] = vehicle.isAlive()
@@ -555,6 +557,7 @@ data = Data()
 
 
 class _Base(object):
+
     def __init__(self, section):
         self.S_MOVE_IN_BATTLE = section + MOVE_IN_BATTLE
         self.S_SHOW_HIT_NO_DAMAGE = section + SHOW_HIT_NO_DAMAGE
@@ -624,11 +627,12 @@ class _Base(object):
                       'clannb': value['clanAbbrev'],
                       'clan': ''.join(['[', value['clanAbbrev'], ']']) if value['clanAbbrev'] else '',
                       'level': value['level'],
-                      'clanicon': value['clanicon'],
+                      'clanicon': value.get('clanicon', None),
                       'squad-num': value['squadnum'],
                       'reloadGun': value['reloadGun'],
                       'my-alive': 'al' if value['isAlive'] else None,
                       'gun-caliber': value['caliber'],
+                      'shell-dmg': value['shellDamage'],
                       'wn8': value.get('wn8', None),
                       'xwn8': value.get('xwn8', None),
                       'wtr': value.get('wtr', None),
@@ -656,7 +660,7 @@ class _Base(object):
                       'my-blownup': 'blownup' if value['blownup'] else None,
                       'type-shell-key': value['shellKind'],
                       'stun-duration': value.get('stun-duration', None),
-                      'vehiclename': value.get('attackerVehicleName', None)
+                      'vehiclename': value.get('attackerVehicleName', '')
                       }
 
         macros.update({'c:team-dmg': conf['c_teamDmg'][value['teamDmg']],
@@ -693,10 +697,11 @@ class _Base(object):
                 SHADOW_OPTIONS.INNER: parser(_config.get(self.SHADOW_INNER)),
                 SHADOW_OPTIONS.KNOCKOUT: parser(_config.get(self.SHADOW_KNOCKOUT)),
                 SHADOW_OPTIONS.QUALITY: parser(_config.get(self.SHADOW_QUALITY))
-               }
+                }
 
 
 class DamageLog(_Base):
+
     def __init__(self, section):
         _Base.__init__(self, section)
         self.S_FORMAT_HISTORY = section + FORMAT_HISTORY
@@ -763,8 +768,8 @@ class DamageLog(_Base):
     def addLine(self, attackerID=None, attackReasonID=None):
         if not (attackerID is None or attackReasonID is None):
             self.dictVehicle[attackerID][attackReasonID] = {'time': BigWorld.serverTime(),
-                                                            'damage':  self.dataLog['damage'],
-                                                            'criticalHit':  self.dataLog['criticalHit'],
+                                                            'damage': self.dataLog['damage'],
+                                                            'criticalHit': self.dataLog['criticalHit'],
                                                             'numberLine': 0,
                                                             'startAction': BigWorld.time() if attackReasonID == 1 else None,
                                                             'hitTime': self.dataLog['hitTime']
@@ -790,7 +795,10 @@ class DamageLog(_Base):
         self.dataLog['damage'] = parametersDmg['damage']
         self.dataLog['dmgRatio'] = self.dataLog['damage'] * 100 // self.dataLog['maxHealth']
         self.dataLog['number'] = len(self.listLog) - parametersDmg['numberLine']
-        self.dataLog['fireDuration'] = BigWorld.time() - parametersDmg['startAction'] if (self.dataLog['attackReasonID'] == 1) and (parametersDmg['startAction'] is not None) else None
+        if (self.dataLog['attackReasonID'] == 1) and (parametersDmg['startAction'] is not None):
+            self.dataLog['fireDuration'] = BigWorld.time() - parametersDmg['startAction']
+        else:
+            self.dataLog['fireDuration'] = None
         self.dataLog['hitTime'] = parametersDmg['hitTime']
         self.setOutParameters(parametersDmg['numberLine'])
 
@@ -929,12 +937,14 @@ _logAlt = DamageLog(DAMAGE_LOG_SECTIONS.LOG_ALT)
 _logBackground = DamageLog(DAMAGE_LOG_SECTIONS.LOG_BACKGROUND)
 _logAltBackground = DamageLog(DAMAGE_LOG_SECTIONS.LOG_ALT_BACKGROUND)
 _lastHit = LastHit(DAMAGE_LOG_SECTIONS.LAST_HIT)
+_lastHitBackground = LastHit(DAMAGE_LOG_SECTIONS.LAST_HIT_BACKGROUND)
 
 
 @registerEvent(PlayerAvatar, 'onBecomePlayer')
 def _PlayerAvatar_onBecomePlayer(self):
     global isShowDamageLog
     isShowDamageLog = _config.get(DAMAGE_LOG_ENABLED) and battle.isBattleTypeSupported
+
 
 @overrideMethod(DamageLogPanel, '_addToTopLog')
 def DamageLogPanel_addToTopLog(base, self, value, actionTypeImg, vehicleTypeImg, vehicleName, shellTypeStr, shellTypeBG):
@@ -979,14 +989,14 @@ def as_updateSummaryStunValueS(base, self, value):
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def Vehicle_onHealthChanged(self, newHealth, attackerID, attackReasonID):
+def Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
     global on_fire, isImpact
     if not isImpact and self.isPlayerVehicle:
         isImpact = True
         as_event(EVENTS_NAMES.ON_IMPACT)
     if isShowDamageLog:
         if self.isPlayerVehicle and data.data['isAlive']:
-            data.onHealthChanged(self, newHealth, attackerID, attackReasonID)
+            data.onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID)
             if newHealth <= 0:
                 on_fire = 0
                 as_event(EVENTS_NAMES.ON_FIRE)
@@ -1073,7 +1083,7 @@ def Vehicle_updateStunInfo(self):
 @registerEvent(DamagePanelMeta, 'as_setFireInVehicleS')
 def DamagePanelMeta_as_setFireInVehicleS(self, isInFire):
     global on_fire
-    if isShowDamageLog:
+    if isShowDamageLog and data.data['isAlive']:
         on_fire = 100 if isInFire else 0
         as_event(EVENTS_NAMES.ON_FIRE)
 
@@ -1089,27 +1099,29 @@ def PlayerAvatar__destroyGUI(self):
     _logBackground.reset(_logBackground.section)
     _logAltBackground.reset(_logAltBackground.section)
     _lastHit.reset()
+    _lastHitBackground.reset()
 
 
-@registerEvent(PlayerAvatar, 'handleKey')
-def PlayerAvatar_handleKey(self, isDown, key, mods):
+@registerEvent(game, 'handleKeyEvent')
+def game_handleKeyEvent(event):
     global isDownAlt
     if isShowDamageLog:
+        isDown, key, mods, isRepeat = game.convertKeyEvent(event)
         hotkey = _config.get('hotkeys/damageLogAltMode')
         if hotkey[ENABLED] and (key == hotkey['keyCode']):
-            if isDown:
-                if hotkey['onHold']:
+            if hotkey['onHold']:
+                if isDown:
                     if not isDownAlt:
                         isDownAlt = True
                         as_event(EVENTS_NAMES.ON_HIT)
                 else:
-                    isDownAlt = not isDownAlt
-                    as_event(EVENTS_NAMES.ON_HIT)
-            else:
-                if hotkey['onHold']:
                     if isDownAlt:
                         isDownAlt = False
                         as_event(EVENTS_NAMES.ON_HIT)
+            else:
+                if isDown:
+                    isDownAlt = not isDownAlt
+                    as_event(EVENTS_NAMES.ON_HIT)
 
 
 def dLog():
@@ -1131,8 +1143,13 @@ def dLog_x():
 def dLog_y():
     return _log.y
 
+
 def lastHit():
     return _lastHit.strLastHit
+
+
+def lastHit_bg():
+    return _lastHitBackground.strLastHit
 
 
 def lastHit_shadow(setting):

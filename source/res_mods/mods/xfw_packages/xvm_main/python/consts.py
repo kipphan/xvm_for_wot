@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 from xfw_loader.python import XFWLOADER_PATH_TO_ROOT
 
@@ -38,6 +38,7 @@ class XVM_EVENT(object):
     RELOAD_CONFIG = 'xvm.reload_config'
     CONFIG_LOADED = 'xvm.config_loaded'
     SYSTEM_MESSAGE = 'xvm.system_message'
+    CHECK_ACTIVATION = 'xvm.check_activation'
     XVM_SERVICES_INITIALIZED = 'xvm.services_initialized'
 
 # PY<->AS3 commands
@@ -62,6 +63,7 @@ class XVM_COMMAND(object):
     SAVE_SETTINGS = "xvm.save_settings"
     IS_IN_BOOTCAMP = "xvm.is_in_bootcamp"
     MINIMAP_CLICK = "xvm.minimap_click"
+    OPEN_WEB_BROWSER = "xvm.open_web_browser"
     AS_ON_KEY_EVENT = "xvm.as.on_key_event"
     AS_ON_UPDATE_STAGE = "xvm.as.on_update_stage"
     AS_DOSSIER = "xvm.as.dossier"

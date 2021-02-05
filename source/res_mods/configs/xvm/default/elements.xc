@@ -56,8 +56,8 @@
     "battleDamageLogPanel"          - Панель: Информирование в бою - История событий         / Panel: Battle Notifications - Log
     "battleLoading"                 - Экран загрузки боя                                     / Battle Loading screen
     "battleMessenger"               - Чат                                                    / Chat
-    "battleTicker"                  - ?                                                      / ?
     "battleTimer"                   - Таймер боя                                             / Battle timer
+    "calloutPanel"                  - Панель подтверждения команды (коммуникация в бою)      / Command confirmation panel (communication in battle)
     "consumablesPanel"              - Панель снарядов и расходников                          / Ammo bar
     "damageInfoPanel"               - Внутриигровая панель критов от навыка "эксперт"        / Ingame crits panel by "expert" skill
     "damagePanel"                   - Панель повреждений                                     / Damage panel

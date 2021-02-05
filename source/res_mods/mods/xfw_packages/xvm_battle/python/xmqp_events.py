@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 import traceback
 import simplejson
@@ -116,33 +116,33 @@ def _onXmqpHola(accountDBID, data):
 
 # WG events hooks
 
-from gui.Scaleform.daapi.view.battle.shared.destroy_timers_panel import DestroyTimersPanel
+from gui.Scaleform.daapi.view.battle.shared.timers_panel import TimersPanel
 
 # fire in vehicle:
 #   enable: True, False
 
-@registerEvent(DestroyTimersPanel, '_DestroyTimersPanel__setFireInVehicle')
-def _DestroyTimersPanel__setFireInVehicle(self, isInFire):
+@registerEvent(TimersPanel, '_TimersPanel__setFireInVehicle')
+def _TimersPanel__setFireInVehicle(self, isInFire):
     if xmqp.is_active():
-        xmqp.call({'event':EVENTS.XMQP_FIRE,'enable':isInFire})
+        xmqp.call({'event': EVENTS.XMQP_FIRE, 'enable': isInFire})
 
 # vehicle death timer
 #   code: drown, overturn, ALL
 #   enable: True, False
 
-@registerEvent(DestroyTimersPanel, '_DestroyTimersPanel__showDestroyTimer')
-def _DestroyTimersPanel__showDestroyTimer(self, value):
+@registerEvent(TimersPanel, '_showDestroyTimer')
+def _TimersPanel_showDestroyTimer(self, value):
     if xmqp.is_active() and dependency.instance(IAppLoader).getSpaceID() == GuiGlobalSpaceID.BATTLE:
         if value.needToCloseAll():
             xmqp.call({
-                'event':EVENTS.XMQP_VEHICLE_TIMER,
-                'enable':False,
-                'code':'ALL'})
+                'event': EVENTS.XMQP_VEHICLE_TIMER,
+                'enable': False,
+                'code': 'ALL'})
         elif value.needToCloseTimer():
             xmqp.call({
-                'event':EVENTS.XMQP_VEHICLE_TIMER,
-                'enable':False,
-                'code':value.code})
+                'event': EVENTS.XMQP_VEHICLE_TIMER,
+                'enable': False,
+                'code': value.code})
         else:
             xmqp.call({
                 'event': EVENTS.XMQP_VEHICLE_TIMER,
@@ -155,20 +155,20 @@ def _DestroyTimersPanel__showDestroyTimer(self, value):
 #   zoneID: death_zone, gas_attack, ALL
 #   enable: True, False
 
-@registerEvent(DestroyTimersPanel, '_showDeathZoneTimer')
-def _DestroyTimersPanel_showDeathZoneTimer(self, value):
+@registerEvent(TimersPanel, '_showDeathZoneTimer')
+def _TimersPanel_showDeathZoneTimer(self, value):
     if xmqp.is_active() and dependency.instance(IAppLoader).getSpaceID() == GuiGlobalSpaceID.BATTLE:
         try:
             if value.needToCloseAll():
                 xmqp.call({
-                    'event':EVENTS.XMQP_DEATH_ZONE_TIMER,
-                    'enable':False,
-                    'zoneID':'ALL'})
+                    'event': EVENTS.XMQP_DEATH_ZONE_TIMER,
+                    'enable': False,
+                    'zoneID': 'ALL'})
             elif value.needToCloseTimer():
                 xmqp.call({
-                    'event':EVENTS.XMQP_DEATH_ZONE_TIMER,
-                    'enable':False,
-                    'zoneID':value.zoneID})
+                    'event': EVENTS.XMQP_DEATH_ZONE_TIMER,
+                    'enable': False,
+                    'zoneID': value.zoneID})
             elif value.needToShow():
                 xmqp.call({
                     'event': EVENTS.XMQP_DEATH_ZONE_TIMER,

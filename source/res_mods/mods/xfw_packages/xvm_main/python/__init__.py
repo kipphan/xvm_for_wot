@@ -1,7 +1,7 @@
 """
 This file is part of the XVM project.
 
-Copyright (c) 2013-2020 XVM Team.
+Copyright (c) 2013-2021 XVM Team.
 
 XVM is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -72,9 +72,10 @@ def start():
     g_eventBus.addListener(XVM_EVENT.RELOAD_CONFIG, config.load)
     g_eventBus.addListener(XVM_EVENT.CONFIG_LOADED, g_xvm.onConfigLoaded)
     g_eventBus.addListener(XVM_EVENT.SYSTEM_MESSAGE, g_xvm.onSystemMessage)
+    g_eventBus.addListener(XVM_EVENT.CHECK_ACTIVATION, g_xvm.onCheckActivation)
 
     # config already loaded, just send event to apply required code
-    g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.CONFIG_LOADED, {'fromInitStage':True}))
+    g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.CONFIG_LOADED, {'fromInitStage': True}))
 
 @registerEvent(game, 'fini')
 def fini():
@@ -91,6 +92,7 @@ def fini():
     g_eventBus.removeListener(XVM_EVENT.RELOAD_CONFIG, config.load)
     g_eventBus.removeListener(XVM_EVENT.CONFIG_LOADED, g_xvm.onConfigLoaded)
     g_eventBus.removeListener(XVM_EVENT.SYSTEM_MESSAGE, g_xvm.onSystemMessage)
+    g_eventBus.removeListener(XVM_EVENT.CHECK_ACTIVATION, g_xvm.onCheckActivation)
 
 
 #####################################################################
@@ -112,7 +114,9 @@ def _MessageDecorator_getListVO(base, self, newId=None):
 
 @overrideMethod(NotificationsActionsHandlers, 'handleAction')
 def _NotificationsActionsHandlers_handleAction(base, self, model, typeID, entityID, actionName):
-    if typeID == NOTIFICATION_TYPE.MESSAGE and re.match('https?://', actionName, re.I):
+    if actionName == 'XVM_CHECK_ACTIVATION':
+        g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.CHECK_ACTIVATION))
+    elif typeID == NOTIFICATION_TYPE.MESSAGE and re.match('https?://', actionName, re.I):
         BigWorld.wg_openWebBrowser(actionName)
     else:
         base(self, model, typeID, entityID, actionName)
@@ -175,7 +179,7 @@ def log_version():
         log("    WoT Version     : %s" % WOT_VERSION_FULL)
         log("    WoT Architecture: %s" % platform.architecture()[0])
         log("    Current Time    : %s %+05d" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            round((round((datetime.now()-datetime.utcnow()).total_seconds())/1800)/2) * 100))
+            round((round((datetime.now() - datetime.utcnow()).total_seconds()) / 1800) / 2) * 100))
 
         log("---------------------------")
 
@@ -199,7 +203,7 @@ def xfw_module_init():
         BigWorld.callback(0, start)
 
         # load config
-        config.load(events.HasCtxEvent(XVM_EVENT.RELOAD_CONFIG, {'filename':XVM.CONFIG_FILE}))
+        config.load(events.HasCtxEvent(XVM_EVENT.RELOAD_CONFIG, {'filename': XVM.CONFIG_FILE}))
 
         global __xvm_main_loaded
         __xvm_main_loaded = True

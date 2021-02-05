@@ -1,7 +1,7 @@
 """
 This file is part of the XVM project.
 
-Copyright (c) 2013-2020 XVM Team.
+Copyright (c) 2013-2021 XVM Team.
 
 XVM is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as
@@ -143,7 +143,7 @@ class _Ping(object):
                 else:
                     hostping = 0
 
-                if hostping<0:
+                if hostping < 0:
                     res.append({'cluster': host, 'time': (self.hangarErrorString if self.hangarSpace.inited else self.loginErrorString)})
                     debug('Ping has returned non-zero status: %d' % hostping)
                     continue

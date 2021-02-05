@@ -1,9 +1,9 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # imports
 
-from gui.Scaleform.daapi.view.battle.shared.stats_exchage import BattleStatisticsDataController
+from gui.Scaleform.daapi.view.battle.shared.stats_exchange import BattleStatisticsDataController
 
 from xfw import *
 

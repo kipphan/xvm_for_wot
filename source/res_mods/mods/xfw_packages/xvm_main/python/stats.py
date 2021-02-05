@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #############################
 # Command
@@ -19,10 +19,11 @@ def getBattleResultsStat(args, respondFunc):
         'args': args})
     _stat.processQueue()
 
-def getUserData(args):
+def getUserData(args, respondFunc):
     _stat.enqueue({
         'func': _stat.getUserData,
         'cmd': XVM_COMMAND.AS_STAT_USER_DATA,
+        'respondFunc': respondFunc,
         'args': args})
     _stat.processQueue()
 
@@ -283,7 +284,7 @@ class _Stat(object):
                     self.resp = {}
                 return
 
-            # pprint.pprint(value)
+            #log(value)
 
             self.players = {}
 
@@ -299,7 +300,14 @@ class _Stat(object):
                     'team': vData[0]['team']}
                 self.players[vehicleID] = _Player(vehicleID, vData)
 
-            self._load_stat(True)
+
+            battleinfo = {
+                'arena_unique_id': value['arenaUniqueID'],
+                'duration': value['common']['duration'],
+                'finishReason': value['common']['finishReason'],
+                'winnerTeam': value['common']['winnerTeam']}
+
+            self._load_stat(True, battleinfo)
 
             players = {}
             for (vehicleID, pl) in self.players.iteritems():
@@ -368,7 +376,7 @@ class _Stat(object):
         }
         return self._fix(s)
 
-    def _load_stat(self, isBattleResults):
+    def _load_stat(self, isBattleResults, battleinfo=None):
         requestList = []
 
         replay = isReplay()
@@ -379,7 +387,7 @@ class _Stat(object):
             if cacheKey not in self.cacheBattle:
                 all_cached = False
 
-            requestList.append("{}={}".format(pl.accountDBID, pl.vehCD))
+            requestList.append("{}={}={}".format(pl.accountDBID, pl.vehCD, pl.team))
 
         if all_cached or not requestList:
             return
@@ -387,7 +395,7 @@ class _Stat(object):
         try:
             accountDBID = utils.getAccountDBID()
             if config.networkServicesSettings.statBattle:
-                data = self._load_data_online(accountDBID, ','.join(requestList), isBattleResults)
+                data = self._load_data_online(accountDBID, ','.join(requestList), isBattleResults, battleinfo)
             else:
                 data = self._load_data_offline(accountDBID)
 
@@ -407,7 +415,7 @@ class _Stat(object):
         except Exception:
             err(traceback.format_exc())
 
-    def _load_data_online(self, accountDBID, request, isBattleResults):
+    def _load_data_online(self, accountDBID, request, isBattleResults, battleinfo):
         token = config.token.token
         if token is None:
             err('No valid token for XVM network services (id=%s)' % accountDBID)
@@ -416,7 +424,7 @@ class _Stat(object):
         if isReplay():
             data = xvmapi.getStatsReplay(request)
         elif isBattleResults:
-            data = xvmapi.getStatsBattleResults(request)
+            data = xvmapi.getStatsBattleResults(request, battleinfo)
         else:
             data = xvmapi.getStats(request)
 
@@ -459,6 +467,7 @@ class _Stat(object):
                     stat['name'] = pl.name
                     stat['team'] = TEAM.ALLY if team == pl.team else TEAM.ENEMY
                     stat['badgeId'] = pl.badgeId
+                    stat['badgeStage'] = pl.badgeStage
                     if hasattr(pl, 'alive'):
                         stat['alive'] = pl.alive
                     if hasattr(pl, 'ready'):
@@ -675,8 +684,9 @@ class _Stat(object):
 
 class _Player(object):
 
-    __slots__ = ('vehicleID', 'accountDBID', 'name', 'clan', 'clanInfo', 'badgeId', 'team',
-                 'vehCD', 'vLevel', 'maxHealth', 'vIcon', 'vn', 'vType', 'alive',
+    __slots__ = ('vehicleID', 'accountDBID', 'name', 'clan', 'clanInfo',
+                 'badgeId', 'badgeStage', 'team', 'vehCD', 'vLevel',
+                 'maxHealth', 'vIcon', 'vn', 'vType', 'alive',
                  'ready', 'x_emblem', 'x_emblem_loading', 'clanicon')
 
     sessionProvider = dependency.descriptor(IBattleSessionProvider)
@@ -687,9 +697,11 @@ class _Player(object):
         self.name = vData['name']
         self.clan = vData['clanAbbrev']
         self.badgeId = None
+        self.badgeStage = None
         badges = vData.get('badges', None)
         if badges:
             self.badgeId = str(badges[0])
+            self.badgeStage = str(badges[1][0])
         self.clanInfo = topclans.getClanInfo(self.clan)
         self.vehCD = None
         if 'typeCompDescr' in vData:

@@ -1,24 +1,24 @@
-# import c_parser_addon
-
 
 def parser_addon(strHTML, dict_macros):
     if not isinstance(strHTML, str):
         return str(strHTML)
     if '{{' in strHTML:
-        # return c_parser_addon.parse(strHTML, dict_macros)
         return _parser(strHTML, dict_macros)
     else:
         return strHTML
 
 
 def comparing(_macro, _operator, _math):
-    if isinstance(_macro, basestring):
-        _math = str(_math)
-    elif isinstance(_macro, float):
-        _math = float(_math)
-    elif isinstance(_macro, int):
-        _math = int(_math)
-    if isinstance(_macro, (float, int)) and isinstance(_math, (float, int)):
+    try:
+        if isinstance(_macro, (float, int)):
+            _math = float(_math)
+        elif isinstance(_macro, basestring):
+            _math = str(_math)
+        else:
+            return False
+    except ValueError:
+        return False
+    if isinstance(_macro, (float, int)):
         if _operator == '>=':
             return _macro >= _math
         elif _operator == '<=':
@@ -31,7 +31,7 @@ def comparing(_macro, _operator, _math):
             return _macro < _math
         elif _operator == '>':
             return _macro > _math
-    elif isinstance(_macro, basestring) and isinstance(_math, basestring):
+    elif isinstance(_macro, basestring):
         if _operator in ('==', '='):
             return _macro == _math
         elif _operator == '!=':

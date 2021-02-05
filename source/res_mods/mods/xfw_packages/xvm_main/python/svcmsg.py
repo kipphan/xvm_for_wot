@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 # -*- coding: utf-8 -*-
 
 import time
@@ -20,7 +20,7 @@ _XVM_MESSAGE_HEADER = \
 
 def sendXvmSystemMessage(type, msg):
     msg = _XVM_MESSAGE_HEADER + '\n\n' + msg + '</textformat>'
-    g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.SYSTEM_MESSAGE, {'msg':msg, 'type':type}))
+    g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.SYSTEM_MESSAGE, {'msg': msg, 'type': type}))
 
 def tokenUpdated():
     type = SystemMessages.SM_TYPE.Warning
@@ -45,9 +45,10 @@ def tokenUpdated():
     else:
         type = SystemMessages.SM_TYPE.Error
         msg += '{{l10n:token/unknown_status}}\n%s' % status
-    msg += '</textformat>'
+    msg += '</textformat>\n'
+    msg += _getXvmMessageFooter()
 
-    g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.SYSTEM_MESSAGE, {'msg':msg, 'type':type}))
+    g_eventBus.handleEvent(events.HasCtxEvent(XVM_EVENT.SYSTEM_MESSAGE, {'msg': msg, 'type': type}))
 
 def fixData(value):
     if value and 'message' in value and 'message' in value['message']:
@@ -60,12 +61,14 @@ def fixData(value):
               .replace('#XVM_SITE_INACTIVE#',    'event:https://modxvm.com/%D1%81%D0%B5%D1%82%D0%B5%D0%B2%D1%8B%D0%B5-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D1%8B-xvm/#wot-main') \
               .replace('#XVM_SITE_BLOCKED#',     'event:https://modxvm.com/%D1%81%D1%82%D0%B0%D1%82%D1%83%D1%81-%D0%B7%D0%B0%D0%B1%D0%BB%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD/#wot-main')
         else:
-            message = message  \
+            message = message \
               .replace('#XVM_SITE#',             'event:https://modxvm.com/en/#wot-main') \
               .replace('#XVM_SITE_DL#',          'event:https://modxvm.com/en/download-xvm/#wot-main') \
               .replace('#XVM_SITE_UNAVAILABLE#', 'event:https://modxvm.com/en/network-services-unavailable/#wot-main') \
               .replace('#XVM_SITE_INACTIVE#',    'event:https://modxvm.com/en/network-services-xvm/#wot-main') \
               .replace('#XVM_SITE_BLOCKED#',     'event:https://modxvm.com/en/status-blocked/#wot-main')
+        message = message \
+            .replace('#XVM_CHECK_ACTIVATION#',   'event:XVM_CHECK_ACTIVATION')
         value['message']['message'] = message
     return value
 
@@ -82,7 +85,6 @@ def _getXvmMessageHeader():
     msg += '{{l10n:ver/currentVersion:%s:%s}}\n' % (config.get('__xvmVersion'), rev)
     msg += _getVersionText() + '\n'
     return msg
-
 
 def _getVersionText():
     ver = config.verinfo.ver
@@ -116,3 +118,6 @@ If you are testing XVM, you can ignore this message.
 <b>If you're just a player and not a tester of XVM, please use a stable version instead of nightly builds. Download the stable version from the official website of XVM: <a href='#XVM_SITE_DL#'>https://modxvm.com</a></b>
 """
     return msg
+
+def _getXvmMessageFooter():
+    return '\n{{l10n:stats_link/svcmsg:%s}}\n\n' % (utils.getAccountDBID())

@@ -1,4 +1,4 @@
-""" XVM (c) https://modxvm.com 2013-2020 """
+""" XVM (c) https://modxvm.com 2013-2021 """
 
 #####################################################################
 # imports
@@ -19,7 +19,7 @@ from skeletons.gui.battle_session import IBattleSessionProvider
 from gui.battle_control import avatar_getter
 from gui.shared import g_eventBus, events
 from gui.Scaleform.daapi.view.battle.shared.markers2d.manager import MarkersManager
-from gui.Scaleform.daapi.view.battle.shared.markers2d.plugins import VehicleMarkerPlugin
+from gui.Scaleform.daapi.view.battle.shared.markers2d.vehicle_plugins import VehicleMarkerPlugin
 
 from xfw import *
 from xvm_main.python.consts import *
@@ -143,7 +143,7 @@ def _MarkersManager_as_setShowExInfoFlagS(base, self, flag):
 
 # add attackerID if XVM markers are active
 @overrideMethod(VehicleMarkerPlugin, '_VehicleMarkerPlugin__updateVehicleHealth')
-def _VehicleMarkerPlugin__updateVehicleHealth(base, self, handle, newHealth, aInfo, attackReasonID):
+def _VehicleMarkerPlugin__updateVehicleHealth(base, self, vehicleID, handle, newHealth, aInfo, attackReasonID):
     if g_markers.active:
         if not (g_replayCtrl.isPlaying and g_replayCtrl.isTimeWarpInProgress):
             attackerID = aInfo.vehicleID if aInfo else 0
@@ -153,7 +153,7 @@ def _VehicleMarkerPlugin__updateVehicleHealth(base, self, handle, newHealth, aIn
                                self._VehicleMarkerPlugin__getVehicleDamageType(aInfo),
                                '{},{}'.format(constants.ATTACK_REASONS[attackReasonID], str(attackerID)))
             return
-    base(self, handle, newHealth, aInfo, attackReasonID)
+    base(self, vehicleID, handle, newHealth, aInfo, attackReasonID)
 
 def as_xvm_cmdS(self, *args):
     if self._isDAAPIInited():
@@ -182,7 +182,9 @@ class VehicleMarkers(object):
         return self.enabled and \
                self.initialized and \
                (self.guiType != constants.ARENA_GUI_TYPE.TUTORIAL) and \
-               (self.battleType != constants.ARENA_BONUS_TYPE.TUTORIAL)
+               (self.battleType != constants.ARENA_BONUS_TYPE.TUTORIAL) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.EVENT_BATTLES) and \
+               (self.battleType != constants.ARENA_BONUS_TYPE.EVENT_BATTLES)
 
     @property
     def plugins(self):
@@ -278,8 +280,8 @@ class VehicleMarkers(object):
                 else:
                     self.call(
                         XVM_COMMAND.AS_SET_CONFIG,
-                        {'markers':{'enabled':False}},
-                        {'locale':{}},
+                        {'markers': {'enabled': False}},
+                        {'locale': {}},
                         None,
                         None,
                         IS_DEVELOPMENT)
@@ -326,6 +328,10 @@ class VehicleMarkers(object):
                     if targets & INV.MARKS_ON_GUN:
                         if entity and hasattr(entity, 'publicInfo'):
                             data['marksOnGun'] = entity.publicInfo.marksOnGun
+
+                    if targets & INV.TURRET:
+                        if entity and hasattr(entity, 'typeDescriptor'):
+                            data['turretCD'] = entity.typeDescriptor.turret.compactDescr
 
                     if targets & INV.CREW_ACTIVE:
                         if entity and hasattr(entity, 'isCrewActive'):

@@ -166,14 +166,6 @@
     "(sec)": "(sec)",
     "(m)": "(m)",
 
-    // Squad
-    "Squad battle tiers": "Squad battle tiers",
-    "Squad tanks battle tiers difference": "Squad tanks battle tiers difference",
-    "Vehicle": "Vehicle",
-    "Battle tiers": "Battle tiers",
-    "Type": "Type",
-    "Nation": "Nation",
-
     // Nation
     "ussr": "USSR",
     "germany": "Germany",
@@ -205,12 +197,18 @@
 
     // Token
     "token/services_unavailable": "Network services unavailable.&nbsp;&nbsp;<a href='#XVM_SITE_UNAVAILABLE#'><font size='11'>more info</font></a>",
-    "token/services_inactive": "Network services inactive.&nbsp;&nbsp;<a href='#XVM_SITE_INACTIVE#'><font size='11'>enable</font></a>",
+    "token/services_inactive": "Network services inactive.&nbsp;&nbsp;<br><a href='#XVM_SITE_INACTIVE#'><font size='12'>Activate</font></a>&nbsp;&nbsp;&nbsp;<a href='#XVM_CHECK_ACTIVATION#'><font size='12'>Check activation</font></a>",
+    "token/services_not_activated": "Failed to activate network services. Before checking, activate the services in your account on the XVM website.<br><a href='#XVM_SITE_INACTIVE#'><font size='12'>Activate</font></a>&nbsp;&nbsp;&nbsp;<a href='#XVM_CHECK_ACTIVATION#'><font size='12'>Check activation</font></a>",
     "token/blocked": "Status: <font color='#FF0000'>Blocked</font>&nbsp;&nbsp;<a href='#XVM_SITE_BLOCKED#'><font size='11'>more info</font></a>",
     "token/active": "Status:<tab/><font color='#00FF00'>Active</font>",
     "token/time_left": "<tab/><font color='#EEEEEE'>{0}d. {1}h. {2}m.</font>",
     "token/time_left_warn": "<tab/><font color='#EEEEEE'>{0}d. {1}h. {2}m.</font>\n<tab/><a href='#XVM_SITE#'>Prolong</a>",
     "token/unknown_status": "Unknown status",
+
+    // Stats link
+    "stats_link/svcmsg": "<a href='event:https://stats.modxvm.com/en/stats/players/{0}#svcmsg'><font color='#E2D2A2'>Your stats on the XVM website</font></a>",
+    "stats_link/profile_self": "<a href='event:https://stats.modxvm.com/en/stats/players/{0}#profile'><font color='#E2D2A2'><u>Your stats on the XVM website</u></font></a>",
+    "stats_link/profile": "<a href='event:https://stats.modxvm.com/en/stats/players/{0}#profile'><font color='#E2D2A2'><u>Player stats on the XVM website</u></font></a>",
 
     // Lobby
     "lobby/header/gold_locked_tooltip": "Gold is locked",

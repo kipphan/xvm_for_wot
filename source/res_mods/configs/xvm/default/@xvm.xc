@@ -62,15 +62,15 @@
 
     // Supported version of the game.
     // Поддерживаемая версия игры.
-    "gameVersion": "1.9.0.1",
+    "gameVersion": "1.11.1.1",
 
     // The minimum required version of the XVM mod.
     // Минимально необходимая версия мода XVM.
-    "modMinVersion": "8.4.1",
+    "modMinVersion": "8.7.4",
 
     // Config last modified.
     // Дата последней модификации конфига.
-    "date": "24.04.2020"
+    "date": "31.01.2021"
   },
 
   // Parameters for login screen.
@@ -108,10 +108,6 @@
   // Special XVM hotkeys.
   // Специальные горячие клавиши XVM.
   "hotkeys": ${"hotkeys.xc":"hotkeys"},
-
-  // Parameters for squad window.
-  // Параметры окна взвода.
-  "squad": ${"squad.xc":"squad"},
 
   // Parameters of the Battle Loading screen.
   // Параметры экрана загрузки боя.
