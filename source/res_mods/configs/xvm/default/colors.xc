@@ -82,7 +82,7 @@
       "world_collision": "0x4CAF50", // world collision / столкновение с объектами, падение
       "death_zone":      "0x607D8B", // death_zone      / опасная зона
       "drowning":        "0x2196F3", // drowning        / затопление
-      "other":           "0xEEEEEE"  // other           / другое
+      "other":           "0xEEEEEE",  // other           / другое
       "overturn":        "0xCCCCCC", // overturn        / опрокидывание
     },
     // Dynamic color by vehicle type.
