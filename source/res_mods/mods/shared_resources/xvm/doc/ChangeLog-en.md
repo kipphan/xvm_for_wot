@@ -1,4 +1,21 @@
-﻿### XVM 8.7.6
+﻿### XVM 8.7.7
+
+  #### General
+
+  * Compatibility with World of Tanks 1.12.0.0
+
+  #### Players panel
+
+  * Added option in the sections "playersPanel"/"short", "medium", "medium2", "large":
+
+    * `"removeSpottedIndicator"` — disable enemy spotted status icons
+    * `"spottedIndicatorAlpha"` — transparency of the enemy spotted status icons
+    * `"spottedIndicatorOffsetX"` — offset of X value for enemy spotted status icons
+    * `"spottedIndicatorOffsetY"` — offset of Y value for enemy spotted status icons
+
+______________________________
+
+### XVM 8.7.6
 
   #### General
 

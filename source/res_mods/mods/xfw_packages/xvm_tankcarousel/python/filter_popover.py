@@ -3,19 +3,16 @@
 #####################################################################
 # imports
 
-import itertools
 import traceback
 import simplejson
 
-import constants
 from account_helpers.AccountSettings import AccountSettings, DEFAULT_VALUES, KEY_FILTERS
-from account_helpers.AccountSettings import CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2, BOB_CAROUSEL_FILTER_2
-from account_helpers.AccountSettings import CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1, BOB_CAROUSEL_FILTER_CLIENT_1
+from account_helpers.AccountSettings import CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2
+from account_helpers.AccountSettings import CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1
 from account_helpers.settings_core.ServerSettingsManager import ServerSettingsManager
 from gui.shared.gui_items.dossier.achievements import MarkOfMasteryAchievement
 from gui.shared.utils.functions import makeTooltip
 from gui.shared.utils.requesters.ItemsRequester import REQ_CRITERIA
-from gui.Scaleform.daapi.settings.views import VIEW_ALIAS
 from gui.Scaleform.daapi.view.common.filter_popover import TankCarouselFilterPopover, _SECTION
 from gui.Scaleform.daapi.view.common.vehicle_carousel.carousel_filter import BasicCriteriesGroup
 from helpers import dependency
@@ -25,7 +22,6 @@ from xfw import *
 
 from xvm_main.python.logger import *
 from xvm_main.python.xvm import l10n
-import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
 import xvm_main.python.vehinfo as vehinfo
 
@@ -54,7 +50,7 @@ class PREFS(object):
 class USERPREFS(object):
     CAROUSEL_FILTERS = "users/{accountDBID}/tankcarousel/filters"
 
-_SUPPORTED_SECTIONS = (CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2, BOB_CAROUSEL_FILTER_2)
+_SUPPORTED_SECTIONS = (CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2)
 
 #####################################################################
 # initialization/finalization
@@ -94,7 +90,7 @@ def _ServerSettingsManager_setSections(base, self, sections, settings):
 
 @overrideStaticMethod(AccountSettings, 'setFilter')
 def _AccountSettings_setFilter(base, name, value):
-    if name in (CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1, BOB_CAROUSEL_FILTER_CLIENT_1):
+    if name in (CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1):
         value = {key: value for key, value in value.iteritems() if key not in PREFS.XVM_KEYS}
     base(name, value)
 

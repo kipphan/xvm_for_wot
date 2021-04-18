@@ -12,6 +12,7 @@ import constants
 from Avatar import PlayerAvatar
 from Vehicle import Vehicle
 from helpers import dependency
+from skeletons.gui.app_loader import IAppLoader
 from skeletons.gui.battle_session import IBattleSessionProvider
 from gui.app_loader.settings import APP_NAME_SPACE
 from gui.shared import g_eventBus, events
@@ -32,8 +33,6 @@ from gui.Scaleform.daapi.view.battle.shared.page import SharedPage
 from gui.Scaleform.daapi.view.battle.shared.postmortem_panel import PostmortemPanel
 from gui.Scaleform.daapi.view.battle.shared.stats_exchange import BattleStatisticsDataController
 from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin, RadarHintPlugin
-from helpers import dependency
-from skeletons.gui.app_loader import IAppLoader
 
 from xfw import *
 from xfw_actionscript.python import *
@@ -52,8 +51,7 @@ import xmqp_events
 NOT_SUPPORTED_BATTLE_TYPES = [constants.ARENA_GUI_TYPE.TUTORIAL,
                            constants.ARENA_GUI_TYPE.EVENT_BATTLES,
                            constants.ARENA_GUI_TYPE.BOOTCAMP,
-                           constants.ARENA_GUI_TYPE.BATTLE_ROYALE,
-                           constants.ARENA_GUI_TYPE.BOB]
+                           constants.ARENA_GUI_TYPE.BATTLE_ROYALE]
 
 #####################################################################
 # initialization/finalization

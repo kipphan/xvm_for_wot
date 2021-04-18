@@ -16,9 +16,7 @@ def requestDossier(args):
 #############################
 # Private
 
-from pprint import pprint
 import traceback
-from adisp import process
 
 import BigWorld
 from helpers.i18n import makeString
@@ -33,7 +31,6 @@ from gui.Scaleform.daapi.view.lobby.profile.QueuedVehicleDossierReceiver import 
 from items.components.c11n_constants import SeasonType
 from helpers import dependency
 from skeletons.gui.shared import IItemsCache
-from skeletons.gui.game_control import IRankedBattlesController
 from skeletons.gui.lobby_context import ILobbyContext
 
 from xfw import *
@@ -161,7 +158,8 @@ class _Dossier(object):
         winter_camo = outfit is not None and bool(outfit.hull.slotFor(GUI_ITEM_TYPE.CAMOUFLAGE).getItemCD())
         outfit = vehicle.getOutfit(SeasonType.DESERT)
         desert_camo = outfit is not None and bool(outfit.hull.slotFor(GUI_ITEM_TYPE.CAMOUFLAGE).getItemCD())
-        crystalEarned = self.itemsCache.items.stats.getWeeklyVehicleCrystals(vehCD)
+        limit = self.itemsCache.items.stats.getWeeklyVehicleCrystals(vehCD)
+        crystalEarned = limit if vehicle.isEarnCrystals else None
 
         if self.__isVehicleDossierLoaded(accountDBID, vehCD):
             dossier = self.itemsCache.items.getVehicleDossier(vehCD, accountDBID)
