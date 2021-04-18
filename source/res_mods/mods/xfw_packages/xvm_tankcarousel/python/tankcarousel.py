@@ -4,14 +4,11 @@
 # imports
 
 from functools import partial
-from operator import attrgetter
 import traceback
-import weakref
 
 import BigWorld
 import game
 from constants import QUEUE_TYPE
-from dossiers2.ui.achievements import ACHIEVEMENT_BLOCK as ACHIEVEMENT_BLOCK
 from gui import GUI_NATIONS_ORDER_INDEX
 from gui.shared import g_eventBus
 from gui.shared.gui_items.Vehicle import VEHICLE_TYPES_ORDER_INDICES
@@ -107,6 +104,11 @@ def _Hangar_as_setCarouselS(base, self, linkage, alias):
     #do not modify tankcarousel in events
     isEvent = self.prbDispatcher.getFunctionalState().isQueueSelected(QUEUE_TYPE.EVENT_BATTLES)
     if isEvent:
+        return base(self, linkage, alias)
+
+    #do not modify tankcarousel in battle royale
+    isRoyale = self.prbDispatcher.getFunctionalState().isQueueSelected(QUEUE_TYPE.BATTLE_ROYALE)
+    if isRoyale:
         return base(self, linkage, alias)
 
     #in other cases, replace UI linkage with XVMs one

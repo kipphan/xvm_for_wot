@@ -97,7 +97,7 @@
       {
         "enabled": true,
         "x": 17, "y": 28,
-        "format": "<b><font face='$FieldFont' size='11' color='{{v.c_xtdb|#CFCFCF}}'>{{v.tdb%d}}</font></b>",
+        "format": "<b><font face='$FieldFont' size='12' color='{{v.c_xtdb|#CFCFCF}}'>{{v.tdb%d}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
       },
       // Sign of mastery.
@@ -130,7 +130,7 @@
       {
         "enabled": true,
         "x": 145, "y": 14, "align": "right",
-        "format": "<b><font face='$FieldFont' size='11' color='#CFCFCF' alpha='#F0'>{{v.battles}}</font></b>",
+        "format": "<b><font face='$FieldFont' size='12' color='#CFCFCF' alpha='#F0'>{{v.battles}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
       },
       // Winrate.
@@ -143,7 +143,7 @@
       {
         "enabled": true,
         "x": 145, "y": 28, "align": "right",
-        "format": "<b><font face='$FieldFont' size='11' color='{{v.c_winrate|#CFCFCF}}'>{{v.winrate%-3.1f~%}}</font></b>",
+        "format": "<b><font face='$FieldFont' size='12' color='{{v.c_winrate|#CFCFCF}}'>{{v.winrate%2d~%}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
       }
     ]

@@ -19,7 +19,6 @@ class VIEW(object):
 # includes
 
 from gui.Scaleform.framework import g_entitiesFactories, ViewSettings, ScopeTemplates
-from gui.Scaleform.framework.entities.View import View
 from gui.shared.tooltips.common import ContactTooltipData
 from frameworks.wulf import WindowLayer
 from messenger.gui.Scaleform.view.lobby.ContactsListPopover import ContactsListPopover
@@ -32,6 +31,7 @@ from xfw_actionscript.python import *
 from xvm_main.python.logger import *
 from xvm_main.python.xvm import l10n
 
+import as3
 import contacts
 import view
 
