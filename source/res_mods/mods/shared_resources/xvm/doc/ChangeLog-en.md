@@ -1,4 +1,24 @@
-﻿### XVM 8.7.7
+﻿### XVM 8.7.8
+
+  #### General
+
+  * Compatibility with World of Tanks 1.12.1.1
+
+  #### Carousel
+
+  * Added option in the `"carousel"/"normal"/"fields"` and `"carousel"/"small"/"fields"` sections:
+
+    * `"progressionPoints"` — battle Pass progression points
+
+  * Added the `"slotSelectedBorderAlpha "` option to the `"carousel"` section
+
+  #### Camera
+
+  * Removed section "camera"/"noCameraLimit"
+
+______________________________
+
+### XVM 8.7.7
 
   #### General
 
