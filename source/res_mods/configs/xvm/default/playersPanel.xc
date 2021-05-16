@@ -11,7 +11,7 @@
     "enemySpottedMarker": {
       // false - disable.
       // false - отключить.
-      "enabled": true,
+      "enabled": false,
       // Opacity percentage of spotted markers in the panels. 0 - transparent (disabled) ... 100 - opaque.
       // Прозрачность в процентах маркеров засвета в ушах. 0 - полностью прозрачные (отключены), 100 - не прозрачные.
       "alpha": "{{a:spotted}}",
@@ -37,7 +37,7 @@
     // XMQP service marker definition.
     // Шаблон маркера сервиса XMQP.
     "xmqpServiceMarker": {
-      "enabled": true,
+      "enabled": false,
       "x": 88, "y": -2, "align": "center", "bindToIcon": true,
       "textFormat": {
         "font": "xvm",
@@ -49,7 +49,7 @@
     // Clan icon.
     // Иконка клана.
     "clanIcon": {
-      "enabled": true,
+      "enabled": false,
       "x": 65, "y": 6, "width": 16, "height": 16, "align": "center", "alpha": 90, "bindToIcon": true,
       "src": "{{clanicon}}"
       //"format": "<img src='{{clanicon}}' width='16' height='16'>"
@@ -82,7 +82,7 @@
   "playersPanel": {
     // false - disable.
     // false - отключить.
-    "enabled": true,
+    "enabled": false,
     // Opacity percentage of the background panels. 0 - transparent, 100 - opaque.
     // Прозрачность в процентах подложки ушей. 0 - прозрачная, 100 - не прозрачная.
     "alpha": 80,
@@ -167,7 +167,7 @@
     "short": {
       // false - disable.
       // false - отключить.
-      "enabled": true,
+      "enabled": false,
       // Displayed standard fields in this mode and their order.
       // Available names: "frags", "badge", "nick", "vehicle".
       // Отображаемые стандартные поля в данном режиме, и их порядок.
@@ -296,7 +296,7 @@
     "medium": {
       // false - disable.
       // false - отключить.
-      "enabled": true,
+      "enabled": false,
       // Displayed standard fields in this mode and their order.
       // Available names: "frags", "badge", "nick", "vehicle".
       // Отображаемые стандартные поля в данном режиме, и их порядок.
@@ -423,7 +423,7 @@
     "medium2": {
       // false - disable.
       // false - отключить.
-      "enabled": true,
+      "enabled": false,
       // Displayed standard fields in this mode and their order.
       // Available names: "frags", "badge", "nick", "vehicle".
       // Отображаемые стандартные поля в данном режиме, и их порядок.
@@ -550,7 +550,7 @@
     "large": {
       // false - disable.
       // false - отключить.
-      "enabled": true,
+      "enabled": false,
       // Displayed standard fields in this mode and their order.
       // Available names: "frags", "badge", "nick", "vehicle".
       // Отображаемые стандартные поля в данном режиме, и их порядок.
