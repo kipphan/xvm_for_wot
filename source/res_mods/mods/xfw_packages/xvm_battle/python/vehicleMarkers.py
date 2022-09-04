@@ -24,7 +24,7 @@ from xfw import *
 from xvm_main.python.consts import *
 from xvm_main.python.logger import *
 import xvm_main.python.config as config
-import xvm_main.python.python_macro as python_macro
+import xvm_main.python.pymacro as pymacro
 import xvm_main.python.stats as stats
 import xvm_main.python.vehinfo as vehinfo
 
@@ -70,12 +70,12 @@ def _PlayerAvatar_onBecomeNonPlayer(base, self):
     base(self)
 
 # on any player marker appear
-@registerEvent(PlayerAvatar, 'vehicle_onEnterWorld')
-def _PlayerAvatar_vehicle_onEnterWorld(self, vehicle):
+@registerEvent(PlayerAvatar, 'vehicle_onAppearanceReady')
+def _PlayerAvatar_vehicle_onAppearanceReady(self, vehicle):
     g_markers.updatePlayerState(vehicle.id, INV.ALL)
 
 @registerEvent(Vehicle, 'set_isCrewActive')
-def set_isCrewActive(self, prev):
+def set_isCrewActive(self, _=None):
     g_markers.updatePlayerState(self.id, INV.CREW_ACTIVE)
 
 #####################################################################
@@ -182,6 +182,9 @@ class VehicleMarkers(object):
                (self.guiType != constants.ARENA_GUI_TYPE.TUTORIAL) and \
                (self.battleType != constants.ARENA_BONUS_TYPE.TUTORIAL) and \
                (self.guiType != constants.ARENA_GUI_TYPE.EVENT_BATTLES) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.RTS) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.RTS_TRAINING) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.RTS_BOOTCAMP) and \
                (self.battleType != constants.ARENA_BONUS_TYPE.EVENT_BATTLES)
 
     @property
@@ -237,7 +240,7 @@ class VehicleMarkers(object):
             elif cmd == XVM_BATTLE_COMMAND.REQUEST_BATTLE_GLOBAL_DATA:
                 self.respondGlobalBattleData()
             elif cmd == XVM_COMMAND.PYTHON_MACRO:
-                self.call(XVM_VM_COMMAND.AS_CMD_RESPONSE, python_macro.process_python_macro(args[0]))
+                self.call(XVM_VM_COMMAND.AS_CMD_RESPONSE, pymacro.process_python_macro(args[0]))
             elif cmd == XVM_COMMAND.GET_CLAN_ICON:
                 self.call(XVM_VM_COMMAND.AS_CMD_RESPONSE, stats.getClanIcon(int(args[0])))
             elif cmd == XVM_COMMAND.LOAD_STAT_BATTLE:

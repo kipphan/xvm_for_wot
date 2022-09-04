@@ -150,6 +150,12 @@ class _Dossier(object):
         # vehicle dossier
         vehicle = self.itemsCache.items.getItemByCD(vehCD)
 
+        levelPostProgress = 0 if vehicle.isPostProgressionExists else -1
+        for step in vehicle.postProgression.iterOrderedSteps():
+            level = step.getLevel()
+            if step.isReceived() and level > levelPostProgress:
+                levelPostProgress = level
+
         rent = vehicle.isRented
         multiNation = vehicle.hasNationGroup
         outfit = vehicle.getOutfit(SeasonType.SUMMER)
@@ -173,6 +179,7 @@ class _Dossier(object):
         cache_item = self._cache.get(cache_key, None)
         if cache_item is not None and cache_item['totalBattles'] == totalBattles:
             self.__updateCamouflageResult(cache_item, summer_camo, winter_camo, desert_camo)
+            self._cache[cache_key]['levelPostProgress'] = levelPostProgress
             return cache_item
 
         xpVehs = self.itemsCache.items.stats.vehiclesXPs
@@ -210,6 +217,7 @@ class _Dossier(object):
                 #    xwtr = vehinfo.calculateXvmScale('wtr', wtr)
         res = self.__prepareVehicleResult(accountDBID, vehCD, dossier, xtdb, xte, wtr, xwtr, earnedXP, freeXP, xpToElite, rent, multiNation, crystalEarned)
         self.__updateCamouflageResult(res, summer_camo, winter_camo, desert_camo)
+        res['levelPostProgress'] = levelPostProgress
         self._cache[cache_key] = res
         return res
 

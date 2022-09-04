@@ -1,21 +1,23 @@
+from Avatar import PlayerAvatar
 from BigWorld import player, cancelCallback, callback
 from Vehicle import Vehicle
-from Avatar import PlayerAvatar
-from constants import VEHICLE_SIEGE_STATE, VEHICLE_HIT_FLAGS as VHF
-from gui.battle_control.battle_constants import PERSONAL_EFFICIENCY_TYPE
+from constants import ARENA_GUI_TYPE, VEHICLE_SIEGE_STATE, VEHICLE_HIT_FLAGS as VHF
+from gui.Scaleform.daapi.view.battle.classic.stats_exchange import FragsCollectableStats
+from gui.Scaleform.daapi.view.battle.shared.damage_log_panel import DamageLogPanel
+from gui.Scaleform.daapi.view.battle.shared.ribbons_aggregator import RibbonsAggregator
+from gui.Scaleform.daapi.view.battle.shared.ribbons_panel import BattleRibbonsPanel
 from gui.battle_control.arena_info.arena_dp import ArenaDataProvider
 from gui.battle_control.arena_info.arena_vos import VehicleArenaInfoVO
-from gui.Scaleform.daapi.view.battle.shared.damage_log_panel import DamageLogPanel
-from gui.Scaleform.daapi.view.battle.shared.ribbons_panel import BattleRibbonsPanel
-from gui.Scaleform.daapi.view.battle.shared.ribbons_aggregator import RibbonsAggregator
-from gui.Scaleform.daapi.view.battle.classic.stats_exchange import FragsCollectableStats
+from gui.battle_control.battle_constants import PERSONAL_EFFICIENCY_TYPE
 
 from xfw import *
 from xfw_actionscript.python import *
 from xvm_main.python.logger import *
+
 import xvm_battle.python.battle as battle
 
 from xvm.damageLog import ATTACK_REASONS
+
 
 ON_TOTAL_EFFICIENCY = 'ON_TOTAL_EFFICIENCY'
 
@@ -103,6 +105,10 @@ class UpdateLabels(object):
 updateLabels = UpdateLabels(ON_TOTAL_EFFICIENCY)
 
 
+def isRandom():
+    return _player.arena.guiType == ARENA_GUI_TYPE.RANDOM if _player is not None else False
+
+
 @registerEvent(VehicleArenaInfoVO, 'updatePlayerStatus')
 def totalEfficiency_updatePlayerStatus(self, **kwargs):
     global isPlayerInSquad, fragsSquad, fragsSquad_dict, damagesSquad
@@ -172,7 +178,7 @@ def Vehicle_showShooting(self, burstCount, gunIndex, isPredictedShot=False):
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
-def showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor):
+def showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
     global numberShotsReceived, numberHitsReceived
     if battle.isBattleTypeSupported and self.isPlayerVehicle and self.isAlive:
         numberShotsReceived += 1
@@ -291,20 +297,19 @@ def onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
                 dmgAlly = True
             if attackReasonID == 0:
                 numberHitsDealt += 1
-            damageKind = ATTACK_REASONS[min(attackReasonID, 6)]
+            damageKind = ATTACK_REASONS[attackReasonID] if attackReasonID < 8 else 'other'
             isUpdate = True
     if isUpdate:
         updateLabels.update()
 
 
-@registerEvent(Vehicle, 'onEnterWorld')
-def onEnterWorld(self, prereqs):
+@registerEvent(Vehicle, '_Vehicle__onAppearanceReady')
+def _Vehicle__onAppearanceReady(self, appearance):
     global _player, isPlayerInSquad, isStuns, enemiesHealth, allyVehicles, enemyVehiclesMaxHP, enemyVehiclesSumMaxHP, arenaDP, alliesDamage
     if not battle.isBattleTypeSupported:
         return
     if _player is None:
         _player = player()
-        arenaDP = _player.guiSessionProvider.getArenaDP()
     if self.publicInfo['team'] != _player.team:
         enemiesHealth[self.id] = self.health if self.health is not None else 0
         if self.id in enemyVehiclesMaxHP and enemyVehiclesMaxHP[self.id] < self.health:
@@ -316,6 +321,7 @@ def onEnterWorld(self, prereqs):
             alliesDamage[self.id] = 0
     if self.isPlayerVehicle:
         global maxHealth, vehCD, burst
+        arenaDP = _player.guiSessionProvider.getArenaDP()
         isPlayerInSquad = arenaDP.isSquadMan(_player.playerVehicleID)
         vehCD = self.typeDescriptor.type.compactDescr
         burst = self.typeDescriptor.gun.burst[0]

@@ -1,4 +1,211 @@
-﻿### XVM 8.7.8
+### XVM 9.3.4
+
+  * Compatibility with World of Tanks 1.17.1.3
+
+### XVM 9.3.3
+
+  * py_macro/total_hp: fix normalization in macros `{{py:xvm.total_hp.enemy}}` and `{{py:xvm.total_hp.ally}}`
+
+### XVM 9.3.2
+
+  * hangar/tankcarousel: fix carousels with >2 rows
+
+### XVM 9.3.1
+
+  * Compatibility with World of Tanks 1.17.1.2
+
+### XVM 9.3.0
+
+  * Compatibility with World of Tanks 1.17.1.0
+  * Added macros to **totalEfficiency**:
+
+    * `{{py:xvm.dmgKindKey}}`
+
+### XVM 9.2.1
+
+  * Compatibility with World of Tanks 1.17.0.1
+
+### XVM 9.2.0
+
+  * Compatibility with World of Tanks 1.17.0.0
+
+### XVM 9.1.0
+
+  * Compatibility with World of Tanks 1.16.1.0
+
+  #### Battle
+
+  * Added macro `{{dmg-color-key}}`
+
+  #### damageLog, hitLog
+
+  * Added "high_explosive_stun" parameter to "type-shell" and "c:type-shell" sections.
+
+### XVM 9.0.0
+
+  * Compatibility with World of Tanks 1.16.0.0
+
+### XVM 8.9.8
+
+  * Compatibility with World of Tanks 1.15.0.3
+  * Fixed `{{v.levelPostProgress}}` macro
+  * Updated short vehicle names
+
+### XVM 8.9.7
+
+  * Compatibility with World of Tanks 1.15.0.2
+  * Various fixes and improvements
+
+  #### Python macros
+
+  * Added macros to **totalEfficiency**:
+
+    * `{{py:xvm.avgDmg}}`
+
+### XVM 8.9.6
+
+  * Compatibility with World of Tanks 1.15.0.1
+
+### XVM 8.9.5
+
+  * Compatibility with World of Tanks 1.15.0.0
+
+### XVM 8.9.4
+
+  * Compatibility with World of Tanks 1.14.1.4
+  * Bug fixes
+
+  #### damageLog
+
+  * Added "minefield" parameter to "dmg-kind" and "c:dmg-kind" sections.
+
+  #### hitLog
+
+  * Added "minefield" parameter to "dmg-kind", "c:dmg-kind" and "dmg-kind-player" sections.
+
+### XVM 8.9.3
+
+  * Compatibility with World of Tanks 1.14.1.3
+
+  #### Hangar
+
+  * added `{{v.levelPostProgress}}` macro
+
+### XVM 8.9.2
+
+  * Compatibility with World of Tanks 1.14.1.2
+
+### XVM 8.9.1
+
+  * Compatibility with World of Tanks 1.14.1.1
+
+### XVM 8.9.0
+
+  #### General
+
+  * Compatibility with World of Tanks 1.14.1.0
+
+  #### Сarousel
+
+  * fix `crystalsBorder` option in carousel
+
+  #### totalEfficiency
+
+  * fix macros `{{py:xvm.toMainGun}}` and `{{py:xvm.toAvgDmg}}`
+
+  #### hitLog
+
+  * fix macro `{{alive}}`
+
+  #### XFW.Native 2.4.4
+
+  * revert SSL stack
+  * remove additional modules
+
+______________________________
+
+### XVM 8.8.4
+
+  #### General
+
+  * Compatibility with World of Tanks 1.14.0.5 nanopatch 1
+
+  #### XFW.Native 2.4.0
+  * fixed compatibility with Windows 11
+  * new SSL-stack (OpenSSL 1.1, TLS 1.2) for 32-bit WoT
+
+______________________________
+
+### XVM 8.8.3
+
+  #### General
+
+  * Compatibility with World of Tanks 1.14.0.5
+
+  #### Python macros
+
+  * Added macros to **totalEfficiency**:
+
+    * `{{py:xvm.toAvgDmg(norm)}}`
+    * `{{py:xvm.toMainGun(norm)}}`
+
+______________________________
+
+### XVM 8.8.2
+
+  #### General
+
+  * Compatibility with World of Tanks 1.14.0.0
+
+______________________________
+
+### XVM 8.8.1
+
+  #### General
+
+  * Compatibility with World of Tanks 1.13.0.1
+
+______________________________
+
+### XVM 8.8.0
+
+  #### General
+
+  * Compatibility with World of Tanks 1.13.0.0
+  * Removed section:
+
+    * `"export*"` in **@xvm.xc** file (deleted **export.xc** file)
+
+  #### Players panel
+
+  * Added option:
+
+    * `"playersPanel"/"removeHealthPoints"` — remove the number of hit points (HP) vehicle
+
+  #### Minimap
+
+  * Added option:
+
+    * `"minimapAlt"/"healthPointsEnabled"` — use standard the number of hit points (HP) vehicle
+
+______________________________
+
+### XVM 8.7.9
+
+  #### General
+
+  * Compatibility with World of Tanks 1.12.1.2
+
+  #### Python macros
+
+  * Added macros to **damageLog**:
+
+    * `{{n-crits}}` - number of crits received per hit, 0 - if not received
+    * `{{hp}}` - current health points
+
+______________________________
+
+### XVM 8.7.8
 
   #### General
 

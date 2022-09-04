@@ -18,7 +18,7 @@ from gui.shared.tooltips import formatters
 from gui.shared.gui_items import GUI_ITEM_TYPE
 from gui.Scaleform.locale.MENU import MENU
 from gui.shared.items_parameters import formatters as param_formatter
-from gui.shared.items_parameters.formatters import measureUnitsForParameter
+from gui.shared.items_parameters.formatters import measureUnitsForParameter, MEASURE_UNITS
 from gui.shared.items_parameters.params_helper import getParameters as getParameters_helper
 from gui.shared.items_parameters.params_helper import idealCrewComparator as idealCrewComparator_helper
 from gui.shared.utils.requesters.ItemsRequester import ItemsRequester
@@ -106,6 +106,10 @@ def _ToolTip_onCreateTypedTooltip(base, self, type, *args):
 def _ToolTip_onHideTooltip(base, self, tooltipId):
     self.xvm_hide()
     base(self, tooltipId)
+
+@registerEvent(ToolTip, 'hide', True)
+def _ToolTip_onHideTooltip(self):
+    self.xvm_hide()
 
 # adds delay for tooltip appearance
 def _createTooltip(self, func):
@@ -254,7 +258,7 @@ shellData = ShellData()
 # add to hangar tooltips display the missing experience to unlock the vehicle
 @overrideMethod(tooltips_vehicle.StatusBlockConstructor, 'construct')
 def StatusBlockConstructor_construct(base, self):
-    block, result = base(self)
+    block = base(self)
     if block and config.get('tooltips/showXpToUnlockVeh'):
         try:
             techTreeNode = self.configuration.node
@@ -267,12 +271,12 @@ def StatusBlockConstructor_construct(base, self):
                     icon = "<img src='{}' vspace='{}'".format(RES_ICONS.MAPS_ICONS_LIBRARY_XPCOSTICON_1.replace('..', 'img://gui'), -3)
                     template = "<font face='$TitleFont' size='14'><font color='#ff2717'>{}</font> {}</font> {}"
                     block[0]['data']['text'] = template.format(i18n.makeString(STORAGE.BLUEPRINTS_CARD_CONVERTREQUIRED), need, icon)
-            return block, result
+            return block
         except Exception as ex:
             err(traceback.format_exc())
-            return block, result
+            return block
     else:
-        return block, result
+        return block
 
 # overriding tooltips for tanks in hangar, configuration in tooltips.xc
 @overrideMethod(tooltips_vehicle.CommonStatsBlockConstructor, 'construct')
@@ -307,6 +311,8 @@ def CommonStatsBlockConstructor_construct(base, self):
                     continue
                 if paramName == 'rateOfFire':
                     paramName = 'reloadTime'
+                if paramName == 'piercingPowerAvg':
+                    paramName = 'avgPiercingPower'
                 elif paramName == 'traverseLimits':
                     paramName = 'gunYawLimits' if 'gunYawLimits' in vehicleCommonParams else 'turretYawLimits'
                 elif paramName == 'radioRange':
@@ -354,9 +360,9 @@ def CommonStatsBlockConstructor_construct(base, self):
                     shellSpeedSummary_str = '/'.join(shellSpeedSummary_arr)
                     tooltip_add_param(self, result, tooltip_with_units(l10n('shellSpeed'), l10n('(m/sec)')), shellSpeedSummary_str)
                 #piercingPowerAvg
-                elif paramName == 'piercingPowerAvg':
-                    piercingPowerAvg = formatNumber(veh_descr.shot.piercingPower[0])
-                    tooltip_add_param(self, result, replace_p(i18n.makeString(MENU.TANK_PARAMS_AVGPIERCINGPOWER)), piercingPowerAvg)
+                # elif paramName == 'piercingPowerAvg':
+                #     piercingPowerAvg = formatNumber(veh_descr.shot.piercingPower[0])
+                #     tooltip_add_param(self, result, replace_p(i18n.makeString(MENU.TANK_PARAMS_AVGPIERCINGPOWER)), piercingPowerAvg)
                 #piercingPowerAvgSummary
                 elif paramName == 'piercingPowerAvgSummary':
                     piercingPowerAvgSummary_arr = []
@@ -455,7 +461,7 @@ def CommonStatsBlockConstructor_construct(base, self):
                 elif paramName.startswith('TEXT:'):
                     customtext = paramName[5:]
                     tooltip_add_param(self, result, l10n(customtext), '')
-                elif paramInfo is not None and paramName in paramInfo.name:
+                elif paramInfo is not None and paramName in paramInfo.name and paramName in MEASURE_UNITS:
                     valueStr = str(param_formatter.formatParameter(paramName, paramInfo.value))
                     tooltip_add_param(self, result, getParameterValue(paramName), valueStr)
         if vehicle.isInInventory:

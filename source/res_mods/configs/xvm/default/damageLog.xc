@@ -49,6 +49,8 @@
     {{type-shell-key}} - shell kind table key value / название ключа таблицы типа снаряда.
     {{hitTime}}        - time of the received (blocked) damage in "mm:ss" format / время полученного (заблокированного) урона в формате "мм:сс".
     {{vehiclename}}    - vehicle system name (usa-A34_M24_Chaffee) / название техники в системе (usa-A34_M24_Chaffee).
+    {{n-crits}}        - number of crits received per hit, 0 - if not received / количество критов полученных за одно попадание, 0 - если не получено.
+    {{hp}}             - текущий запас прочности / current health points.
 */
 
 {
@@ -97,7 +99,8 @@
         "death_zone": "DZ",                                                                                // death zone / смертельная зона.
         "gas_attack": "GA",                                                                                // gas attack / газовая атака.
         "art_attack": "{{hit-effects}}{{critical-hit}}{{splash-hit}}<tab><font face='xvm'>&#x110;</font>", // art attack / артиллерийская поддержка.
-        "air_strike": "{{hit-effects}}{{critical-hit}}{{splash-hit}}<tab><font face='xvm'>&#x111;</font>"  // air strike / поддержка авиации.
+        "air_strike": "{{hit-effects}}{{critical-hit}}{{splash-hit}}<tab><font face='xvm'>&#x111;</font>", // air strike / поддержка авиации.
+        "minefield": "{{hit-effects}}{{critical-hit}}{{splash-hit}}<tab><font face='xvm'>&#x117;</font>"   // minefield / минное поле.
       },
       // Color by kind of the received damage (macro {{c:dmg-kind}}).
       // Цвет по типу полученного урона (макрос {{c:dmg-kind}}).
@@ -112,7 +115,8 @@
         "death_zone": "#CCCCCC",           // death zone / смертельная зона.
         "gas_attack": "#CCCCCC",           // gas attack / газовая атака.
         "art_attack": "{{c:hit-effects}}", // art attack / артиллерийская поддержка.
-        "air_strike": "{{c:hit-effects}}"  // air strike / поддержка авиации.
+        "air_strike": "{{c:hit-effects}}", // air strike / поддержка авиации.
+        "minefield": "{{c:hit-effects}}"   // minefield / минное поле.
       },
       // Damage with shell splinters (HE/HESH). (macro {{splash-hit}}).
       // Урон осколками снаряда (ОФ/ХФ). (макрос {{splash-hit}}).
@@ -125,6 +129,7 @@
       "type-shell": {
         "armor_piercing": "<font color='{{c:costShell}}'>{{l10n:armor_piercing}}</font>",       // armor piercing / бронебойный.
         "high_explosive": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",       // high explosive / осколочно-фугасный.
+        "high_explosive_stun": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",  // stunning high explosive / оглушающий осколочно-фугасный.
         "armor_piercing_cr": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_cr}}</font>", // armor piercing composite rigid / бронебойный подкалиберный.
         "armor_piercing_he": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_he}}</font>", // armor piercing high explosive / бронебойно-фугасный.
         "hollow_charge": "<font color='{{c:costShell}}'>{{l10n:hollow_charge}}</font>",         // high explosive anti-tank / кумулятивный.
@@ -133,12 +138,13 @@
       // Color by shell kind (macro {{c:type-shell}}).
       // Цвет по типу снаряда (макрос {{c:type-shell}}).
       "c:type-shell": {
-        "armor_piercing": "#CCCCCC",    // armor piercing / бронебойный.
-        "high_explosive": "#CCCCCC",    // high explosive / осколочно-фугасный.
-        "armor_piercing_cr": "#CCCCCC", // armor piercing composite rigid / бронебойный подкалиберный.
-        "armor_piercing_he": "#CCCCCC", // armor piercing high explosive / бронебойно-фугасный.
-        "hollow_charge": "#CCCCCC",     // high explosive anti-tank / кумулятивный.
-        "not_shell": "#CCCCCC"          // another source of damage / другой источник урона.
+        "armor_piercing": "#CCCCCC",      // armor piercing / бронебойный.
+        "high_explosive": "#CCCCCC",      // high explosive / осколочно-фугасный.
+        "high_explosive_stun": "#CCCCCC", // stunning high explosive / оглушающий осколочно-фугасный.
+        "armor_piercing_cr": "#CCCCCC",   // armor piercing composite rigid / бронебойный подкалиберный.
+        "armor_piercing_he": "#CCCCCC",   // armor piercing high explosive / бронебойно-фугасный.
+        "hollow_charge": "#CCCCCC",       // high explosive anti-tank / кумулятивный.
+        "not_shell": "#CCCCCC"            // another source of damage / другой источник урона.
       },
       // Vehicle type (macro {{vtype}}).
       // Тип техники (макрос {{vtype}}).
@@ -337,7 +343,8 @@
         "death_zone": "DZ",                   // death zone / смертельная зона.
         "gas_attack": "GA",                   // gas attack / газовая атака.
         "art_attack": "{{hit-effects}}",      // art attack / артиллерийская поддержка.
-        "air_strike": "{{hit-effects}}"       // air strike / поддержка авиации.
+        "air_strike": "{{hit-effects}}",      // air strike / поддержка авиации.
+        "minefield": "{{hit-effects}}"        // minefield / минное поле.
       },
       // Last damage format.
       // Формат последнего урона.

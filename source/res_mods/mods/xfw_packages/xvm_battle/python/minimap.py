@@ -17,7 +17,7 @@ from AvatarInputHandler.control_modes import PostMortemControlMode
 from gui.battle_control import avatar_getter
 from gui.shared import g_eventBus
 from gui.Scaleform.daapi.view.battle.shared.minimap.component import MinimapComponent
-from gui.Scaleform.daapi.view.battle.shared.minimap.settings import ENTRY_SYMBOL_NAME, ADDITIONAL_FEATURES
+from gui.Scaleform.daapi.view.battle.shared.minimap.settings import ENTRY_SYMBOL_NAME
 from gui.Scaleform.daapi.view.battle.shared.minimap.plugins import ArenaVehiclesPlugin, PersonalEntriesPlugin
 
 from xfw import *
@@ -53,6 +53,7 @@ def onConfigLoaded(self, e=None):
     g_minimap.opt_linesEnabled = config.get('minimap/linesEnabled', True)
     g_minimap.opt_circlesEnabled = config.get('minimap/circlesEnabled', True)
     g_minimap.opt_minimapDeadSwitch = config.get('battle/minimapDeadSwitch', True)
+    g_minimap.opt_healthPointsEnabled = config.get('minimap/healthPointsEnabled', False)
 
 g_eventBus.addListener(XVM_EVENT.CONFIG_LOADED, onConfigLoaded)
 
@@ -177,6 +178,8 @@ _LINES_SETTINGS = (
     settings_constants.GAME.SHOW_SECTOR_ON_MAP)
 _LABELS_SETTINGS = (
     settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP)
+_HP_SETTINGS = (
+    settings_constants.GAME.SHOW_VEHICLE_HP_IN_MINIMAP)
 _DEFAULTS = {
     settings_constants.GAME.SHOW_VECTOR_ON_MAP: False,
     settings_constants.GAME.SHOW_SECTOR_ON_MAP: True,
@@ -185,6 +188,7 @@ _DEFAULTS = {
     settings_constants.GAME.MINIMAP_VIEW_RANGE: True,
     settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP: False,
     settings_constants.GAME.MINIMAP_MIN_SPOTTING_RANGE: False,
+    settings_constants.GAME.SHOW_VEHICLE_HP_IN_MINIMAP: True,
 }
 
 _in_PersonalEntriesPlugin_setSettings = False
@@ -194,7 +198,6 @@ _in_ArenaVehiclesPlugin_setSettings = False
 def _SettingsCore_getSetting(base, self, name):
     value = base(self, name)
     if g_minimap.active:
-        global _in_PersonalEntriesPlugin_setSettings
         if _in_PersonalEntriesPlugin_setSettings:
             if name in _LINES_SETTINGS:
                 if g_minimap.opt_linesEnabled:
@@ -202,10 +205,12 @@ def _SettingsCore_getSetting(base, self, name):
             elif name in _CIRCLES_SETTINGS:
                 if g_minimap.opt_circlesEnabled:
                     value = _DEFAULTS[name]
-        global _in_ArenaVehiclesPlugin_setSettings
         if _in_ArenaVehiclesPlugin_setSettings:
             if name in _LABELS_SETTINGS:
                 if g_minimap.opt_labelsEnabled:
+                    value = _DEFAULTS[name]
+            elif name in _HP_SETTINGS:
+                if g_minimap.opt_healthPointsEnabled:
                     value = _DEFAULTS[name]
         #debug('getSetting: {} = {}'.format(name, value))
     return value
@@ -215,7 +220,9 @@ def _PersonalEntriesPlugin_start(base, self):
     base(self)
     if g_minimap.active and g_minimap.opt_linesEnabled:
         if not self._PersonalEntriesPlugin__yawLimits:
-            vehicle = avatar_getter.getArena().vehicles.get(avatar_getter.getPlayerVehicleID())
+            vehicle = avatar_getter.getArena().vehicles.get(avatar_getter.getPlayerVehicleID(), None)
+            if vehicle is None:
+                return
             staticTurretYaw = vehicle['vehicleType'].gun.staticTurretYaw
             if staticTurretYaw is None:
                 vInfoVO = self._arenaDP.getVehicleInfo()
@@ -262,18 +269,25 @@ def _ArenaVehiclesPlugin_updateSettings(base, self, diff):
         if g_minimap.opt_labelsEnabled:
             if settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP in diff:
                 diff[settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP] = _DEFAULTS[settings_constants.GAME.SHOW_VEH_MODELS_ON_MAP]
+        if g_minimap.opt_healthPointsEnabled:
+            if settings_constants.GAME.SHOW_VEHICLE_HP_IN_MINIMAP in diff:
+                diff[settings_constants.GAME.SHOW_VEHICLE_HP_IN_MINIMAP] = _DEFAULTS[settings_constants.GAME.SHOW_VEHICLE_HP_IN_MINIMAP]
     base(self, diff)
 
 
 # Disable standard features if XVM minimap is active
 
-@overrideClassMethod(ADDITIONAL_FEATURES, 'isOn')
-def _ADDITIONAL_FEATURES_isOn(base, cls, mask):
-    return False if g_minimap.active and g_minimap.opt_labelsEnabled else base(mask)
+@overrideMethod(ArenaVehiclesPlugin, '_ArenaVehiclesPlugin__showFeatures')
+def showFeatures(base, self, flag):
+    if g_minimap.active and g_minimap.opt_labelsEnabled:
+        return
+    base(self, flag)
 
-@overrideClassMethod(ADDITIONAL_FEATURES, 'isChanged')
-def _ADDITIONAL_FEATURES_isChanged(base, cls, mask):
-    return False if g_minimap.active and g_minimap.opt_labelsEnabled else base(mask)
+@overrideMethod(ArenaVehiclesPlugin, '_ArenaVehiclesPlugin__showMinimapHP')
+def showMinimapHP(base, self, flag):
+    if g_minimap.active and g_minimap.opt_healthPointsEnabled:
+        return
+    base(self, flag)
 
 @overrideMethod(PersonalEntriesPlugin, '_onVehicleFeedbackReceived')
 def _PersonalEntriesPlugin_onVehicleFeedbackReceived(base, self, eventID, _, __):
@@ -298,6 +312,7 @@ class _Minimap(object):
     opt_linesEnabled = True
     opt_circlesEnabled = True
     opt_minimapDeadSwitch = True
+    opt_healthPointsEnabled = False
     viewPointID = 0
     minimapComponent = None
     entrySymbols = {}
@@ -310,6 +325,10 @@ class _Minimap(object):
                self.initialized and \
                (self.guiType != constants.ARENA_GUI_TYPE.EPIC_BATTLE) and \
                (self.guiType != constants.ARENA_GUI_TYPE.TUTORIAL) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.EVENT_BATTLES) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.RTS) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.RTS_TRAINING) and \
+               (self.guiType != constants.ARENA_GUI_TYPE.RTS_BOOTCAMP) and \
                (self.battleType != constants.ARENA_BONUS_TYPE.TUTORIAL)
 
     def init(self, minimapComponent):
