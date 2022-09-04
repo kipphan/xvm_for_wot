@@ -45,8 +45,11 @@ def BattleResultsWindow_as_setDataS(base, self, data):
         if linkage == 'EpicStatsUI' and not config.get('battleResults/showStandardFrontLineInterface', True):
             linkage = 'CommonStats'
 
-        if linkage == 'CommonStats':
-            linkage = 'com.xvm.lobby.ui.battleresults::UI_CommonStats'
+        #
+        # TODO 1.16.1: disable BattleResulsts
+        #
+        # if linkage == 'CommonStats':
+        #    linkage = 'com.xvm.lobby.ui.battleresults::UI_CommonStats'
 
         if linkage == 'com.xvm.lobby.ui.battleresults::UI_CommonStats':
             data['tabInfo'][0]['linkage'] = linkage
@@ -56,8 +59,9 @@ def BattleResultsWindow_as_setDataS(base, self, data):
             data['xvm_data']['regionNameStr'] = data['common']['regionNameStr']
             data['xvm_data']['arenaUniqueID'] = str(self._BattleResultsWindow__arenaUniqueID)
             data['common']['regionNameStr'] = simplejson.dumps(data['xvm_data'], separators=(',',':'))
-
-        del data['xvm_data']
+    
+        if 'xvm_data' in data:
+            del data['xvm_data']
     except Exception as ex:
         err(traceback.format_exc())
     return base(self, data)
@@ -130,18 +134,29 @@ class XvmDataBlock(base.StatsBlock):
             #TODO 1.5: add support for premiumPlus and premiumVip
             origXP = vData['xp']
             premXP = vData['xp']
-            origCrewXP = vData['tmenXP']
-            premCrewXP = vData['tmenXP']
-            if vData['isPremium']:
-                origXP = vData['xp'] / (vData['premiumXPFactor100'] / 100.0)
-                origCrewXP = vData['tmenXP'] / (vData['premiumXPFactor100'] / 100.0)
-            else:
-                premXP = vData['xp'] * (vData['premiumXPFactor100'] / 100.0)
-                premCrewXP = vData['tmenXP'] * (vData['premiumXPFactor100'] / 100.0)
-            ownVehicle = self.itemsCache.items.getItemByCD(typeCompDescr)
-            if ownVehicle and ownVehicle.isPremium:
-                origCrewXP = int(origCrewXP * 1.5)
-                premCrewXP = int(premCrewXP * 1.5)
+
+            origCrewXP = 0
+            premCrewXP = 0
+            if 'tmenXP' in vData:
+                origCrewXP = vData['tmenXP']
+                premCrewXP = vData['tmenXP']
+        
+            if 'isPremium' in vData:
+                if vData['isPremium']:
+                    origXP = vData['xp'] / (vData['premiumXPFactor100'] / 100.0)
+                    origCrewXP = vData['tmenXP'] / (vData['premiumXPFactor100'] / 100.0)
+                else:
+                    premXP = vData['xp'] * (vData['premiumXPFactor100'] / 100.0)
+                    premCrewXP = vData['tmenXP'] * (vData['premiumXPFactor100'] / 100.0)
+
+                ownVehicle = self.itemsCache.items.getItemByCD(typeCompDescr)
+                if ownVehicle and ownVehicle.isPremium:
+                    origCrewXP = int(origCrewXP * 1.5)
+                    premCrewXP = int(premCrewXP * 1.5)
+
+            details = None
+            if 'details' in vData:
+                details = vData['details']
 
             data = {
                 'origXP': origXP,
@@ -150,7 +165,7 @@ class XvmDataBlock(base.StatsBlock):
                 'premCrewXP': premCrewXP,
                 'damageDealt': vData['damageDealt'],
                 'damageAssisted': vData['damageAssistedRadio'] + vData['damageAssistedTrack'],
-                'damageAssistedCount': calcDetailsCount(vData['details'], ['damageAssistedRadio', 'damageAssistedTrack']),
+                'damageAssistedCount': calcDetailsCount(details, ['damageAssistedRadio', 'damageAssistedTrack']),
                 'damageAssistedRadio': vData['damageAssistedRadio'],
                 'damageAssistedTrack': vData['damageAssistedTrack'],
                 'damageAssistedStun': vData['damageAssistedStun'],
@@ -162,8 +177,8 @@ class XvmDataBlock(base.StatsBlock):
                 'spotted': vData['spotted'],
                 'stunNum': vData['stunNum'],
                 'stunDuration': vData['stunDuration'],
-                'critsCount': calcCritsCount(vData['details']),
-                'ricochetsCount': calcDetailsSum(vData['details'], 'rickochetsReceived'),
+                'critsCount': calcCritsCount(details),
+                'ricochetsCount': calcDetailsSum(details, 'rickochetsReceived'),
                 'nonPenetrationsCount': vData['noDamageDirectHitsReceived']
             }
             self.xvm_data.append(data)
@@ -194,7 +209,7 @@ def appendTotalData(total, data):
     total['ricochetsCount'] += data['ricochetsCount']
     total['nonPenetrationsCount'] += data['nonPenetrationsCount']
 
-_XVM_DATA_STATS_BLOCK = XvmDataBlock(base.DictMeta(), 'xvm_data', BATTLE_RESULTS_RECORD.PERSONAL)
+_XVM_DATA_STATS_BLOCK = XvmDataBlock(base.DictMeta(), 'xvm_data')
 
 @overrideMethod(composer.StatsComposer, '__init__')
 def _StatsComposer__init__(base, self, *args):
@@ -210,38 +225,44 @@ def _StatsComposer__init__(base, self, *args):
 # utility
 
 def calcDetailsSum(details, field):
+    n = 0
+            
     try:
-        n = 0
-        for detail in details.values():
-            if field in detail:
-                n += int(detail[field])
-        return n
+        if details is not None:
+            for detail in details.values():
+                if field in detail:
+                    n += int(detail[field])
     except Exception as ex:
         err(traceback.format_exc())
-        return 0
+
+    return n
 
 def calcDetailsCount(details, fields):
+    n = 0
+    
     try:
-        n = 0
-        for detail in details.values():
-            for field in fields:
-                if detail.get(field, 0) > 0:
-                    n += 1
-                    break;
-        return n
+        if details is not None:
+            for detail in details.values():
+                for field in fields:
+                    if detail.get(field, 0) > 0:
+                        n += 1
+                        break
     except Exception as ex:
         err(traceback.format_exc())
-        return 0
+        
+    return n
 
 def calcCritsCount(details):
+    n = 0
+    
     try:
-        n = 0
-        for detail in details.values():
-            value = detail.get('crits', 0)
-            if value > 0:
-                for subType, critType in critsParserGenerator(value):
-                    n += 1
-        return n
+        if details is not None:
+            for detail in details.values():
+                value = detail.get('crits', 0)
+                if value > 0:
+                    for subType, critType in critsParserGenerator(value):
+                        n += 1
     except Exception as ex:
         err(traceback.format_exc())
-        return 0
+
+    return n

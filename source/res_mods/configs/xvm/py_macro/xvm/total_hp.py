@@ -5,19 +5,18 @@
 import traceback
 
 import BigWorld
-from Vehicle import Vehicle
 from Avatar import PlayerAvatar
-from constants import VEHICLE_HIT_FLAGS
 from CurrentVehicle import g_currentVehicle
+from constants import VEHICLE_HIT_FLAGS
 from gui.Scaleform.daapi.view.battle.shared.frag_correlation_bar import FragCorrelationBar
 from gui.Scaleform.daapi.view.lobby.hangar.Hangar import Hangar
 from helpers import dependency
 from skeletons.gui.game_control import IBootcampController
 from skeletons.gui.shared import IItemsCache
 
+import xvm_battle.python.battle as battle
 from xfw import *
 from xfw_actionscript.python import *
-import xvm_battle.python.battle as battle
 from xvm_main.python import config
 
 #####################################################################
@@ -81,14 +80,14 @@ def update_hp():
         if teams_totalhp[0] < teams_totalhp[1]:
             ratio = max(min(2.0 * teams_totalhp[0] / teams_totalhp[1] - 0.9, 1), 0)
             total_hp_color = color_gradient(hp_colors['neutral'], hp_colors['bad'], ratio)
-            total_hp_sign = '&lt;'
+            total_hp_sign = '&#60;'
         elif teams_totalhp[0] > teams_totalhp[1]:
             ratio = max(min(2.0 * teams_totalhp[1] / teams_totalhp[0] - 0.9, 1), 0)
             total_hp_color = color_gradient(hp_colors['neutral'], hp_colors['good'], ratio)
-            total_hp_sign = '&gt;'
+            total_hp_sign = '&#62;'
         else:
             total_hp_color = color_gradient(hp_colors['neutral'], hp_colors['neutral'], 1)
-            total_hp_sign = '&equals;'
+            total_hp_sign = '&#61;'
         as_event('ON_UPDATE_HP')
     except Exception, ex:
         err(traceback.format_exc())
@@ -120,9 +119,9 @@ def showShotResults(self, results):
         data.showShotResults(self, results)
 
 
-@registerEvent(Vehicle, 'onEnterWorld')
-def onEnterWorld(self, prereqs):
-    if self.isPlayerVehicle:
+@registerEvent(PlayerAvatar, 'onEnterWorld')
+def _PlayerAvatar_onEnterWorld(self, prereqs):
+    if battle.isBattleTypeSupported:
         update_conf_hp()
 
 
@@ -135,17 +134,21 @@ def destroyGUI(self):
 
 
 def ally(norm=None):
-    if (norm is None) or (teams_maxhp[0] == 0):
+    maxhp = int(teams_maxhp[0])
+    if (norm is None) or (maxhp == 0) or (teams_totalhp[0] == 0):
         return teams_totalhp[0]
     else:
-        return int(teams_totalhp[0] * norm / teams_maxhp[0])
+        result = teams_totalhp[0] * norm / maxhp
+        return min(-1, result) if norm < 0 else max(1, result)
 
 
 def enemy(norm=None):
-    if (norm is None) or (teams_maxhp[1] == 0):
+    maxhp = int(teams_maxhp[1])
+    if (norm is None) or (maxhp == 0) or (teams_totalhp[1] == 0):
         return teams_totalhp[1]
     else:
-        return int(teams_totalhp[1] * norm / teams_maxhp[1])
+        result = teams_totalhp[1] * norm / maxhp
+        return min(-1, result) if norm < 0 else max(1, result)
 
 
 def color():

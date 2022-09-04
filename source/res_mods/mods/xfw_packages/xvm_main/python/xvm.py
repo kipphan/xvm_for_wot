@@ -1,4 +1,20 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+This file is part of the XVM project.
+
+Copyright (c) 2013-2021 XVM Team.
+
+XVM is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as
+published by the Free Software Foundation, version 3.
+
+XVM is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+"""
 
 import traceback
 import simplejson
@@ -14,6 +30,7 @@ from helpers import dependency
 from skeletons.gui.app_loader import IAppLoader, GuiGlobalSpaceID
 
 from xfw import *
+import xfw_loader.python as xfw_loader
 from xfw_actionscript.python import *
 
 from consts import *
@@ -27,7 +44,7 @@ import userprefs
 import disabled_servers
 import dossier
 import minimap_circles
-import python_macro
+import pymacro
 import reserve
 import topclans
 import wgutils
@@ -39,6 +56,7 @@ _LOG_COMMANDS = (
     XVM_COMMAND.LOAD_STAT_BATTLE_RESULTS,
     XVM_COMMAND.LOAD_STAT_USER,
 )
+
 
 # performs translations and fixes image path
 def l10n(text):
@@ -84,18 +102,27 @@ class Xvm(object):
 
     appLoader = dependency.descriptor(IAppLoader)
 
+    # INIT
+
     def __init__(self):
+        trace('xvm_main.python.xvm::XVM::__init__()')
+
         self.xvmServicesInitialized = False
         self.xvmLobbyMessageShown = False
         self.xvmServerMessageLastInfo = None
         self.currentAccountDBID = None
 
+    def initialize(self):
+        trace('xvm_main.python.xvm::XVM::initialize()')
+
+        disabled_servers.initialize()
+        vehinfo.initialize()
+
     # CONFIG
 
     def onConfigLoaded(self, e=None):
-        trace('onConfigLoaded')
+        trace('xvm_main.python.xvm::XVM::onConfigLoaded()')
 
-        python_macro.initialize()
         disabled_servers.initialize()
 
         if not e or not e.ctx.get('fromInitStage', False):
@@ -103,7 +130,8 @@ class Xvm(object):
             wgutils.reloadHangar()
 
     def respondConfig(self):
-        trace('respondConfig')
+        trace('xvm_main.python.xvm::XVM::respondConfig()')
+
         as_xfw_cmd(XVM_COMMAND.AS_SET_CONFIG,
                    config.config_data,
                    config.lang_data,
@@ -282,7 +310,7 @@ class Xvm(object):
                 return (None, True)
 
             if cmd == XVM_COMMAND.PYTHON_MACRO:
-                return (python_macro.process_python_macro(args[0]), True)
+                return (pymacro.process_python_macro(args[0]), True)
 
             if cmd == XVM_COMMAND.GET_PLAYER_ID:
                 return (getCurrentAccountDBID(), True)

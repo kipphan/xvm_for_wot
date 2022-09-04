@@ -58,19 +58,8 @@
 
     // Address to config updates.
     // Адрес, где выкладываются обновления конфига.
-    "url": "https://modxvm.com/",
+    "url": "https://modxvm.com/"
 
-    // Supported version of the game.
-    // Поддерживаемая версия игры.
-    "gameVersion": "1.12.1.1",
-
-    // The minimum required version of the XVM mod.
-    // Минимально необходимая версия мода XVM.
-    "modMinVersion": "8.7.8",
-
-    // Config last modified.
-    // Дата последней модификации конфига.
-    "date": "27.04.2021"
   },
 
   // Parameters for login screen.
@@ -168,10 +157,6 @@
   // Vehicle names mapping.
   // Замена названий танков.
   "vehicleNames": ${"vehicleNames.xc":"vehicleNames"},
-
-  // Export data.
-  // Выгрузка данных.
-  "export": ${"export.xc":"export"},
 
   // Parameters for tooltips.
   // Параметры всплывающих подсказок.

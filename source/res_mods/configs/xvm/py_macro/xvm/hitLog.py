@@ -48,7 +48,12 @@ BATTLE_TYPE = {ARENA_GUI_TYPE.UNKNOWN: "unknown",
                ARENA_GUI_TYPE.EPIC_BATTLE: "epic_battle",
                ARENA_GUI_TYPE.EPIC_TRAINING: "epic_battle",
                ARENA_GUI_TYPE.BATTLE_ROYALE: "battle_royale",
-               ARENA_GUI_TYPE.WEEKEND_BRAWL: "weekend_brawl"}
+               ARENA_GUI_TYPE.MAPBOX: "mapbox",
+               ARENA_GUI_TYPE.MAPS_TRAINING: "maps_training",
+               ARENA_GUI_TYPE.RTS: "rts",
+               ARENA_GUI_TYPE.RTS_TRAINING: "rts_training",
+               ARENA_GUI_TYPE.RTS_BOOTCAMP: "rts_bootcamp",
+               }
 
 HIT_LOG = 'hitLog/'
 FORMAT_HISTORY = 'formatHistory'
@@ -169,7 +174,6 @@ class DataHitLog(object):
         self.shells = {}
         self.macros = Macros()
         self.reset()
-        self.ammo = None
 
     def reset(self):
         self.shellType = None
@@ -186,7 +190,7 @@ class DataHitLog(object):
         self.intCD = None
         self.splashHit = False
         self.criticalHit = False
-        self.compName = 'unknown'
+        self.compName = None
         self.battletypeKey = 'unknown'
         self.data = {
             'damage': 0,
@@ -302,9 +306,6 @@ class DataHitLog(object):
         self.data['battletype-key'] = self.battletypeKey
         self.updateLabels()
 
-    def loaded(self):
-        self.intCD = self.ammo.getCurrentShellCD()
-
     def setParametersShot(self):
         if self.intCD is not None:
             _shells = self.shells[self.intCD]
@@ -326,16 +327,11 @@ class DataHitLog(object):
         self.isVehicle = isVehicle
         self.vehicleID = vehicle.id
         self.data['isAlive'] = vehicle.isAlive()
-        if attackReasonID < 8:
-            self.data['attackReasonID'] = attackReasonID
-        elif attackReasonID in [9, 10, 13, 24]:
-            self.data['attackReasonID'] = 24
-        elif attackReasonID in [11, 14, 25]:
-            self.data['attackReasonID'] = 25
+        self.data['attackReasonID'] = attackReasonID
         self.data['blownup'] = newHealth <= -5
         newHealth = max(0, newHealth)
         self.data['damage'] = (self.vehHealth[vehicle.id]['health'] - newHealth) if vehicle.id in self.vehHealth else (- newHealth)
-        if self.data['attackReasonID'] != 0:
+        if attackReasonID != 0:
             self.criticalHit = False
             self.splashHit = False
             self.compName = None
@@ -348,7 +344,7 @@ class DataHitLog(object):
             self.data['shortUserString'] = l10n(PILLBOX).format(self.entityNumber)
         self.updateData()
 
-    def showDamageFromShot(self, vehicle, attackerID, points, effectsIndex, damageFactor):
+    def showDamageFromShot(self, vehicle, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
         maxComponentIdx = TankPartIndexes.ALL[-1]
         wheelsConfig = vehicle.appearance.typeDescriptor.chassis.generalWheelsAnimatorConfig
         if wheelsConfig:
@@ -359,30 +355,36 @@ class DataHitLog(object):
             maxHitEffectCode = maxPriorityHitPoint.hitEffectCode
             compName = decodedPoints[0].componentName
             self.compName = compName if compName[0] != 'W' else 'wheel'
+            self.criticalHit = (maxHitEffectCode == 5)
         else:
-            self.compName = 'unknown'
-        self.criticalHit = (maxHitEffectCode == 5)
+            self.compName = None
+            self.criticalHit = False
 
-    def onEnterWorld(self, vehicle):
-        self.macros.setChooseRating()
-        self.player = BigWorld.player()
-        self.playerVehicleID = self.player.playerVehicleID
-        self.ammo = self.guiSessionProvider.shared.ammo
-        shots = vehicle.typeDescriptor.gun.shots
-        nation = nations.NAMES[vehicle.typeDescriptor.type.id[0]]
+    def getListGoldShells(self, nation_id):
+        nation = nations.NAMES[nation_id]
         xmlPath = '%s%s%s%s' % (ITEM_DEFS_PATH, 'vehicles/', nation, '/components/shells.xml')
         xmlCtx_s = (((None, '{}/{}'.format(xmlPath, n)), s) for n, s in ResMgr.openSection(xmlPath).items() if (n != 'icons') and (n != 'xmlns:xmlref'))
         goldShells = [_xml.readInt(xmlCtx, s, 'id', 0, 65535) for xmlCtx, s in xmlCtx_s if s.readBool('improved', False)]
+        ResMgr.purge(xmlPath, True)
+        return goldShells
+
+    def setShellParameters(self, typeDescriptor):
+        shots = typeDescriptor.gun.shots
+        goldShells = self.getListGoldShells(typeDescriptor.type.id[0])
         for shot in shots:
             shell = shot.shell
             intCD = shell.compactDescr
             self.shells[intCD] = {}
-            self.shells[intCD]['shellKind'] = shell.kind.lower()
+            self.shells[intCD]['shellKind'] = str(shell.kind).lower() if not shell.hasStun else 'high_explosive_stun'
             self.shells[intCD]['shellDamage'] = shell.damage[0]
             self.shells[intCD]['costShell'] = 'gold-shell' if shell.id[1] in goldShells else 'silver-shell'
-        ResMgr.purge(xmlPath, True)
-        arena = avatar_getter.getArena()
-        self.battletypeKey = BATTLE_TYPE.get(arena.guiType, ARENA_GUI_TYPE.UNKNOWN)
+
+    def onAppearanceReady(self, vehicle):
+        self.macros.setChooseRating()
+        self.player = BigWorld.player()
+        self.playerVehicleID = self.player.playerVehicleID
+        self.setShellParameters(vehicle.typeDescriptor)
+        self.battletypeKey = BATTLE_TYPE.get(self.player.arena.guiType, ARENA_GUI_TYPE.UNKNOWN)
 
     def updateVehInfo(self, vehicle):
         if vehicle.id not in self.vehHealth:
@@ -849,7 +851,7 @@ g_hitLogs = HitLogs()
 @registerEvent(PlayerAvatar, '_PlayerAvatar__processVehicleAmmo')
 def PlayerAvatar__processVehicleAmmo(self, vehicleID, compactDescr, quantity, quantityInClip, _, __):
     if battle.isBattleTypeSupported and _config.get(HIT_LOG_ENABLED, True):
-        g_dataHitLog.loaded()
+        g_dataHitLog.intCD = compactDescr
 
 
 @registerEvent(DestructibleEntity, 'onEnterWorld')
@@ -869,9 +871,9 @@ def DestructibleEntity_onHealthChanged(self, newHealth, attackerID, attackReason
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
-def _Vehicle_showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor):
+def _Vehicle_showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
     if battle.isBattleTypeSupported and (g_dataHitLog.playerVehicleID == attackerID) and self.isAlive() and _config.get(HIT_LOG_ENABLED, True):
-        g_dataHitLog.showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor)
+        g_dataHitLog.showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield)
 
 
 @registerEvent(Vehicle, 'showDamageFromExplosion')
@@ -882,18 +884,18 @@ def _Vehicle_showDamageFromExplosion(self, attackerID, center, effectsIndex, dam
 
 
 @registerEvent(PlayerAvatar, '_PlayerAvatar__onArenaVehicleKilled')
-def __onArenaVehicleKilled(self, targetID, attackerID, equipmentID, reason):
+def __onArenaVehicleKilled(self, targetID, attackerID, equipmentID, reason, numVehiclesAffected):
     if self.playerVehicleID != attackerID:
         g_hitLogs.removePlayerFromLogs(targetID)
 
 
-@registerEvent(Vehicle, 'onEnterWorld')
-def _Vehicle_onEnterWorld(self, prereqs):
+@registerEvent(Vehicle, '_Vehicle__onAppearanceReady')
+def _Vehicle__onAppearanceReady(self, appearance):
     if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         if self.id in g_dataHitLog.vehDead:
             g_dataHitLog.vehDead.remove(self.id)
         if self.isPlayerVehicle:
-            g_dataHitLog.onEnterWorld(self)
+            g_dataHitLog.onAppearanceReady(self)
             g_hitLogs.setPosition(g_dataHitLog.battletypeKey)
 
 
@@ -917,9 +919,9 @@ def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReaso
         g_dataHitLog.updateVehInfo(self)
 
 
-@registerEvent(Vehicle, 'set_isCrewActive')
-def set_isCrewActive(self, prev):
-    g_dataHitLog.updateVehInfo(self)
+# @registerEvent(Vehicle, 'set_isCrewActive')
+# def set_isCrewActive(self, _=None):
+#     g_dataHitLog.updateVehInfo(self)
 
 
 @registerEvent(PlayerAvatar, '_PlayerAvatar__destroyGUI')
