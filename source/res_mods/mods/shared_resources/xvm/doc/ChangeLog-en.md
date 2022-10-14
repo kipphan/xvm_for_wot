@@ -1,6 +1,36 @@
+### XVM 10.0.0
+
+  * Compatibility with World of Tanks 1.18.0.1
+
+  #### Battle
+
+  * Added support for special combat modes in Strongholds
+
+  #### Minimap
+
+  * Added option:
+
+    * `"deadAnimationAlpha"` — transparency of animation when destroying vehicles
+
+  * Moved layers on the minimap
+
+  #### Carousel
+
+  * Added options in the `"carousel"/"normal"/"fields"` and `"carousel"/"small"/"fields"` sections:
+
+    * `"coreBorder"` — Core Vehicles mark for the Battle Pass
+
+  * Added macro `{{v.core}}`
+
 ### XVM 9.3.4
 
   * Compatibility with World of Tanks 1.17.1.3
+
+  #### Battle
+
+  * Added normalization support for `{{cap.points}}`.
+
+  * Added a setting for the capture bar to the "captureBar" when blocking the capture of the base.
 
 ### XVM 9.3.3
 
@@ -105,7 +135,7 @@
 
   * Compatibility with World of Tanks 1.14.1.0
 
-  #### Сarousel
+  #### Carousel
 
   * fix `crystalsBorder` option in carousel
 
