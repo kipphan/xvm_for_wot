@@ -1,4 +1,7 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2022 XVM Contributors
+"""
 
 #####################################################################
 # imports
@@ -7,13 +10,13 @@ import traceback
 import simplejson
 
 from account_helpers.AccountSettings import AccountSettings, DEFAULT_VALUES, KEY_FILTERS
-from account_helpers.AccountSettings import CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2, MAPBOX_CAROUSEL_FILTER_2
-from account_helpers.AccountSettings import CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1, MAPBOX_CAROUSEL_FILTER_CLIENT_1
+from account_helpers.AccountSettings import CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2, MAPBOX_CAROUSEL_FILTER_2, FUN_RANDOM_CAROUSEL_FILTER_2, COMP7_CAROUSEL_FILTER_2 
+from account_helpers.AccountSettings import CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1, MAPBOX_CAROUSEL_FILTER_CLIENT_1, FUN_RANDOM_CAROUSEL_FILTER_CLIENT_1, COMP7_CAROUSEL_FILTER_CLIENT_1 
 from account_helpers.settings_core.ServerSettingsManager import ServerSettingsManager
 from gui.shared.gui_items.dossier.achievements import MarkOfMasteryAchievement
 from gui.shared.utils.functions import makeTooltip
 from gui.shared.utils.requesters.ItemsRequester import REQ_CRITERIA
-from gui.Scaleform.daapi.view.common.filter_popover import TankCarouselFilterPopover, _SECTION
+from gui.Scaleform.daapi.view.common.filter_popover import TankCarouselFilterPopover, FILTER_SECTION
 from gui.Scaleform.daapi.view.common.vehicle_carousel.carousel_filter import BasicCriteriesGroup
 from helpers import dependency
 from skeletons.gui.shared import IItemsCache
@@ -50,7 +53,7 @@ class PREFS(object):
 class USERPREFS(object):
     CAROUSEL_FILTERS = "users/{accountDBID}/tankcarousel/filters"
 
-_SUPPORTED_SECTIONS = (CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2, MAPBOX_CAROUSEL_FILTER_2)
+_SUPPORTED_SECTIONS = (CAROUSEL_FILTER_2, RANKED_CAROUSEL_FILTER_2, EPICBATTLE_CAROUSEL_FILTER_2, ROYALE_CAROUSEL_FILTER_2, MAPBOX_CAROUSEL_FILTER_2, FUN_RANDOM_CAROUSEL_FILTER_2, COMP7_CAROUSEL_FILTER_2)
 
 #####################################################################
 # initialization/finalization
@@ -90,7 +93,7 @@ def _ServerSettingsManager_setSections(base, self, sections, settings):
 
 @overrideStaticMethod(AccountSettings, 'setFilter')
 def _AccountSettings_setFilter(base, name, value):
-    if name in (CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1, MAPBOX_CAROUSEL_FILTER_CLIENT_1):
+    if name in (CAROUSEL_FILTER_CLIENT_1, RANKED_CAROUSEL_FILTER_CLIENT_1, EPICBATTLE_CAROUSEL_FILTER_CLIENT_1, BATTLEPASS_CAROUSEL_FILTER_CLIENT_1, ROYALE_CAROUSEL_FILTER_CLIENT_1, MAPBOX_CAROUSEL_FILTER_CLIENT_1, FUN_RANDOM_CAROUSEL_FILTER_CLIENT_1, COMP7_CAROUSEL_FILTER_CLIENT_1):
         value = {key: value for key, value in value.iteritems() if key not in PREFS.XVM_KEYS}
     base(name, value)
 
@@ -105,23 +108,23 @@ def _TankCarouselFilterPopover_getInitialVO(base, self, filters, xpRateMultiplie
         #debug(data['specials'])
         #debug(mapping)
         try:
-            premium = data['specials'][mapping[_SECTION.SPECIALS].index(PREFS.PREMIUM)]
+            premium = data['specials'][mapping[FILTER_SECTION.SPECIALS].index(PREFS.PREMIUM)]
             premium = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/premium.png', 'tooltip': makeTooltip(l10n('PremiumTooltipHeader'), l10n('PremiumTooltipBody'))}
             special = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/special.png', 'tooltip': makeTooltip(l10n('SpecialTooltipHeader'), l10n('SpecialTooltipBody')), 'selected': filters[PREFS.SPECIAL]}
             normal = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/normal.png', 'tooltip': makeTooltip(l10n('NormalTooltipHeader'), l10n('NormalTooltipBody')), 'selected': filters[PREFS.NORMAL]}
-            elite = data['specials'][mapping[_SECTION.SPECIALS].index(PREFS.ELITE)]
+            elite = data['specials'][mapping[FILTER_SECTION.SPECIALS].index(PREFS.ELITE)]
             elite['value'] = '../../../mods/shared_resources/xvm/res/icons/carousel/filter/elite.png'
             non_elite = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/nonelite.png', 'tooltip': makeTooltip(l10n('NonEliteTooltipHeader'), l10n('NonEliteTooltipBody')), 'selected': filters[PREFS.NON_ELITE]}
             full_crew = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/fullcrew.png', 'tooltip': makeTooltip(l10n('CompleteCrewTooltipHeader'), l10n('CompleteCrewTooltipBody')), 'selected': filters[PREFS.FULL_CREW]}
             training_crew = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/trainingcrew.png', 'tooltip': makeTooltip(l10n('TrainingCrewTooltipHeader'), l10n('TrainingCrewTooltipBody')), 'selected': filters[PREFS.TRAINING_CREW]}
             no_master = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/nomaster.png', 'tooltip': makeTooltip(l10n('NoMasterTooltipHeader'), l10n('NoMasterTooltipBody')), 'selected': filters[PREFS.NO_MASTER]}
             reserve = {'value': '../../../mods/shared_resources/xvm/res/icons/carousel/filter/reserve.png', 'tooltip': makeTooltip(l10n('ReserveFilterTooltipHeader'), l10n('ReserveFilterTooltipBody')), 'selected': filters[PREFS.RESERVE]}
-            crystals = data['specials'][mapping[_SECTION.SPECIALS].index(PREFS.CRYSTALS)]
+            crystals = data['specials'][mapping[FILTER_SECTION.SPECIALS].index(PREFS.CRYSTALS)]
             crystals['value'] = '../../../mods/shared_resources/xvm/res/icons/carousel/filter/crystals.png'
-            rented = data['specials'][mapping[_SECTION.SPECIALS].index(PREFS.RENTED)]
+            rented = data['specials'][mapping[FILTER_SECTION.SPECIALS].index(PREFS.RENTED)]
             rented['value'] = '../../../mods/shared_resources/xvm/res/icons/carousel/filter/rented.png'
 
-            is_igr = PREFS.IGR in mapping[_SECTION.SPECIALS]
+            is_igr = PREFS.IGR in mapping[FILTER_SECTION.SPECIALS]
             if is_igr:
                 igr = data['specials'][-1]
             data['specials'] = [
@@ -137,13 +140,13 @@ def _TankCarouselFilterPopover_getInitialVO(base, self, filters, xpRateMultiplie
 @overrideClassMethod(TankCarouselFilterPopover, '_generateMapping')
 def _TankCarouselFilterPopover_generateMapping(base, cls, hasRented, hasEvent, hasRoles, **kwargs):
     mapping = base(hasRented, hasEvent, hasRoles, **kwargs)
-    is_igr = PREFS.IGR in mapping[_SECTION.SPECIALS]
-    mapping[_SECTION.SPECIALS] = [
+    is_igr = PREFS.IGR in mapping[FILTER_SECTION.SPECIALS]
+    mapping[FILTER_SECTION.SPECIALS] = [
         PREFS.PREMIUM, PREFS.SPECIAL, PREFS.NORMAL, PREFS.ELITE, PREFS.NON_ELITE,
         PREFS.FULL_CREW, PREFS.TRAINING_CREW, PREFS.NO_MASTER, PREFS.RESERVE, PREFS.CRYSTALS,
         PREFS.RENTED]
     if is_igr:
-        mapping[_SECTION.SPECIALS].append(PREFS.IGR)
+        mapping[FILTER_SECTION.SPECIALS].append(PREFS.IGR)
     return mapping
 
 # Apply XVM filters
