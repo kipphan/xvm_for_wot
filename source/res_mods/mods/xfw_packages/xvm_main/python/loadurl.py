@@ -70,7 +70,7 @@ def loadUrl(url, req=None, body=None, content_type='text/plain; charset=utf-8', 
     response = None
     response_errmsg = ''
     try:
-        response = _urllib_pool.request(req_type, url, headers = req_headers, body = body, timeout = XVM.TIMEOUT)
+        response = _urllib_pool.request(req_type, url, headers = req_headers, body = body, retries = XVM.RETRIES, timeout = XVM.TIMEOUT)
     except urllib3.exceptions.TimeoutError:
         logger.warning('TimeoutError')
         response_errmsg = 'timeout'
@@ -88,7 +88,7 @@ def loadUrl(url, req=None, body=None, content_type='text/plain; charset=utf-8', 
         logging.getLogger('XVM/Main/LoadUrl').info('RESP: status=%s, time=%s', response.status, time_elapsed_ms)
 
     # return
-    if response.status in [200, 202, 204]:
+    if response.status in [200, 202, 204, 401]:
         return (response.data, time_elapsed_ms, response_errmsg)
     else:
         return (None, time_elapsed_ms, response_errmsg)
@@ -118,6 +118,8 @@ def init():
         _urllib_pool = urllib3.ProxyManager(proxy, **opts)
     else:
         _urllib_pool = urllib3.PoolManager(**opts)
+
+    logging.getLogger("urllib3").setLevel(logging.ERROR)
 
 def fini():
     global _urllib_pool

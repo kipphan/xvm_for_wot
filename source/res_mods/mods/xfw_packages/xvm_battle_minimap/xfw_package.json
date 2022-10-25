@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.minimap",
     "name": "XVM Battle Minimap",
     "description": "XVM Battle Minimap module",
-    "version": "10.1.0.0024",
+    "version": "10.1.1.0008",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",
@@ -10,7 +10,7 @@
     ],
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
-    "wot_version_min": "1.18.1.0",
+    "wot_version_min": "1.18.1.1",
     "wot_version_exactmatch": false,
     "features": [
         "actionscript",
