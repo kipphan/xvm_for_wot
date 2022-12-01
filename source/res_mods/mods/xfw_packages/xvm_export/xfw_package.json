@@ -3,14 +3,14 @@
     "name": "XVM Export (obsolete)",
     "description": "",
 
-    "version": "10.1.2.0000",
+    "version": "10.2.0.0000",
     "dependencies": [],
     "dependencies_optional": [],
 
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
 
-    "wot_version_min": "1.18.1.2",
+    "wot_version_min": "1.19.0.1",
     "wot_version_exactmatch": false,
 
     "features": ["python"]
