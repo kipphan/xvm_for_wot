@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.vm",
     "name": "XVM Battle VM",
     "description": "XVM Battle VehicleMarkers module",
-    "version": "10.2.1.0000",
+    "version": "10.3.0.0007",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",
@@ -10,7 +10,7 @@
     ],
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
-    "wot_version_min": "1.19.0.2",
+    "wot_version_min": "1.19.1.0",
     "wot_version_exactmatch": false,
     "features": [
         "actionscript",
