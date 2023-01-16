@@ -301,7 +301,7 @@
     "onlineServers": {
       // true - enable display online of servers.
       // true - показывать онлайн серверов.
-      "enabled": true,
+      "enabled": false,
       // Axis field coordinates.
       // Положение поля по осям.
       "x": -3,
