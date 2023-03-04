@@ -12,19 +12,19 @@
     "showPremiumShopButton": true,
     // true - show "Create squad" text on the squad creation button.
     // true - показать текст "Создать взвод" на кнопке создания взвода.
-    "showCreateSquadButtonText": false,
+    "showCreateSquadButtonText": true,
     // true - show selected battle mode text.
     // true - показать текст с названием выбранного режима боя.
-    "showBattleTypeSelectorText": false,
+    "showBattleTypeSelectorText": true,
     // true - show "Referral Program" button.
     // true - показать кнопку "Реферальная программа".
     "showReferralButton": true,
     // true - show "General chat" button.
     // true - показать кнопку "Общий чат".
-    "showGeneralChatButton": false,
+    "showGeneralChatButton": true,
     // false - disable display promo of premium vehicle (on the background in the hangar).
     // false - отключить отображение рекламы премиум техники (на фоне в ангаре).
-    "showPromoPremVehicle": false,
+    "showPromoPremVehicle": true,
     // true - show info windows with the battle results in the "Ranked battle" mode.
     // true - показывать информационное окно результатов боя в режиме "Ранговый бой".
     "showRankedBattleResults": true,
@@ -59,13 +59,13 @@
     },
     // true - enable locker for gold.
     // true - включить замок для золота.
-    "enableGoldLocker": true,
+    "enableGoldLocker": false,
     // true - enable locker for free XP.
     // true - включить замок для свободного опыта.
-    "enableFreeXpLocker": true,
+    "enableFreeXpLocker": false,
     // true - enable locker for bonds.
     // true - включить замок для бонов.
-    "enableCrystalLocker": true,
+    "enableCrystalLocker": false,
     // Show/hide server info or change its parameters.
     // Показать/спрятать информацию о сервере, или изменить ее параметры.
     "serverInfo": {
@@ -90,7 +90,7 @@
     "enableCrewAutoReturn": true,
     // true - return crew check box is selected by default.
     // true - включить галочку возврата экипажа по умолчанию.
-    "crewReturnByDefault": true,
+    "crewReturnByDefault": false,
     // Number of perks to show without grouping.
     // Количество перков, которые отображаются без группировки.
     "crewMaxPerksCount": 8,
@@ -156,7 +156,7 @@
     "blockVehicleIfLowAmmo": false,
     // Below this percentage, ammo is low. (0 - 100)
     // Ниже этого процента, снарядов считается мало. (0 - 100)
-    "lowAmmoPercentage": 50,
+    "lowAmmoPercentage": 20,
     // Behavior of the system channel notifications button on new notifications:
     //   none  - do nothing;
     //   blink - blink button;
@@ -168,13 +168,13 @@
     "notificationsButtonType": "full",
     // true - hide price button in tech tree.
     // true - прятать кнопку с ценой в дереве исследований.
-    "hidePricesInTechTree": true,
+    "hidePricesInTechTree": false,
     // true - show mastery mark in tech tree.
     // true - показывать знак мастерства в дереве исследований.
     "masteryMarkInTechTree": true,
     // true - allow to consider the exchange of experience with gold in tech tree.
     // true - разрешить учитывать обмен опыта за золото в дереве исследований.
-    "allowExchangeXPInTechTree": false,
+    "allowExchangeXPInTechTree": true,
     // true - show flags in barracks.
     // true - показывать флаги в казарме.
     "barracksShowFlags": true,
@@ -189,10 +189,10 @@
     "pingServers": {
       // true - enable display of ping to the servers.
       // true - показывать пинг до серверов.
-      "enabled": true,
+      "enabled": false,
       // Update interval, in ms.
       // Интервал обновления, в мс.
-      "updateInterval": 3000,
+      "updateInterval": 10000,
       // Axis field coordinates.
       // Положение поля по осям.
       "x": 85,
@@ -274,13 +274,13 @@
       "threshold": {
         // Below this value response is great.
         // До этого значения отклик отличный.
-        "great": 30,
+        "great": 35,
         // Below this value response is good.
         // До этого значения отклик хороший.
-        "good": 50,
+        "good": 60,
         // Below this value response is poor.
         // До этого значения отклик так себе.
-        "poor": 70
+        "poor": 100
         // Values above define bad response.
         // Значения более считаются плохим откликом.
       },

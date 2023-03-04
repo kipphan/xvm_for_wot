@@ -6,7 +6,7 @@
   "captureBar": {
     // false - disable.
     // false - отключить.
-    "enabled": false,
+    "enabled": true,
     // Y value (34 for vanilla client).
     // Значение Y (34 для чистого клиента).
     "y": 65,
@@ -21,7 +21,7 @@
     "enemy": {
       // Capture bar color (default: use system color).
       // Цвет полосы захвата (по умолчанию используется системный цвет).
-      "color": "0xED5E5E",
+      "color": null,
       // Title textfield (center).
       // Текстовое поле с заголовком (среднее).
       "title": {
@@ -36,7 +36,7 @@
         "format": "<font size='15' color='#FFFFFF'>{{l10n:allyBaseCapture}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
         // Full capture text format.
         // Формат текста при полном захвате.
-        "done": "<font size='15' color='#F6E955'>{{l10n:allyBaseCaptured}}</font> <font size='14' color='#EEEEEE'>({{cap.points}})</font>",
+        "done": "<font size='15' color='#FFCC66'>{{l10n:allyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
         // Shadow options.
         // Параметры тени.
         "shadow": {
@@ -56,8 +56,8 @@
       "players": {
         "x": -225,
         "y": 0,
-        "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x113;</font>  <font color='#F5A83D'><b>{{cap.tanks}}</b></font>",
-        "done": "<font face='xvm' size='15' color='#FFFFFF'>&#x113;</font>  <font color='#F5A83D'><b>{{cap.tanks}}</b></font>",
+        "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x113;</font>  <font color='#FFCC66'><b>{{cap.tanks}}</b></font>",
+        "done": "<font face='xvm' size='15' color='#FFFFFF'>&#x113;</font>  <font color='#FFCC66'><b>{{cap.tanks}}</b></font>",
         "shadow": {
           "color": "0x000000",
           "alpha": 35,
@@ -70,8 +70,8 @@
       "timer": {
         "x": 200,
         "y": 0,
-        "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x114;</font>  <font color='#F5A83D'><b>{{cap.time}}</b></font>",
-        "done": "<font face='xvm' size='15' color='#FFFFFF'>&#x114;</font>  <font color='#F5A83D'><b>{{cap.time}}</b></font>",
+        "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x114;</font>  <font color='#FFCC66'><b>{{cap.time}}</b></font>",
+        "done": "<font face='xvm' size='15' color='#FFFFFF'>&#x114;</font>  <font color='#FFCC66'><b>{{cap.time}}</b></font>",
         "shadow": {
           "color": "0x000000",
           "alpha": 35,
@@ -102,7 +102,7 @@
       "title": {
         "$ref": { "path":"captureBar.enemy.title" },
         "format": "<font size='15' color='#FFFFFF'>{{l10n:enemyBaseCapture}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
-        "done": "<font size='15' color='#F6E955'>{{l10n:enemyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>"
+        "done": "<font size='15' color='#FFCC66'>{{l10n:enemyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>"
       },
       "players": ${"captureBar.enemy.players"},
       "timer": ${"captureBar.enemy.timer"},

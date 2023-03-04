@@ -22,7 +22,7 @@
     // Format of clock on the Debug Panel (near FPS).
     // Формат часов на экране панели отладки (возле FPS).
     // http://php.net/date
-    "clockFormat": "H:i:s",
+    "clockFormat": "H:i",
     // Path to clan icons folder relative to res_mods/mods/shared_resources/xvm/res.
     // Путь к папке иконок кланов относительно res_mods/mods/shared_resources/xvm/res.
     "clanIconsFolder": "clanicons/",
@@ -31,7 +31,7 @@
     "sixthSenseIcon": "xvm://res/SixthSense.png",
     // Duration of the sixth sense indicator (msec).
     // Длительность отображения индикатора 6-го чувства (мсек).
-    "sixthSenseDuration": 10000,
+    "sixthSenseDuration": 2000,
     // GUI elements settings (experts only).
     // Настройки графических элементов (только для экспертов!).
     "elements": ${"elements.xc":"elements"},

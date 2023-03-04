@@ -10,7 +10,7 @@
     // Всплывающий урон.
     "damageText": {
       // false - disable / не отображать.
-      "enabled": false,
+      "enabled": true,
       // Axis field coordinates.
       // Положение поля по осям.
       "x": 0,
@@ -130,7 +130,7 @@
       "textFormat": {
         "font": "$FieldFont",
         "size": 11,
-        "color": "0xE0E0E0",
+        "color": "0xD9D9D9",
         "bold": true,
         "italic": false
       },
@@ -149,7 +149,7 @@
     // Текстовое поле с рейтингом.
     "rating": {
       "name": "Rating",
-      "enabled": false,
+      "enabled": true,
       "x": -32,
       "y": -21,
       "alpha": "{{xvm-stat?100|0}}",
@@ -157,7 +157,7 @@
       "textFormat": {
         "font": "xvm",
         "size": 17,
-        "color": "{{c:xr|#9E9E9E}}",
+        "color": "{{c:xr|#999999}}",
         "bold": false,
         "italic": false
       },
@@ -186,7 +186,7 @@
       "textFormat": {
         "font": "xvm",                // название
         "size": 24,                   // размер
-        "color": "0xFFC107",          // цвет (допускается использование динамического цвета, см. macros.txt)
+        "color": "0xFFBB00",          // цвет (допускается использование динамического цвета, см. macros.txt)
         "bold": false,                // обычный (false) или жирный (true)
         "italic": false               // обычный (false) или курсив (true)
       },
@@ -204,7 +204,7 @@
         "strength": 1                 // интенсивность
       },
       // Формат текста. См. описание макросов в macros.txt
-      "format": "<font color='{{x-spotted?#FFC107|#FFFFFF}}' alpha='{{x-spotted?#FF|#80}}'>{{x-enabled?&#x70;}}</font> {{x-overturned?&#x112;}}"
+      "format": "<font color='{{x-spotted?#FFBB00|#FFFFFF}}' alpha='{{x-spotted?#FF|#80}}'>{{x-enabled?&#x70;}}</font> {{x-overturned?&#x112;}}"
     },
     // Position of the player.
     // Порядковый номер игрока.
@@ -218,7 +218,7 @@
       "textFormat": {                 // параметры шрифта
         "font": "$FieldFont",         // название
         "size": 13,                   // размер
-        "color": "0xEEEEEE",          // цвет (допускается использование динамического цвета, см. macros.txt)
+        "color": "0xEDEDED",          // цвет (допускается использование динамического цвета, см. macros.txt)
         "bold": false,                // обычный (false) или жирный (true)
         "italic": false               // обычный (false) или курсив (true)
       },
@@ -244,10 +244,10 @@
     // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
       // false - disable / не отображать.
-      "enabled": false,
+      "enabled": true,
       // true - show speaker even if enabled=false.
       // true - показывать спикер, даже если enabled=false.
-      "showSpeaker": true,
+      "showSpeaker": false,
       // Axis field coordinates.
       // Положение поля по осям.
       "x": 0,
@@ -272,8 +272,8 @@
       "x": -36,                         // положение по оси X
       "y": -33,                         // положение по оси Y
       "alpha": 100,                     // прозрачность (допускается использование динамической прозрачности, см. macros.txt)
-      "color": "0x2ECC71",              // цвет основной (допускается использование динамического цвета, см. macros.txt)
-      "lcolor": "0x27AE60",             // цвет дополнительный (для градиента)
+      "color": null,                    // цвет основной (допускается использование динамического цвета, см. macros.txt)
+      "lcolor": null,                   // цвет дополнительный (для градиента)
       "width": 70,                      // ширина полосы здоровья
       "height": 12,                     // высота полосы здоровья
       // Substrate and frame parameters.
@@ -375,7 +375,7 @@
     // Type of vehicle icon (HT/MT/LT/TD/Arty).
     // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
-      "enabled": false,
+      "enabled": true,
       "showSpeaker": false,
       "x": 0,
       "y": -16,
@@ -391,8 +391,8 @@
       "x": -36,
       "y": -33,
       "alpha": 100,
-      "color": "0xE74C3C",
-      "lcolor": "0xC0392B",
+      "color": null,
+      "lcolor": null,
       "width": 70,
       "height": 12,
       "border": {

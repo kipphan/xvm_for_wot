@@ -5,4 +5,4 @@
  * // - comment out the line (will not be used)
  */
 
-${"default/@xvm.xc":"."}
+${"kipphan/@xvm.xc":"."}

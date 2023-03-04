@@ -113,19 +113,6 @@
         "x": 1, "y": 12, "width": 23, "height": 23,
         "src": "{{v.mastery!=0?img://gui/maps/icons/library/proficiency/class_icons_{{v.mastery}}.png}}"
       },
-      // Marks of Excellence.
-      // Знаки отличия.
-      {
-        "enabled": true,
-        "x": 1, "y": 46, "width": 13, "height": 13, "alpha": "{{v.damageRating?|0}}",
-        "src": "xvm://res/icons/carousel/gunmark/moe_{{v.marksOnGun?x|x}}.png"
-      },
-      {
-        "enabled": true,
-        "x": 17, "y": 42,
-        "format": "<b><font face='$FieldFont' size='11' color='{{v.c_damageRating|#CFCFCF}}'>{{v.damageRating%-3.1f~%}}</font></b>",
-        "shadow": ${ "def.textFieldShadow" }
-      },
       // Battles count.
       // Количество боёв.
       {

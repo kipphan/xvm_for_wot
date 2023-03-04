@@ -50,11 +50,11 @@
   "definition": {
     // Config author.
     // Автор конфига.
-    "author": "Kipphan",
+    "author": "XVM Team",
 
     // Config description.
     // Описание конфига.
-    "description": "Custom settings for XVM",
+    "description": "Default settings for XVM",
 
     // Address to config updates.
     // Адрес, где выкладываются обновления конфига.
