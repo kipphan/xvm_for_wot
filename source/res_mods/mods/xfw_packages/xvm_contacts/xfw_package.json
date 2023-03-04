@@ -3,13 +3,13 @@
     "name": "XVM Contacts",
     "description": "XVM Contacts",
 
-    "version": "10.3.0.0007",
+    "version": "10.4.0.0007",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",
     "url_update": "https://modxvm.com/",
 
-    "wot_version_min": "1.19.1.0",
+    "wot_version_min": "1.20.0.0",
     "wot_version_exactmatch": false,
 
     "features": ["python"]
