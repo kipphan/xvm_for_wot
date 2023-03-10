@@ -3,7 +3,7 @@
     "name": "XVM Battle",
     "description": "XVM Battle module",
 
-    "version": "10.4.0.0007",
+    "version": "10.4.0.0000",
     "dependencies": ["com.modxvm.xvm"],
 
     "url": "https://modxvm.com/",

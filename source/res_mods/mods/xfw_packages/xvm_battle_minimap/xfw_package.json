@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.minimap",
     "name": "XVM Battle Minimap",
     "description": "XVM Battle Minimap module",
-    "version": "10.4.0.0007",
+    "version": "10.4.0.0000",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",

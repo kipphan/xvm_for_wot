@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.xmqp",
     "name": "XVM Battle XMQP",
     "description": "XVM Battle XMQP module",
-    "version": "10.4.0.0007",
+    "version": "10.4.0.0000",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",

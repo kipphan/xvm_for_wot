@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.vm",
     "name": "XVM Battle VM",
     "description": "XVM Battle VehicleMarkers module",
-    "version": "10.4.0.0007",
+    "version": "10.4.0.0000",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",
