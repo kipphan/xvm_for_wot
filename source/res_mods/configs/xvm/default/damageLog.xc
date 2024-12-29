@@ -23,7 +23,8 @@
     {{c:team-dmg}}     - color by team attachment of the attacker (ally , enemy, self damage) / цвет по командной принадлежности атакующего (союзник, противник, урон по себе).
     {{costShell}}      - shell currency (gold, credits) / валюта снаряда (золото, кредиты).
     {{c:costShell}}    - color by shell currency / цвет по валюте снаряда.
-    {{vehicle}}        - attacker vehicle name / название техники атакующего.
+    {{vehicle}}        - attacker vehicle name (vehicleNames.xc)/ название техники атакующего (vehicleNames.xc).
+    {{vehicle-short}}  - attacker shortened vehicle name (vehicleNames.xc) / укороченное название техники атакующего (vehicleNames.xc).
     {{name}}           - attacker nickname / никнейм атакующего.
     {{critical-hit}}   - critical hit / критическое попадание.
     {{comp-name}}      - vehicle part that was hit (turret, hull, chassis, gun) / часть техники, в которую было попадание (башня, корпус, ходовая, орудие).
@@ -83,6 +84,9 @@
       // true - summarize damages from ramming, crash, falling (if more than one damage per second).
       // true - суммировать повреждения от тарана, столкновения, падения (если больше одного повреждения в секунду).
       "groupDamagesFromRamming_WorldCollision": true,
+      // true - summarize damages from shots (if more than one damage per second).
+      // true - суммировать повреждения от выстрелов (если больше одного повреждения в секунду).
+      "groupDamageFromShots": true,
       // true - summarize damages from artillery strike and airstrike (if more than one damage per second).
       // true - суммировать повреждения от артудара и авионалета (если больше одного повреждения в секунду).
       "groupDamageFromArtAndAirstrike": true,
@@ -106,7 +110,7 @@
       // Цвет по типу полученного урона (макрос {{c:dmg-kind}}).
       "c:dmg-kind": {
         "shot": "{{c:hit-effects}}",       // shot / попадание.
-        "fire": "#FF9800",                 // fire / пожар.
+        "fire": "#FF6655",                 // fire / пожар.
         "ramming": "#998855",              // ramming / таран.
         "world_collision": "#228855",      // world collision / столкновение с объектами, падение.
         "drowning": "#CCCCCC",             // drowning / утопление.
@@ -127,13 +131,15 @@
       // Shell kind (macro {{type-shell}}).
       // Тип снаряда (макрос {{type-shell}}).
       "type-shell": {
-        "armor_piercing": "<font color='{{c:costShell}}'>{{l10n:armor_piercing}}</font>",       // armor piercing / бронебойный.
-        "high_explosive": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",       // high explosive / осколочно-фугасный.
-        "high_explosive_stun": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",  // stunning high explosive / оглушающий осколочно-фугасный.
-        "armor_piercing_cr": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_cr}}</font>", // armor piercing composite rigid / бронебойный подкалиберный.
-        "armor_piercing_he": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_he}}</font>", // armor piercing high explosive / бронебойно-фугасный.
-        "hollow_charge": "<font color='{{c:costShell}}'>{{l10n:hollow_charge}}</font>",         // high explosive anti-tank / кумулятивный.
-        "not_shell": ""                                                                         // another source of damage / другой источник урона.
+        "armor_piercing": "<font color='{{c:costShell}}'>{{l10n:armor_piercing}}</font>",           // armor piercing / бронебойный.
+        "high_explosive": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",           // high explosive / осколочно-фугасный.
+        "high_explosive_stun": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",      // stunning high explosive / оглушающий осколочно-фугасный.
+        "armor_piercing_cr": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_cr}}</font>",     // armor piercing composite rigid / бронебойный подкалиберный.
+        "armor_piercing_he": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_he}}</font>",     // armor piercing high explosive / бронебойно-фугасный.
+        "hollow_charge": "<font color='{{c:costShell}}'>{{l10n:hollow_charge}}</font>",             // high explosive anti-tank / кумулятивный.
+        "flame": "<font color='{{c:costShell}}'>{{l10n:flame}}</font>",                             // flame / пламя. (Lesta)
+        "armor_piercing_fsds": "<font color='{{c:costShell}}'>{{l10n:armor_piercing_fsds}}</font>", // armor piercing fin-stabilized discarding sabot / бронебойный подкалиберный оперенный. (Lesta)
+        "not_shell": ""                                                                             // another source of damage / другой источник урона.
       },
       // Color by shell kind (macro {{c:type-shell}}).
       // Цвет по типу снаряда (макрос {{c:type-shell}}).
@@ -144,6 +150,8 @@
         "armor_piercing_cr": "#CCCCCC",   // armor piercing composite rigid / бронебойный подкалиберный.
         "armor_piercing_he": "#CCCCCC",   // armor piercing high explosive / бронебойно-фугасный.
         "hollow_charge": "#CCCCCC",       // high explosive anti-tank / кумулятивный.
+        "flame": "#CCCCCC",               // flame / пламя. (Lesta)
+        "armor_piercing_fsds": "#CCCCCC", // armor piercing fin-stabilized discarding sabot / бронебойный подкалиберный оперенный. (Lesta)
         "not_shell": "#CCCCCC"            // another source of damage / другой источник урона.
       },
       // Vehicle type (macro {{vtype}}).
@@ -159,9 +167,9 @@
       // Color by vehicle type (macro {{c:vtype}}).
       // Цвет по типу техники (макрос {{c:vtype}}).
       "c:vtype": {
-        "HT": "#FFF198",         // heavy tank / тяжёлый танк.
-        "MT": "#A2FF9A",         // medium tank / средний танк.
-        "LT": "#FFACAC",         // light tank / лёгкий танк.
+        "HT": "#FFACAC",         // heavy tank / тяжёлый танк.
+        "MT": "#FFF198",         // medium tank / средний танк.
+        "LT": "#A2FF9A",         // light tank / лёгкий танк.
         "TD": "#A0CFFF",         // tank destroyer / ПТ-САУ.
         "SPG": "#EFAEFF",        // SPG / САУ.
         "not_vehicle": "#CCCCCC" // another source of damage / другой источник урона.

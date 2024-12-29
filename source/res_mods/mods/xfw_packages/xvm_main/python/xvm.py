@@ -1,23 +1,10 @@
 """
-This file is part of the XVM project.
-
-Copyright (c) 2013-2021 XVM Team.
-
-XVM is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as
-published by the Free Software Foundation, version 3.
-
-XVM is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 import traceback
-import simplejson
+import json
 
 import BigWorld
 from CurrentVehicle import g_currentVehicle
@@ -232,7 +219,7 @@ class Xvm(object):
 
             self.showXvmServicesLobbyMessage()
 
-        except Exception, ex:
+        except Exception as ex:
             err(traceback.format_exc())
 
 
@@ -254,11 +241,11 @@ class Xvm(object):
         try:
             minimap_circles.updateCurrentVehicle()
             lobby = getLobbyApp()
-            if lobby is not None:
+            if lobby is not None and g_currentVehicle.item is not None:
                 as_xfw_cmd(XVM_COMMAND.AS_UPDATE_CURRENT_VEHICLE,
                            g_currentVehicle.item.intCD,
                            minimap_circles.getMinimapCirclesData())
-        except Exception, ex:
+        except Exception as ex:
             err(traceback.format_exc())
 
 
@@ -278,14 +265,14 @@ class Xvm(object):
         trace('onBecomePlayer')
         try:
             pass
-        except Exception, ex:
+        except Exception as ex:
             err(traceback.format_exc())
 
     def onBecomeNonPlayer(self):
         trace('onBecomeNonPlayer')
         try:
             pass
-        except Exception, ex:
+        except Exception as ex:
             err(traceback.format_exc())
 
 
@@ -301,7 +288,7 @@ class Xvm(object):
     def onXfwCommand(self, cmd, *args):
         try:
             if IS_DEVELOPMENT and cmd in _LOG_COMMANDS:
-                debug("cmd=" + str(cmd) + " args=" + simplejson.dumps(args))
+                debug("cmd=" + str(cmd) + " args=" + json.dumps(args))
 
             # common
 
@@ -341,9 +328,6 @@ class Xvm(object):
                 userprefs.set(args[0], args[1])
                 return (None, True)
 
-            if cmd == XVM_COMMAND.IS_IN_BOOTCAMP:
-                return (isInBootcamp(), True)
-
             if cmd == XVM_COMMAND.OPEN_WEB_BROWSER:
                 BigWorld.wg_openWebBrowser(args[0])
                 return (None, True)
@@ -379,7 +363,7 @@ class Xvm(object):
                 g_eventBus.handleEvent(events.HasCtxEvent(cmd, args[0]))
                 return (None, True)
 
-        except Exception, ex:
+        except Exception as ex:
             err(traceback.format_exc())
             return (None, True)
 
@@ -435,13 +419,13 @@ class Xvm(object):
                     app = getLobbyApp()
                     if app:
                         as_xfw_cmd(XVM_COMMAND.AS_ON_KEY_EVENT, event.key, event.isKeyDown())
-        except Exception, ex:
+        except Exception as ex:
             err('onKeyEvent(): ' + traceback.format_exc())
 
     def onUpdateStage(self):
         try:
             as_xfw_cmd(XVM_COMMAND.AS_ON_UPDATE_STAGE)
-        except Exception, ex:
+        except Exception as ex:
             err('onUpdateStage(): ' + traceback.format_exc())
 
     def onViewLoaded(self, view, loadParams):

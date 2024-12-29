@@ -1,4 +1,7 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+"""
 
 import os
 import re
@@ -95,7 +98,7 @@ def compareVersions(v1, v2):
                 return -1
             if int(a) > int(b):
                 return 1
-    except Exception, ex:
+    except Exception as ex:
         # err(traceback.format_exc())
         return -2
     return 0

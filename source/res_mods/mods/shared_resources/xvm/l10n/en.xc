@@ -74,6 +74,8 @@
     "armor_piercing_cr": "APCR",
     "armor_piercing_he": "HESH",
     "hollow_charge": "HEAT",
+    "flame": "FM",
+    "armor_piercing_fsds": "DP",
     // Text at hits no damage (ricochet, no penetration, no damage), macro {{dmg}}
     "intermediate_ricochet": "ricochet",
     "final_ricochet": "ricochet",
@@ -153,6 +155,7 @@
     "radio_range/actual": "actual",
     "lowAmmo": "Low ammo",
     "shootingRadius": "Shooting radius",
+    "flameMaxDistance": "Flamethrower radius",
     "pitchLimitsSide": "Elevation arc (side)",
     "pitchLimitsRear": "Elevation arc (rear)",
     "terrainResistance": "Terrain resistance (hard/medium/soft)",
@@ -207,9 +210,9 @@
     "token/unknown_status": "Unknown status",
 
     // Stats link
-    "stats_link/svcmsg": "<a href='event:https://stats.modxvm.com/en/stats/players/{0}#svcmsg'><font color='#E2D2A2'>Your stats on the XVM website</font></a>",
-    "stats_link/profile_self": "<a href='event:https://stats.modxvm.com/en/stats/players/{0}#profile'><font color='#E2D2A2'><u>Your stats on the XVM website</u></font></a>",
-    "stats_link/profile": "<a href='event:https://stats.modxvm.com/en/stats/players/{0}#profile'><font color='#E2D2A2'><u>Player stats on the XVM website</u></font></a>",
+    "stats_link/svcmsg": "<a href='event:https://modxvm.com/en/stats/players/{0}#svcmsg'><font color='#E2D2A2'>Your stats on the XVM website</font></a>",
+    "stats_link/profile_self": "<a href='event:https://modxvm.com/en/stats/players/{0}#profile'><font color='#E2D2A2'><u>Your stats on the XVM website</u></font></a>",
+    "stats_link/profile": "<a href='event:https://modxvm.com/en/stats/players/{0}#profile'><font color='#E2D2A2'><u>Player stats on the XVM website</u></font></a>",
 
     // Lobby
     "lobby/header/gold_locked_tooltip": "Gold is locked",
@@ -280,10 +283,6 @@
     // Config loading
     "XVM config reloaded": "XVM config reloaded",
     "Config file xvm.xc was not found, using the built-in config": "Config file xvm.xc was not found, using the built-in config",
-    "Error loading XVM config": "Error loading XVM config",
-
-    // Bootcamp workaround
-    "bootcamp_workaround_title": "Warning",
-    "bootcamp_workaround_message": "Currently XVM is not compatible with the \"boot camp\" game mode.\n\nTo enter the \"boot camp\" mode, you must restart the World of Tanks client in safe mode, which does not load modifications.\n\nDo you want to restart World of Tanks without mods right now?"
+    "Error loading XVM config": "Error loading XVM config"  
   }
 }

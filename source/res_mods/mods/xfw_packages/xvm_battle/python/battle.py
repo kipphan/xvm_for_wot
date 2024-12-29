@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2013-2022 XVM Contributors
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 #
@@ -41,12 +41,12 @@ from gui.Scaleform.daapi.view.battle.shared.minimap.plugins import ArenaVehicles
 from gui.Scaleform.daapi.view.battle.shared.page import SharedPage
 from gui.Scaleform.daapi.view.battle.shared.postmortem_panel import PostmortemPanel
 from gui.Scaleform.daapi.view.battle.shared.stats_exchange import BattleStatisticsDataController
-from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import CommanderCameraHintPlugin, TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin, RadarHintPlugin, RoleHelpPlugin, MapsTrainingHelpHintPlugin
+import gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins as hint_plugin
 from gui.Scaleform.daapi.view.meta.PlayersPanelMeta import PlayersPanelMeta
+from gui.battle_control.controllers.dog_tags_ctrl import DogTagsController
 
 # XFW
-from xfw.constants import XFW_COMMAND, XFW_EVENT
-from xfw.events import registerEvent, overrideMethod
+from xfw import *
 
 # XFW Actionscript
 from xfw_actionscript.python import as_xfw_cmd
@@ -64,16 +64,24 @@ import shared
 # Constants
 #
 
-NOT_SUPPORTED_BATTLE_TYPES = [constants.ARENA_GUI_TYPE.TUTORIAL,
-                           constants.ARENA_GUI_TYPE.EVENT_BATTLES,
-                           constants.ARENA_GUI_TYPE.BOOTCAMP,
-                           constants.ARENA_GUI_TYPE.BATTLE_ROYALE,
-                           constants.ARENA_GUI_TYPE.MAPS_TRAINING,
-                           constants.ARENA_GUI_TYPE.RTS,
-                           constants.ARENA_GUI_TYPE.RTS_TRAINING,
-                           constants.ARENA_GUI_TYPE.RTS_BOOTCAMP,
-                           constants.ARENA_GUI_TYPE.COMP7
-                           ]
+NOT_SUPPORTED_BATTLE_TYPES = [
+    constants.ARENA_GUI_TYPE.EVENT_BATTLES,
+    constants.ARENA_GUI_TYPE.BATTLE_ROYALE,
+    constants.ARENA_GUI_TYPE.MAPS_TRAINING,
+    constants.ARENA_GUI_TYPE.RTS,
+    constants.ARENA_GUI_TYPE.RTS_TRAINING,
+    constants.ARENA_GUI_TYPE.RTS_BOOTCAMP,
+    constants.ARENA_GUI_TYPE.COMP7,
+    31, # constants.ARENA_GUI_TYPE.WINBACK (removed in Lesta since 1.29) # TODO: fix broken totalEfficiency and hitLog due to broken PlayerPanels
+    33, # constants.ARENA_GUI_TYPE.TOURNAMENT_COMP7 (WG 1.24.1)
+    34, # constants.ARENA_GUI_TYPE.TRAINING_COMP7 (WG 1.24.1)
+    # constants.ARENA_GUI_TYPE.STORY_MODE_ONBOARDING (WG 1.25 Newbie tutorial)
+    # constants.ARENA_GUI_TYPE.STORY_MODE (Lesta only)
+    100,
+    104, # constants.ARENA_GUI_TYPE.STORY_MODE_REGULAR (WG 1.25 PvE event)
+    106, # constants.ARENA_GUI_TYPE.GRINCH (WG 1.27 NY 2025 event)
+    300, # constants.ARENA_GUI_TYPE.COSMIC_EVENT (Lesta 1.25.0.0)
+]
 
 
 
@@ -102,7 +110,7 @@ def _PlayerAvatar_vehicle_onAppearanceReady(self, vehicle):
 
 
 # Vehicle
-def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
+def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID, *args, **kwargs):
     # any vehicle health changed
     # update only for player vehicle, others handled on vehicle feedback event
     if self.isPlayerVehicle:
@@ -150,13 +158,20 @@ def _ArenaVehiclesPlugin_setInAoI(self, entry, isInAoI):
 
 
 # SharedPage
-def _SharedPage_as_setPostmortemTipsVisibleS(base, self, value):
-    if not config.get('battle/showPostmortemTips'):
+IGNORED_BATTLE_PAGES = ()
+
+# In some event battle pages we shouldn't hide postmortem tips
+# as it handles postmortem timers or something else
+def isIgnoredBattlePage(battlePage):
+    return type(battlePage).__name__ in IGNORED_BATTLE_PAGES
+
+def _SharedPage_as_handlePostmortemTips(base, self, value):
+    if not config.get('battle/showPostmortemTips') and not isIgnoredBattlePage(self):
         value = False
     base(self, value)
 
 def _SharedPage_switchToPostmortem(base, self):
-    if config.get('battle/showPostmortemTips'):
+    if config.get('battle/showPostmortemTips') and not isIgnoredBattlePage(self):
         base(self)
 
 
@@ -167,61 +182,19 @@ def _BattleStatisticsDataController_as_setQuestsInfoS(base, self, data, setForce
 
 
 # Hints
-def _CommanderCameraHintPlugin_displayHint(base, self, hint):
-    # disable battle hints
+def _hint_plugin_createPlugins(base):
     if not config.get('battle/showBattleHint'):
-        return
-    base(self, hint)
+        return {}
+    return base()
 
-
-def _TrajectoryViewHintPlugin_addHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return
-    base(self)
-
-
-def _SiegeIndicatorHintPlugin__updateHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return
-    base(self)
-
-
-def _PreBattleHintPlugin__canDisplayQuestHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self)
-
-
-def _PreBattleHintPlugin__canDisplayVehicleHelpHint(base, self, typeDescriptor):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self, typeDescriptor)
-
-
-def _PreBattleHintPlugin__canDisplayBattleCommunicationHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self)
-
-
-def _RadarHintPlugin__areOtherIndicatorsShown(base, self):
-    if not config.get('battle/showBattleHint'):
-        return True
-    base(self)
-
-
-def _RoleHelpPlugin__handleBattleLoading(base, self, event):
-    if not config.get('battle/showBattleHint'):
-        return
-    base(self, event)
-
-
-def _MapsTrainingHelpHintPlugin_canDisplayCustomHelpHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self)
 
 # disable DogTag's
+def _DogTagsController__canShowMarkers(base, self):
+    if not config.get('battle/showPrebattleDogTags', True):
+        return False
+    return base(self)
+
+
 def _PostmortemPanel_onDogTagKillerInPlaySound(base, self):
     if not config.get('battle/showPostmortemDogTag', True) or not config.get('battle/showPostmortemTips', True):
         return
@@ -355,7 +328,8 @@ class Battle(object):
                                         VIEW_ALIAS.EPIC_BATTLE_PAGE,
                                         VIEW_ALIAS.RANKED_BATTLE_PAGE,
                                         VIEW_ALIAS.BATTLE_ROYALE_PAGE,
-                                        VIEW_ALIAS.STRONGHOLD_BATTLE_PAGE]:
+                                        VIEW_ALIAS.STRONGHOLD_BATTLE_PAGE,
+                                        'winbackBattlePage']:
             self.battle_page = weakref.proxy(view)
 
     def onStartBattle(self):
@@ -563,21 +537,19 @@ def init():
     registerEvent(DynSquadFunctional, 'updateVehiclesInfo')(_DynSquadFunctional_updateVehiclesInfo)
     registerEvent(DamagePanel, '_updateDeviceState')(_DamagePanel_updateDeviceState)
     registerEvent(ArenaVehiclesPlugin, '_setInAoI')(_ArenaVehiclesPlugin_setInAoI)
-    overrideMethod(SharedPage, 'as_setPostmortemTipsVisibleS')(_SharedPage_as_setPostmortemTipsVisibleS)
+    if hasattr(SharedPage, 'as_onPostmortemActiveS'):
+        overrideMethod(SharedPage, 'as_onPostmortemActiveS')(_SharedPage_as_handlePostmortemTips)
+    else:
+        overrideMethod(SharedPage, 'as_setPostmortemTipsVisibleS')(_SharedPage_as_handlePostmortemTips)
     overrideMethod(SharedPage, '_switchToPostmortem')(_SharedPage_switchToPostmortem)
     overrideMethod(BattleStatisticsDataController, 'as_setQuestsInfoS')(_BattleStatisticsDataController_as_setQuestsInfoS)
-    overrideMethod(CommanderCameraHintPlugin, '_CommanderCameraHintPlugin__displayHint')(_CommanderCameraHintPlugin_displayHint)
-    overrideMethod(TrajectoryViewHintPlugin, '_TrajectoryViewHintPlugin__addHint')(_TrajectoryViewHintPlugin_addHint)
-    overrideMethod(SiegeIndicatorHintPlugin, '_SiegeIndicatorHintPlugin__updateHint')(_SiegeIndicatorHintPlugin__updateHint)
-    overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayQuestHint')(_PreBattleHintPlugin__canDisplayQuestHint)
-    overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayVehicleHelpHint')(_PreBattleHintPlugin__canDisplayVehicleHelpHint)
-    overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayBattleCommunicationHint')(_PreBattleHintPlugin__canDisplayBattleCommunicationHint)
-    overrideMethod(RadarHintPlugin, '_RadarHintPlugin__areOtherIndicatorsShown')(_RadarHintPlugin__areOtherIndicatorsShown)
-    overrideMethod(RoleHelpPlugin, '_RoleHelpPlugin__handleBattleLoading')(_RoleHelpPlugin__handleBattleLoading)
-    overrideMethod(MapsTrainingHelpHintPlugin, '_canDisplayCustomHelpHint')(_MapsTrainingHelpHintPlugin_canDisplayCustomHelpHint)
+    overrideMethod(hint_plugin, 'createPlugins')(_hint_plugin_createPlugins)
     overrideMethod(PostmortemPanel, 'onDogTagKillerInPlaySound')(_PostmortemPanel_onDogTagKillerInPlaySound)
     overrideMethod(PostmortemPanel, '_PostmortemPanel__onKillerDogTagSet')(_PostmortemPanel__onKillerDogTagSet)
     overrideMethod(PlayersPanelMeta, 'as_setPanelHPBarVisibilityStateS')(_PlayersPanelMetaas_setPanelHPBarVisibilityStateS)
+    
+    if getRegion() != 'RU':
+        overrideMethod(DogTagsController, '_DogTagsController__canShowMarkers')(_DogTagsController__canShowMarkers)
 
 
 def fini():

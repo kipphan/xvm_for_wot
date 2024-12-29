@@ -1,3 +1,7 @@
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+"""
 
 #
 # Imports
@@ -7,9 +11,11 @@
 from BattleReplay import g_replayCtrl
 from constants import ATTACK_REASONS
 from gui.Scaleform.daapi.view.battle.shared.markers2d.manager import MarkersManager
+from gui.Scaleform.daapi.view.battle.shared.markers2d.settings import CommonMarkerType
 from gui.Scaleform.daapi.view.battle.shared.markers2d.vehicle_plugins import VehicleMarkerPlugin
 
 # XFW
+from xfw import getRegion
 from xfw.events import overrideMethod
 
 # XVM Main
@@ -25,27 +31,30 @@ from .consts import AS_SYMBOLS
 # Handlers
 #
 
-def _MarkersManager__init__(base, self):
-    base(self)
-    g_markers.init(self)
+def _MarkersManager__init__(base, self, *args, **kwargs):
+    base(self, *args, **kwargs)
+    if g_markers.isValidManager(self):
+        g_markers.init(self)
 
 
 def _MarkersManager_populate(base, self):
     base(self)
-    g_markers.populate()
+    if g_markers.isValidManager(self):
+        g_markers.populate()
 
 
 def _MarkersManager_dispose(base, self):
-    g_markers.destroy()
+    if g_markers.isValidManager(self):
+        g_markers.destroy()
     base(self)
 
 
-def _MarkersManager_createMarker(base, self, symbol, matrixProvider = None, active = True):
+def _MarkersManager_createMarker(base, self, symbol, matrixProvider=None, active=True, markerType=CommonMarkerType.NORMAL):
     if g_markers.active:
         if symbol == 'VehicleMarker':
             symbol = AS_SYMBOLS.AS_VEHICLE_MARKER
 
-    markerID = base(self, symbol, matrixProvider, active)
+    markerID = base(self, symbol, matrixProvider, active, markerType)
     return markerID
 
 
@@ -71,11 +80,9 @@ def _VehicleMarkerPlugin_updateVehicleHealth(base, self, vehicleID, handle, newH
     if g_markers.active:
         if not (g_replayCtrl.isPlaying and g_replayCtrl.isTimeWarpInProgress):
             attackerID = aInfo.vehicleID if aInfo else 0
-            self._invokeMarker(handle,
-                               'updateHealth',
-                               newHealth,
-                               self._VehicleMarkerPlugin__getVehicleDamageType(aInfo),
-                               '{},{}'.format(ATTACK_REASONS[attackReasonID], str(attackerID)))
+            damageFlag = g_markers.getVehicleDamageType(aInfo)
+            self._invokeMarker(handle, 'updateHealth', newHealth, damageFlag,
+                               ','.join([ATTACK_REASONS[attackReasonID], str(attackerID)]))
             return
     base(self, vehicleID, handle, newHealth, aInfo, attackReasonID)
 

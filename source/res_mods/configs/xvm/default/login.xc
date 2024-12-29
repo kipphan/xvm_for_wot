@@ -85,10 +85,10 @@
         // Different colors depending on server response time.
         // Разные цвета в зависимости от времени отклика сервера.
         "color": {
-          "great": "0x2196F3", // Отличный
-          "good": "0x4CAF50",  // Хороший
-          "poor": "0xFF9800",  // Так себе
-          "bad": "0xEF5350"    // Плохой
+          "great": "0xFFCC66", // Отличный
+          "good":  "0xE5E4E1", // Хороший
+          "poor":  "0x96948F", // Так себе
+          "bad":   "0xD64D4D"  // Плохой
         },
         // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value.
         // Цвет для названия сервера и разделителя (например, "0x8080FF"). Пустая строка "" - использовать цвет значения онлайна.
@@ -186,10 +186,10 @@
         // Different colors depending on people online.
         // Разные цвета в зависимости от количества игроков.
         "color": {
-          "great": "0x2196F3", // Отличный
-          "good": "0x4CAF50",  // Хороший
-          "poor": "0xFF9800",  // Так себе
-          "bad": "0xEF5350"    // Плохой
+          "great": "0xFFCC66", // Отличный
+          "good":  "0xE5E4E1", // Хороший
+          "poor":  "0x96948F", // Так себе
+          "bad":   "0xD64D4D"  // Плохой
         },
         // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value.
         // Цвет для названия сервера и разделителя (например, "0x8080FF"). Пустая строка "" - использовать цвет значения онлайна.

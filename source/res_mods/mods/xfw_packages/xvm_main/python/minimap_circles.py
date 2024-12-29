@@ -1,7 +1,7 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
 """
-@author Omegaice
-@author Maxim Schedriviy <max(at)modxvm.com>
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+Copyright (c) Omegaice
 """
 
 def getMinimapCirclesData():
@@ -221,11 +221,15 @@ class _MinimapCircles(object):
                 if crewman is None:
                     self.is_full_crew = False
                 elif crewman.invID == tankman.invID:
-                    (factor, addition) = tankman.descriptor.efficiencyOnVehicle(self.vehicleItem.descriptor)
+                    level = tankman.roleLevel
+                    # Needed on Lesta while not on WG
+                    if getRegion() == 'RU':
+                        level *= tankman.descriptor.efficiencyOnVehicle(self.vehicleItem.descriptor)
+
                     crew_member = {
                         'position': slotIdx,
                         'isFemale': tankman.descriptor.isFemale,
-                        'level': tankman.roleLevel * factor,
+                        'level': level,
                         'skill': {}
                     }
 

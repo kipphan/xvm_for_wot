@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 #
@@ -24,6 +24,7 @@ from helpers.EffectsList import _FlashBangEffectDesc
 import Math
 from PlayerEvents import g_playerEvents
 from skeletons.gui.battle_session import IBattleSessionProvider
+from realm import CURRENT_REALM
 
 # XFW
 from xfw.events import overrideMethod, registerEvent
@@ -153,7 +154,11 @@ def _ArcadeCamera_create(base, self, onChangeControlMode = None, postmortemMode 
             defMin = 2
             defMax = 25
             cfg['distRange'] = MinMax(float(value[0]), float(value[1])) if value[0] != value[1] else MinMax(defMin, defMax)
-            self._ArcadeCamera__distRange = cfg['distRange']
+            # Different on both realms
+            # WG (1.24.1 CT) => self._distRange
+            # Lesta (1.25) => self._ArcadeCamera__distRange (old)
+            distRangeAttr = '_distRange' if hasattr(self, '_distRange') else '_ArcadeCamera__distRange'
+            setattr(self, distRangeAttr, cfg['distRange'])
 
         value = c['startDist']
         if value is not None:
@@ -256,8 +261,7 @@ def _CrosshairPanelContainer_as_setSettingsS(base, self, data):
 # Strategic Camera
 #
 
-def _StrategicCamera_create(base, self, onChangeControlMode = None):
-    #debug('_StrategicCamera_create')
+def _StrategicCamera_create_common(self):
     if config.get('battle/camera/enabled'):
         c = config.get('battle/camera/strategic')
         cfg = self._cfg
@@ -270,7 +274,15 @@ def _StrategicCamera_create(base, self, onChangeControlMode = None):
         if value is not None:
             cfg['distRange'] = [float(i) for i in value]
 
+
+def _StrategicCamera_create_wg(base, self, onChangeControlMode = None):
+    _StrategicCamera_create_common(self)
     base(self, onChangeControlMode)
+
+
+def _StrategicCamera_create_lesta(base, self, onChangeControlMode = None, useShotMaxDistance=True):
+    _StrategicCamera_create_common(self)
+    base(self, onChangeControlMode, useShotMaxDistance)
 
 
 
@@ -307,7 +319,10 @@ def init():
     overrideMethod(CrosshairPanelContainer, 'as_setSettingsS')(_CrosshairPanelContainer_as_setSettingsS)
 
     # strategic camera
-    overrideMethod(StrategicCamera, 'create')(_StrategicCamera_create)
+    if CURRENT_REALM == 'RU':
+        overrideMethod(StrategicCamera, 'create')(_StrategicCamera_create_lesta)
+    else:
+        overrideMethod(StrategicCamera, 'create')(_StrategicCamera_create_wg)
 
 
 def fini():

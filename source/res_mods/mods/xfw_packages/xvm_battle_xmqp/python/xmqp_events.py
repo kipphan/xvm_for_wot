@@ -1,4 +1,7 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+"""
 
 import traceback
 
@@ -184,7 +187,7 @@ def _TimersPanel_showDeathZoneTimer(self, value):
 from gui.Scaleform.daapi.view.battle.shared.indicators import SixthSenseIndicator
 
 @registerEvent(SixthSenseIndicator, 'as_showS')
-def _SixthSenseIndicator_as_showS(self):
+def _SixthSenseIndicator_as_showS(self, *args, **kwargs):
     if xmqp.is_active():
         xmqp.call({'event': EVENTS.XMQP_SPOTTED})
 

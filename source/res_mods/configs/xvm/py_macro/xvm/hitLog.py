@@ -1,3 +1,8 @@
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) ktulho
+"""
+
 # Addons: "HitLog"
 # ktulho <https://kr.cm/f/p/17624/>
 
@@ -16,10 +21,12 @@ from helpers import dependency
 from items import _xml
 from skeletons.gui.battle_session import IBattleSessionProvider
 from vehicle_systems.tankStructure import TankPartIndexes
+from realm import CURRENT_REALM
 
 import xvm_battle.python.battle as battle
 import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
+import xvm_main.python.vehinfo_short as vehinfo_short
 from xfw.events import registerEvent
 from xfw_actionscript.python import *
 from xvm_main.python.logger import *
@@ -29,31 +36,41 @@ from xvm_main.python.xvm import l10n
 import parser_addon
 from xvm.damageLog import keyLower, ATTACK_REASONS, RATINGS, VEHICLE_CLASSES_SHORT, ConfigCache
 
-BATTLE_TYPE = {ARENA_GUI_TYPE.UNKNOWN: "unknown",
-               ARENA_GUI_TYPE.RANDOM: "regular",
-               ARENA_GUI_TYPE.TRAINING: "training",
-               ARENA_GUI_TYPE.TUTORIAL: "tutorial",
-               ARENA_GUI_TYPE.CYBERSPORT: "cybersport",
-               ARENA_GUI_TYPE.EVENT_BATTLES: "event_battles",
-               ARENA_GUI_TYPE.RATED_SANDBOX: "rated_sandbox",
-               ARENA_GUI_TYPE.SANDBOX: "sandbox",
-               ARENA_GUI_TYPE.FALLOUT_CLASSIC: "fallout_classic",
-               ARENA_GUI_TYPE.FALLOUT_MULTITEAM: "fallout_multiteam",
-               ARENA_GUI_TYPE.SORTIE_2: "sortie_2",
-               ARENA_GUI_TYPE.FORT_BATTLE_2: "fort_battle_2",
-               ARENA_GUI_TYPE.RANKED: "ranked",
-               ARENA_GUI_TYPE.BOOTCAMP: "bootcamp",
-               ARENA_GUI_TYPE.EPIC_RANDOM: "epic_random",
-               ARENA_GUI_TYPE.EPIC_RANDOM_TRAINING: "epic_random_training",
-               ARENA_GUI_TYPE.EPIC_BATTLE: "epic_battle",
-               ARENA_GUI_TYPE.EPIC_TRAINING: "epic_battle",
-               ARENA_GUI_TYPE.BATTLE_ROYALE: "battle_royale",
-               ARENA_GUI_TYPE.MAPBOX: "mapbox",
-               ARENA_GUI_TYPE.MAPS_TRAINING: "maps_training",
-               ARENA_GUI_TYPE.RTS: "rts",
-               ARENA_GUI_TYPE.RTS_TRAINING: "rts_training",
-               ARENA_GUI_TYPE.RTS_BOOTCAMP: "rts_bootcamp",
-               }
+# WG 1.24.1 only
+WINBACK = 31
+TOURNAMENT_COMP7 = 33
+TRAINING_COMP7 = 34
+# Lesta only
+VERSUS_AI = 31000
+
+BATTLE_TYPE = {
+    ARENA_GUI_TYPE.UNKNOWN: "unknown",
+    ARENA_GUI_TYPE.RANDOM: "regular",
+    ARENA_GUI_TYPE.TRAINING: "training",
+    ARENA_GUI_TYPE.CYBERSPORT: "cybersport",
+    ARENA_GUI_TYPE.EVENT_BATTLES: "event_battles",
+    ARENA_GUI_TYPE.FALLOUT_CLASSIC: "fallout_classic",
+    ARENA_GUI_TYPE.FALLOUT_MULTITEAM: "fallout_multiteam",
+    ARENA_GUI_TYPE.SORTIE_2: "sortie_2",
+    ARENA_GUI_TYPE.FORT_BATTLE_2: "fort_battle_2",
+    ARENA_GUI_TYPE.RANKED: "ranked",
+    ARENA_GUI_TYPE.EPIC_RANDOM: "epic_random",
+    ARENA_GUI_TYPE.EPIC_RANDOM_TRAINING: "epic_random_training",
+    ARENA_GUI_TYPE.EPIC_BATTLE: "epic_battle",
+    ARENA_GUI_TYPE.EPIC_TRAINING: "epic_battle",
+    ARENA_GUI_TYPE.BATTLE_ROYALE: "battle_royale",
+    ARENA_GUI_TYPE.MAPBOX: "mapbox",
+    ARENA_GUI_TYPE.MAPS_TRAINING: "maps_training",
+    ARENA_GUI_TYPE.RTS: "rts",
+    ARENA_GUI_TYPE.RTS_TRAINING: "rts_training",
+    ARENA_GUI_TYPE.RTS_BOOTCAMP: "rts_bootcamp",
+    ARENA_GUI_TYPE.FUN_RANDOM: "fun_random",
+    ARENA_GUI_TYPE.COMP7: "comp7",
+    WINBACK: "winback",
+    TOURNAMENT_COMP7: "tournament_comp7",
+    TRAINING_COMP7: "training_comp7",
+    VERSUS_AI: "versusai"
+}
 
 HIT_LOG = 'hitLog/'
 FORMAT_HISTORY = 'formatHistory'
@@ -125,7 +142,8 @@ class Macros(dict):
         xwtr = value.get('xwtr', None)
         xeff = value.get('xeff', None)
         xwgr = value.get('xwgr', None)
-        self['vehicle'] = value['shortUserString']
+        self['vehicle'] = value['userString']
+        self['vehicle-short'] = value['shortUserString']
         self['name'] = value['name']
         self['clannb'] = value['clanAbbrev']
         self['clan'] = ''.join(['[', value['clanAbbrev'], ']']) if value['clanAbbrev'] else ''
@@ -206,6 +224,7 @@ class DataHitLog(object):
             'isAlive': True,
             'compName': None,
             'attackedVehicleType': 'not_vehicle',
+            'userString': None,
             'shortUserString': None,
             'level': None,
             'nation': None,
@@ -247,6 +266,7 @@ class DataHitLog(object):
 
     def resetData(self):
         self.data['attackedVehicleType'] = 'not_vehicle'
+        self.data['userString'] = ''
         self.data['shortUserString'] = ''
         self.data['attackerVehicleName'] = ''
         self.data['level'] = None
@@ -284,14 +304,25 @@ class DataHitLog(object):
                     _type = vehicleType.type
                     self.data['attackedVehicleType'] = list(_type.tags.intersection(VEHICLE_CLASSES))[0]
                     self.data['attackerVehicleName'] = vehicleType.name.replace(':', '-', 1) if vehicleType.name else ''
-                    self.data['shortUserString'] = _type.shortUserString
+                    vehicleNames = _config.get('vehicleNames/' + self.data['attackerVehicleName'])
+                    if vehicleNames:
+                        self.data['userString'] = vehicleNames['name'] if vehicleNames['name'] is not None else _type.shortUserString
+                        if vehicleNames['short'] is None:
+                            self.data['shortUserString'] = vehinfo_short.getShortName(vehicleType.name, vehicleType.level, self.data['attackedVehicleType'])
+                        else:
+                            self.data['shortUserString'] = vehicleNames['short']
+                    else:
+                        self.data['userString'] = _type.shortUserString
+                        self.data['shortUserString'] = vehinfo_short.getShortName(vehicleType.name, vehicleType.level,self.data['attackedVehicleType'])
+                    if self.data['shortUserString'] is None:
+                        self.data['shortUserString'] = self.data['userString']
                     self.data['level'] = vehicleType.level
                     self.data['nation'] = nations.NAMES[_type.customizationNationID]
                     if self.data['attackReasonID'] == 2:
                         self.data['diff-masses'] = (self.player.vehicleTypeDescriptor.physics['weight'] - vehicleType.physics['weight']) / 1000.0
                 self.setRatings()
             elif not self.isVehicle:
-                self.data['shortUserString'] = l10n(PILLBOX).format(self.entityNumber)
+                self.data['userString'] = self.data['shortUserString'] = l10n(PILLBOX).format(self.entityNumber)
                 self.compName = None
                 self.criticalHit = None
             self.data['clanicon'] = _stat.getClanIcon(self.vehicleID)
@@ -341,10 +372,9 @@ class DataHitLog(object):
         if not self.isVehicle:
             self.entityNumber = vehicle.destructibleEntityID
             self.data['teamDmg'] = 'ally-dmg' if vehicle.isPlayerTeam else 'enemy-dmg'
-            self.data['shortUserString'] = l10n(PILLBOX).format(self.entityNumber)
         self.updateData()
 
-    def showDamageFromShot(self, vehicle, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
+    def showDamageFromShot(self, vehicle, attackerID, points, *args, **kwargs):
         maxComponentIdx = TankPartIndexes.ALL[-1]
         wheelsConfig = vehicle.appearance.typeDescriptor.chassis.generalWheelsAnimatorConfig
         if wheelsConfig:
@@ -375,8 +405,9 @@ class DataHitLog(object):
             shell = shot.shell
             intCD = shell.compactDescr
             self.shells[intCD] = {}
-            self.shells[intCD]['shellKind'] = str(shell.kind).lower() if not shell.hasStun else 'high_explosive_stun'
-            self.shells[intCD]['shellDamage'] = shell.damage[0]
+            shellKind = str(shell.kind).lower()
+            self.shells[intCD]['shellKind'] = 'high_explosive_stun' if shellKind == 'high_explosive' and shell.hasStun else shellKind
+            self.shells[intCD]['shellDamage'] = shell.armorDamage[0] if hasattr(shell, 'armorDamage') else shell.damage[0]
             self.shells[intCD]['costShell'] = 'gold-shell' if shell.id[1] in goldShells else 'silver-shell'
 
     def onAppearanceReady(self, vehicle):
@@ -848,8 +879,11 @@ class HitLogs(object):
 g_hitLogs = HitLogs()
 
 
-@registerEvent(PlayerAvatar, '_PlayerAvatar__processVehicleAmmo')
-def PlayerAvatar__processVehicleAmmo(self, vehicleID, compactDescr, quantity, quantityInClip, _, __):
+def PlayerAvatar__processVehicleAmmo_lesta(self, vehicleID, compactDescr, quantity, quantityInClip, _, __):
+    if battle.isBattleTypeSupported and _config.get(HIT_LOG_ENABLED, True):
+        g_dataHitLog.intCD = compactDescr
+
+def PlayerAvatar__processVehicleAmmo_wg(self, vehicleID, compactDescr, quantity, quantityInClip, _, __, ___):
     if battle.isBattleTypeSupported and _config.get(HIT_LOG_ENABLED, True):
         g_dataHitLog.intCD = compactDescr
 
@@ -871,13 +905,13 @@ def DestructibleEntity_onHealthChanged(self, newHealth, attackerID, attackReason
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
-def _Vehicle_showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
+def _Vehicle_showDamageFromShot(self, attackerID, *args, **kwargs):
     if battle.isBattleTypeSupported and (g_dataHitLog.playerVehicleID == attackerID) and self.isAlive() and _config.get(HIT_LOG_ENABLED, True):
-        g_dataHitLog.showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield)
+        g_dataHitLog.showDamageFromShot(self, attackerID, *args, **kwargs)
 
 
 @registerEvent(Vehicle, 'showDamageFromExplosion')
-def _Vehicle_showDamageFromExplosion(self, attackerID, center, effectsIndex, damageFactor):
+def _Vehicle_showDamageFromExplosion(self, attackerID, *args, **kwargs):
     if battle.isBattleTypeSupported and (g_dataHitLog.playerVehicleID == attackerID) and self.isAlive() and _config.get(HIT_LOG_ENABLED, True):
         g_dataHitLog.splashHit = True
         g_dataHitLog.criticalHit = False
@@ -906,7 +940,7 @@ def _Vehicle_startVisual(self):
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
+def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID, *args, **kwargs):
     if _config.get(HIT_LOG_ENABLED, True) and battle.isBattleTypeSupported:
         if (g_dataHitLog.playerVehicleID == attackerID) and (self.id not in g_dataHitLog.vehDead or newHealth <= -5):
             attacked = g_dataHitLog.player.arena.vehicles.get(self.id)
@@ -968,3 +1002,13 @@ def hLog_x():
 def hLog_y():
     return g_hitLogs.log.y
 
+
+
+#
+# Registration
+#
+
+if CURRENT_REALM == 'RU':
+    registerEvent(PlayerAvatar, '_PlayerAvatar__processVehicleAmmo')(PlayerAvatar__processVehicleAmmo_lesta)
+else:
+    registerEvent(PlayerAvatar, '_PlayerAvatar__processVehicleAmmo')(PlayerAvatar__processVehicleAmmo_wg)

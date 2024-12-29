@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 #
@@ -9,16 +9,13 @@ Copyright (c) 2016-2022 XVM Contributors
 
 # CPython
 import logging
+import json
 from pprint import pprint
-
-# Simplejson
-import simplejson
 
 # BigWorld
 import BigWorld
 from gui.shared import event_dispatcher
 from gui.Scaleform.daapi.view.battle_results_window import BattleResultsWindow
-from gui.Scaleform.daapi.view.bootcamp.BCBattleResult import BCBattleResult
 from gui.Scaleform.genConsts.BATTLE_RESULTS_PREMIUM_STATES import BATTLE_RESULTS_PREMIUM_STATES
 from gui.battle_results import composer
 from gui.battle_results.components import base
@@ -51,12 +48,12 @@ _XVM_DATA_STATS_BLOCK = None
 #
 
 # wait for loading xvm_battleresults_ui.swf
-def event_dispatcher_showBattleResultsWindow_proxy(base, arenaUniqueID):
-    event_dispatcher_showBattleResultsWindow(base, arenaUniqueID)
+def event_dispatcher_showBattleResultsWindow_proxy(base, arenaUniqueID, *args, **kwargs):
+    event_dispatcher_showBattleResultsWindow(base, arenaUniqueID, 0, *args, **kwargs)
 
-def event_dispatcher_showBattleResultsWindow(base, arenaUniqueID, cnt=0):
+def event_dispatcher_showBattleResultsWindow(base, arenaUniqueID, cnt, *args, **kwargs):
     if cnt < 5 and not swf_loaded_info.swf_loaded_get('xvm_lobby_ui.swf'):
-        BigWorld.callback(0, lambda: event_dispatcher_showBattleResultsWindow(base, arenaUniqueID, cnt + 1))
+        BigWorld.callback(0, lambda: event_dispatcher_showBattleResultsWindow(base, arenaUniqueID, cnt + 1, *args, **kwargs))
     else:
         base(arenaUniqueID)
 
@@ -86,26 +83,12 @@ def BattleResultsWindow_as_setDataS(base, self, data):
             #log(data['xvm_data'])
             data['xvm_data']['regionNameStr'] = data['common']['regionNameStr']
             data['xvm_data']['arenaUniqueID'] = str(self._BattleResultsWindow__arenaUniqueID)
-            data['common']['regionNameStr'] = simplejson.dumps(data['xvm_data'], separators=(',',':'))
+            data['common']['regionNameStr'] = json.dumps(data['xvm_data'], separators=(',',':'))
     
         if 'xvm_data' in data:
             del data['xvm_data']
     except Exception:
         logging.getLogger('XVM/BattleResults').exception('BattleResultsWindow_as_setDataS')
-    return base(self, data)
-
-
-
-#
-# BCBattleResult
-#
-
-def BCBattleResult_as_setDataS(base, self, data):
-    try:
-        del data['xvm_data']
-    except Exception:
-        logging.getLogger('XVM/BattleResults').exception('BCBattleResult_as_setDataS')
-
     return base(self, data)
 
 
@@ -153,7 +136,6 @@ def xfw_module_init():
 
         overrideMethod(event_dispatcher, 'showBattleResultsWindow')(event_dispatcher_showBattleResultsWindow_proxy)
         overrideMethod(BattleResultsWindow, 'as_setDataS')(BattleResultsWindow_as_setDataS)
-        overrideMethod(BCBattleResult, 'as_setDataS')(BCBattleResult_as_setDataS)
         overrideMethod(DynamicPremiumState, 'getVO')(_DynamicPremiumState_getVO)
         overrideMethod(composer.StatsComposer, '__init__')(_StatsComposer__init__)
         __initialized = True
@@ -162,7 +144,6 @@ def xfw_module_init():
 def xfw_module_fini():
     global __initialized
     if __initialized:
-
         __initialized = False
 
 

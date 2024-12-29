@@ -1,21 +1,42 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+"""
 
-import traceback
+#
+# Imports
+#
 
+# WoT
 from gui.Scaleform.daapi.view.lobby.messengerBar.NotificationListButton import NotificationListButton
 
+# XFW
 from xfw import *
+
+# XVM.Main
 import xvm_main.python.config as config
 from xvm_main.python.logger import *
 
-###
 
-@overrideMethod(NotificationListButton, 'as_setStateS')
+
+#
+# Handlers
+#
+
 def _NotificationListButton_as_setStateS(base, self, isBlinking, counterValue):
-    notificationsButtonType = config.get('hangar/notificationsButtonType', 'full').lower()
-    if notificationsButtonType == 'none':
+    if not config.get('hangar/allowNotificationsButtonBlinking', True):
         isBlinking = False
-        counterValue = ''
-    elif notificationsButtonType == 'blink':
-        counterValue = ''
     base(self, isBlinking, counterValue)
+
+
+
+#
+# Submodule lifecycle
+#
+
+def init():
+    overrideMethod(NotificationListButton, 'as_setStateS')(_NotificationListButton_as_setStateS)
+
+
+def fini():
+    pass

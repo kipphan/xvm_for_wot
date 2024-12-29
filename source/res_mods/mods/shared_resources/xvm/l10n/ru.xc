@@ -74,6 +74,8 @@
     "armor_piercing_cr": "БП",
     "armor_piercing_he": "ХФ",
     "hollow_charge": "КС",
+    "flame": "ОС",
+    "armor_piercing_fsds": "БО",
     // Text at hits no damage (ricochet, no penetration, no damage), macro {{dmg}}
     "intermediate_ricochet": "рикошет",
     "final_ricochet": "рикошет",
@@ -153,6 +155,7 @@
     "radio_range/actual": "расчетная",
     "lowAmmo": "Мало снарядов",
     "shootingRadius": "Дальность стрельбы",
+    "flameMaxDistance": "Дальность огнеметания",
     "pitchLimitsSide": "Углы вертикальной наводки сбоку (град)",
     "pitchLimitsRear": "Углы вертикальной наводки сзади (град)",
     "terrainResistance": "Сопротивление грунтов (тверд./средн./мягк.)",
@@ -207,9 +210,9 @@
     "token/unknown_status": "Неизвестный статус",
 
     // Stats link
-    "stats_link/svcmsg": "<a href='event:https://stats.modxvm.com/ru/stats/players/{0}#svcmsg'><font color='#E2D2A2'>Ваша статистика на сайте XVM</font></a>",
-    "stats_link/profile_self": "<a href='event:https://stats.modxvm.com/ru/stats/players/{0}#profile'><font face='$FieldFont' size='14' color='#E2D2A2'><u>Ваша статистика на сайте XVM</u></font></a>",
-    "stats_link/profile": "<a href='event:https://stats.modxvm.com/ru/stats/players/{0}#profile'><font face='$FieldFont' size='14' color='#E2D2A2'><u>Статистика игрока на сайте XVM</u></font></a>",
+    "stats_link/svcmsg": "<a href='event:https://modxvm.com/ru/stats/players/{0}#svcmsg'><font color='#E2D2A2'>Ваша статистика на сайте XVM</font></a>",
+    "stats_link/profile_self": "<a href='event:https://modxvm.com/ru/stats/players/{0}#profile'><font face='$FieldFont' size='14' color='#E2D2A2'><u>Ваша статистика на сайте XVM</u></font></a>",
+    "stats_link/profile": "<a href='event:https://modxvm.com/ru/stats/players/{0}#profile'><font face='$FieldFont' size='14' color='#E2D2A2'><u>Статистика игрока на сайте XVM</u></font></a>",
 
     // Lobby header
     "lobby/header/gold_locked_tooltip": "Золото заблокировано",
@@ -280,10 +283,6 @@
     // Config loading
     "XVM config reloaded": "Конфиг XVM перезагружен",
     "Config file xvm.xc was not found, using the built-in config": "Файл конфигурации xvm.xc не найден, используем встроенную конфигурацию",
-    "Error loading XVM config": "Ошибка загрузки конфига XVM",
-
-    // Bootcamp workaround
-    "bootcamp_workaround_title": "Предупреждение",
-    "bootcamp_workaround_message": "В настоящий момент модификация XVM не совместима с режимом «учебный полигон».\n\nДля входа в режим «учебный полигон» необходимо перезапустить клиент World of Tanks в безопасном режиме, при использовании которого не происходит загрузка модификаций.\n\nВы хотите перезапустить игру без модификаций прямо сейчас?"
+    "Error loading XVM config": "Ошибка загрузки конфига XVM"
   }
 }

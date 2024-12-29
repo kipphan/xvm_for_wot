@@ -1,11 +1,14 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+"""
 
 from xfw_loader.python import XFWLOADER_PATH_TO_ROOT
 
-from __version__ import __xvm_version__, __wot_version__, __revision__, __development__
+from __version__ import __xvm_version__, __wot_version__, __revision__
 
 class XVM(object):
-    XVM_VERSION    = __xvm_version__ + ('-dev' if __development__ == 'True' else '')
+    XVM_VERSION    = __xvm_version__
     XVM_REVISION   = __revision__
     WOT_VERSION    = __wot_version__
     XVM_INTRO      = 'https://modxvm.com'
@@ -62,7 +65,6 @@ class XVM_COMMAND(object):
     LOAD_STAT_USER = "xvm.load_stat_user"
     PYTHON_MACRO = "xvm.python_macro"
     SAVE_SETTINGS = "xvm.save_settings"
-    IS_IN_BOOTCAMP = "xvm.is_in_bootcamp"
     MINIMAP_CLICK = "xvm.minimap_click"
     OPEN_WEB_BROWSER = "xvm.open_web_browser"
     AS_ON_KEY_EVENT = "xvm.as.on_key_event"

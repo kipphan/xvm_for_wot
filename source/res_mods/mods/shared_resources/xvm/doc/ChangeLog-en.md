@@ -1,3 +1,33 @@
+### XVM 10.8.1
+
+  #### damageLog, hitLog
+
+  * Added support for vehicle names from vehicleNames.xc to the {{vehicle}} macro
+  * Added macro {{vehicle-short}} with support for vehicle names from vehicleNames.xc
+
+### XVM 10.4.2
+
+  #### damageLog
+
+  * Added "flame" parameter to "type-shells" and "c:type-shell" sections (Lesta)
+  * Added parameter "groupDamageFromShots"
+
+  #### hitLog
+
+  * Added "flame" parameter to "type-shells" and "c:type-shell" sections (Lesta)
+
+### XVM 10.4.1
+
+  * Markers: added display of distance to vehicles (only for Lesta)
+  * Changed several options under `"colors"/"system"`
+  * Various fixes and improvements
+
+### XVM 10.4.0
+
+  * Compatibility with World of Tanks 1.20.0.0
+  * Compatibility with Mir Tankov 1.20.0.0
+  * Markers: added ability to move/hide hover marker
+
 ### XVM 10.3.0
 
   * Compatibility with World of Tanks 1.19.1.0

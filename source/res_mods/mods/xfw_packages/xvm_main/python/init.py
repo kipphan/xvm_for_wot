@@ -1,19 +1,6 @@
 """
-This file is part of the XVM project.
-
-Copyright (c) 2013-2021 XVM Team.
-
-XVM is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as
-published by the Free Software Foundation, version 3.
-
-XVM is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 #
@@ -23,6 +10,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 # stdlib
 from datetime import datetime
 from glob import glob
+import logging
 import os
 import platform
 
@@ -31,6 +19,7 @@ import BigWorld
 from gui.shared import g_eventBus, events
 from helpers import dependency
 from skeletons.gui.app_loader import IAppLoader
+from realm import CURRENT_REALM
 
 # XFW
 from xfw.constants import XFW_COMMAND, XFW_EVENT
@@ -46,7 +35,7 @@ from xvm import g_xvm
 import handlers
 import multilaunch
 
-from __version__ import __branch__, __revision__, __node__
+from __version__ import __branch__, __revision__, __node__, __flavor__
 
 #
 # Info
@@ -58,11 +47,13 @@ def log_version():
     log("    XVM Version     : %s" % XVM.XVM_VERSION)
     log("    XVM Revision    : %s" % __revision__)
     log("    XVM Branch      : %s" % __branch__)
+    log("    XVM Flavor      : %s" % __flavor__)
     log("    XVM Hash        : %s" % __node__)
     log("    OS              : %s" % platform.system() + " " + platform.release() + " " + platform.machine())
     log("    OS (Detailed)   : %s" % platform.platform())
     log("    WoT Version     : %s" % WOT_VERSION_FULL)
     log("    WoT Architecture: %s" % platform.architecture()[0])
+    log("    WoT Realm       : %s" % CURRENT_REALM)
     log("    Current Time    : %s %+05d" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         round((round((datetime.now() - datetime.utcnow()).total_seconds()) / 1800) / 2) * 100))
 
@@ -73,6 +64,11 @@ def log_version():
         warn('Following XVM fonts installed: %s' % xvm_fonts_arr)
 
     log("---------------------------")
+
+    logger = logging.getLogger('XVM/Main')
+    logger.info(" log_version: XVM Flavor = %s" % __flavor__)
+    logger.info(" log_version: WoT Realm  = %s" % CURRENT_REALM)
+
 
 #
 # Init/deinit

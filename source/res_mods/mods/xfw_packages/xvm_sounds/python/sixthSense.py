@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 #
@@ -38,7 +38,7 @@ class XVM_SOUND_EVENT(object):
 # handlers
 #
 
-def SixthSenseIndicator_as_showS(self):
+def SixthSenseIndicator_as_showS(self, *args, **kwargs):
     try:
         if config.get('sounds/enabled'):
             vehCD = getVehCD(avatar_getter.getPlayerVehicleID())

@@ -1,4 +1,7 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2024 XVM Contributors
+"""
 
 # PUBLIC
 
@@ -90,23 +93,19 @@ def getXtdbDataArray(vehCD):
 
 # PRIVATE
 
-_XVMSCALE_DATA_URL = 'https://static.modxvm.com/xvmscales.json.gz'
-_WN8_DATA_URL = 'https://static.modxvm.com/wn8-data-exp/json/wn8exp.json.gz'
-_XTE_DATA_URL = 'https://static.modxvm.com/xte.json.gz'
-_XTDB_DATA_URL = 'https://static.modxvm.com/xtdb.json.gz'
-
-
-from math import sin, radians
+import json
 import gzip
 import StringIO
 import traceback
+from math import sin, radians
 
 import BigWorld
 import ResMgr
 import nations
+from gun_rotation_shared import calcPitchLimitsFromDesc
 from items import vehicles
 
-import simplejson
+from xfw import getRegion
 
 from logger import *
 import filecache
@@ -114,12 +113,17 @@ import reserve
 import userprefs
 import vehinfo_short
 import vehinfo_tiers
-from gun_rotation_shared import calcPitchLimitsFromDesc
 
 _vehicleInfoData = None
 _xvmscale_data = None
 _xte_data = None
 _xtdb_data = None
+
+_FLAVOR = 'wg' if getRegion() != 'RU' else 'lesta'
+_XVMSCALE_DATA_URL = 'https://static.modxvm.com/xvmscales-%s.json.gz' % _FLAVOR
+_WN8_DATA_URL = 'https://static.modxvm.com/wn8-data-exp/json/%s/wn8exp.json.gz' % _FLAVOR
+_XTE_DATA_URL = 'https://static.modxvm.com/xte-%s.json.gz' % _FLAVOR
+_XTDB_DATA_URL = 'https://static.modxvm.com/xtdb-%s.json.gz' % _FLAVOR
 
 TURRET_TYPE_ONLY_ONE = 0
 TURRET_TYPE_TOP_GUN_POSSIBLE = 1
@@ -227,8 +231,8 @@ def _load_xvmscale_data_callback(url, bytes):
             if url is not None:
                 userprefs.set('cache/xvmscales.json.gz', bytes)
             global _xvmscale_data
-            _xvmscale_data = simplejson.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
-    except Exception, ex:
+            _xvmscale_data = json.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
+    except Exception as ex:
         err(traceback.format_exc())
 
 def _load_wn8_data_callback(url, bytes):
@@ -236,7 +240,7 @@ def _load_wn8_data_callback(url, bytes):
         if bytes:
             if url is not None:
                 userprefs.set('cache/wn8exp.json.gz', bytes)
-            data = simplejson.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
+            data = json.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
             for x in data['data']:
                 vinfo = getVehicleInfoData(int(x['IDNum']))
                 if vinfo is not None:
@@ -245,7 +249,7 @@ def _load_wn8_data_callback(url, bytes):
                     vinfo['wn8expWinRate'] = float(x['expWinRate'])
                     vinfo['wn8expDef'] = float(x['expDef'])
                     vinfo['wn8expFrag'] = float(x['expFrag'])
-    except Exception, ex:
+    except Exception as ex:
         err(traceback.format_exc())
 
 def _load_xte_data_callback(url, bytes):
@@ -254,7 +258,7 @@ def _load_xte_data_callback(url, bytes):
             if url is not None:
                 userprefs.set('cache/xte.json.gz', bytes)
             global _xte_data
-            _xte_data = simplejson.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
+            _xte_data = json.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
             for k, v in _xte_data.iteritems():
                 vinfo = getVehicleInfoData(int(k))
                 if vinfo is not None:
@@ -262,7 +266,7 @@ def _load_xte_data_callback(url, bytes):
                     vinfo['topdmg'] = float(v['td'])
                     vinfo['avgfrg'] = float(v['af'])
                     vinfo['topfrg'] = float(v['tf'])
-    except Exception, ex:
+    except Exception as ex:
         err(traceback.format_exc())
 
 def _load_xtdb_data_callback(url, bytes):
@@ -271,8 +275,8 @@ def _load_xtdb_data_callback(url, bytes):
             if url is not None:
                 userprefs.set('cache/xtdb.json.gz', bytes)
             global _xtdb_data
-            _xtdb_data = simplejson.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
-    except Exception, ex:
+            _xtdb_data = json.loads(gzip.GzipFile(fileobj=StringIO.StringIO(bytes)).read())
+    except Exception as ex:
         err(traceback.format_exc())
 
 
@@ -358,5 +362,5 @@ def initialize():
         filecache.get_url(_XTE_DATA_URL, _load_xte_data_callback)
         filecache.get_url(_XTDB_DATA_URL, _load_xtdb_data_callback)
 
-    except Exception, ex:
+    except Exception as ex:
         err(traceback.format_exc())

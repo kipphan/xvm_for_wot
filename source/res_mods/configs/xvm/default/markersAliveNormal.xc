@@ -130,7 +130,7 @@
       "textFormat": {
         "font": "$FieldFont",
         "size": 11,
-        "color": "0xE0E0E0",
+        "color": "0xD9D9D9",
         "bold": true,
         "italic": false
       },
@@ -157,7 +157,7 @@
       "textFormat": {
         "font": "xvm",
         "size": 17,
-        "color": "{{c:xr|#9E9E9E}}",
+        "color": "{{c:xr|#999999}}",
         "bold": false,
         "italic": false
       },
@@ -186,7 +186,7 @@
       "textFormat": {
         "font": "xvm",                // название
         "size": 24,                   // размер
-        "color": "0xFFC107",          // цвет (допускается использование динамического цвета, см. macros.txt)
+        "color": "0xFFBB00",          // цвет (допускается использование динамического цвета, см. macros.txt)
         "bold": false,                // обычный (false) или жирный (true)
         "italic": false               // обычный (false) или курсив (true)
       },
@@ -204,7 +204,7 @@
         "strength": 1                 // интенсивность
       },
       // Формат текста. См. описание макросов в macros.txt
-      "format": "<font color='{{x-spotted?#FFC107|#FFFFFF}}' alpha='{{x-spotted?#FF|#80}}'>{{x-enabled?&#x70;}}</font> {{x-overturned?&#x112;}}"
+      "format": "<font color='{{x-spotted?#FFBB00|#FFFFFF}}' alpha='{{x-spotted?#FF|#80}}'>{{x-enabled?&#x70;}}</font> {{x-overturned?&#x112;}}"
     },
     // Position of the player.
     // Порядковый номер игрока.
@@ -218,7 +218,7 @@
       "textFormat": {                 // параметры шрифта
         "font": "$FieldFont",         // название
         "size": 13,                   // размер
-        "color": "0xEEEEEE",          // цвет (допускается использование динамического цвета, см. macros.txt)
+        "color": "0xEDEDED",          // цвет (допускается использование динамического цвета, см. macros.txt)
         "bold": false,                // обычный (false) или жирный (true)
         "italic": false               // обычный (false) или курсив (true)
       },
@@ -272,8 +272,8 @@
       "x": -36,                         // положение по оси X
       "y": -33,                         // положение по оси Y
       "alpha": 100,                     // прозрачность (допускается использование динамической прозрачности, см. macros.txt)
-      "color": "0x2ECC71",              // цвет основной (допускается использование динамического цвета, см. macros.txt)
-      "lcolor": "0x27AE60",             // цвет дополнительный (для градиента)
+      "color": null,                    // цвет основной (допускается использование динамического цвета, см. macros.txt)
+      "lcolor": null,                   // цвет дополнительный (для градиента)
       "width": 70,                      // ширина полосы здоровья
       "height": 12,                     // высота полосы здоровья
       // Substrate and frame parameters.
@@ -307,6 +307,31 @@
     "damageTextSquadman": {
       "$ref": { "path":"def.damageText" }
     },
+    // Distance to allied vehicles.
+    // Дистанция до техники союзников.
+    "vehicleDist": {
+      "enabled": true,
+      "x": 0,
+      "y": -66,
+      "alpha": 100,
+      "align": "center",
+      "textFormat": {
+        "font": "$FieldFont",
+        "size": 13,
+        "color": null,
+        "bold": false,
+        "italic": false
+      },
+      "shadow": {
+        "enabled": true,
+        "distance": 0,
+        "angle": 45,
+        "color": "0x000000",
+        "alpha": 100,
+        "blur": 6,
+        "strength": 2
+      }
+    },
     // Vehicle contour icon.
     // Контурная иконка танка.
     "contourIcon": {
@@ -339,15 +364,29 @@
     "actionMarker": {
       "enabled": true,   // false - disable        / не отображать.
       "x": 0,            // Position on the X axis / Положение по оси X.
-      "y": -67,          // Position on the Y axis / Положение по оси Y.
+      "y": -86,          // Position on the Y axis / Положение по оси Y.
       "alpha": 100       // Opacity                / Прозрачность.
+    },
+    // Hover marker
+    // Маркер по наведению
+    "hoverMarker": {
+      "enabled": true,   // false - disable        / не отображать.
+      "x": 0,            // Position on the X axis / Положение по оси X.
+      "y": -88,          // Position on the Y axis / Положение по оси Y.
+      "alpha": 100,      // Opacity                / Прозрачность.
+      "glow": {
+        "enabled": true,   // false - disable        / не отображать.
+        "x": 0,            // Position on the X axis / Положение по оси X.
+        "y": 85,           // Position on the Y axis / Положение по оси Y.
+        "alpha": 50        // Opacity                / Прозрачность.
+      }
     },
     // Stun marker and consumables marker in "Frontline Returns" mode (smoke screen, morale boost, engineering crew).
     // Маркер оглушения и маркер боевого снаряжения в режиме "Линия фронта" (дымовая завеса, воодушевление, инженерный отряд).
     "vehicleStatusMarker": {
       "enabled": true,   // false - disable        / не отображать.
       "x": 0,            // Position on the X axis / Положение по оси X.
-      "y": -67,          // Position on the Y axis / Положение по оси Y.
+      "y": -92,          // Position on the Y axis / Положение по оси Y.
       "alpha": 100       // Opacity                / Прозрачность.
     },
     // Damage indicator (ricochet, critical hit, ...).
@@ -391,8 +430,8 @@
       "x": -36,
       "y": -33,
       "alpha": 100,
-      "color": "0xE74C3C",
-      "lcolor": "0xC0392B",
+      "color": null,
+      "lcolor": null,
       "width": 70,
       "height": 12,
       "border": {
@@ -420,6 +459,31 @@
     "damageTextSquadman": {
       "$ref": { "path":"def.damageText" }
     },
+    // Distance to enemy vehicles.
+    // Дистанция до техники противников.
+    "vehicleDist": {
+      "enabled": true,
+      "x": 0,
+      "y": -66,
+      "alpha": 100,
+      "align": "center",
+      "textFormat": {
+        "font": "$FieldFont",
+        "size": 13,
+        "color": null,
+        "bold": false,
+        "italic": false
+      },
+      "shadow": {
+        "enabled": true,
+        "distance": 0,
+        "angle": 45,
+        "color": "0x000000",
+        "alpha": 100,
+        "blur": 6,
+        "strength": 2
+      }
+    },
     // Vehicle contour icon.
     // Контурная иконка танка.
     "contourIcon": {
@@ -443,15 +507,29 @@
     "actionMarker": {
       "enabled": true,
       "x": 0,
-      "y": -67,
+      "y": -86,
       "alpha": 100
+    },
+    // Hover marker
+    // Маркер по наведению
+    "hoverMarker": {
+      "enabled": true,
+      "x": 0,
+      "y": -88,
+      "alpha": 100,
+      "glow": {
+        "enabled": true,
+        "x": 0,
+        "y": 85,
+        "alpha": 50
+      }
     },
     // Stun marker and consumables marker in "Frontline Returns" mode (smoke screen, morale boost, engineering crew).
     // Маркер оглушения и маркер боевого снаряжения в режиме "Линия фронта" (дымовая завеса, воодушевление, инженерный отряд).
     "vehicleStatusMarker": {
       "enabled": true,
       "x": 0,
-      "y": -67,
+      "y": -92,
       "alpha": 100
     },
     // Damage indicator (ricochet, critical hit, ...).

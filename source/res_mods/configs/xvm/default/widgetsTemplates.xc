@@ -66,8 +66,8 @@
         // Background image, left part.
         // Фоновая картинка, левая часть.
         "updateEvent": "ON_MY_STAT_LOADED",
-        "x": -764,
-        "y": 93,
+        "x": 136,
+        "y": 193,
         "screenHAlign": "center",
         "format": "<img src='xvm://res/icons/clock/clockBg.png' width='160' height='{{mystat.wn8?80|28}}'>"
       },
@@ -75,8 +75,8 @@
         // Background image, right part.
         // Фоновая картинка, правая часть.
         "updateEvent": "ON_MY_STAT_LOADED",
-        "x": -440,
-        "y": 93,
+        "x": 460,
+        "y": 193,
         "screenHAlign": "center",
         "scaleX": -1,
         "format": "<img src='xvm://res/icons/clock/clockBg.png' width='160' height='{{mystat.wn8?80|28}}'>"
@@ -85,8 +85,8 @@
         // Text block.
         // Текстовый блок.
         "updateEvent": "ON_MY_STAT_LOADED",
-        "x": -645,
-        "y": 98,
+        "x": 255,
+        "y": 198,
         "width": 320,
         "height": 75,
         "screenHAlign": "center",

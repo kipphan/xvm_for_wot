@@ -10,6 +10,9 @@
     // true - show "Premium shop" button.
     // true - показать кнопку "Премиум магазин".
     "showPremiumShopButton": true,
+    // true - show "WoT Plus" subscription button.
+    // true - показать кнопку подписки "WoT Plus".
+    "showWotPlusButton": true,
     // true - show "Create squad" text on the squad creation button.
     // true - показать текст "Создать взвод" на кнопке создания взвода.
     "showCreateSquadButtonText": false,
@@ -31,20 +34,41 @@
     // true - show info windows when receiving progressive decals.
     // true - показывать информационное окно при получении этапной декали.
     "showProgressiveDecalsWindow": true,
+    // true - show battle pass widget in hangar.
+    // true - показывать виджет боевого пропуска в ангаре.
+    "showBattlePassWidget": true,
     // true - show widget "Daily Quests" in the hangar.
     // true - показывать виджет "Ежедневные задачи" в ангаре.
     "showDailyQuestWidget": true,
     // true - show banner of various events in the hangar.
     // true - показывать баннер различных событий в ангаре.
     "showEventBanner": true,
+    // true - show lootbox widget in hangar.
+    // true - показывать виджет лутбоксов в ангаре.
+    "showLootboxesWidget": true,
+    // true - show event tournaments widget in hangar.
+    // true - показывать виджет ивентовых турниров в ангаре.
+    "showEventTournamentWidget": true,
+    // true - show elite levels widget in the hangar.
+    // true - показывать виджет уровней элитности в ангаре.
+    "showHangarPrestigeWidget": true,
+    // true - show elite levels widget in the profile for vehicle statistics.
+    // true - показывать виджет уровней элитности в профиле для статистики техники.
+    "showProfilePrestigeWidget": true,
+    // true - show reward window for unlocking new achievements.
+    // true - показывать окно награды за получение новых достижений.
+    "showAchievementRewardWindow": true,
+    // true - show popups in top right corner for unlocking new achievement.
+    // true - показывать всплывающие окна в правом верхнем углу за получение новых достижений.
+    "showAchievementPopups": true,
     // "Combat Intelligence" - show/hide notifications in the main window and counters in the menu.
     // "Полевая почта" - показывать/прятать уведомления в главном окне и счетчики в меню.
     "combatIntelligence": {
-      // false - disable display pop-up messages in the hangar.
-      // false - отключить отображение всплывающих сообщений в ангаре.
+      // true - show pop-up messages in the hangar.
+      // true - отображать всплывающих сообщений в ангаре.
       "showPopUpMessages": true,
-      // false - disable display unread notifications counter in the menu.
-      // false - отключить отображение счетчика непрочитанных уведомлений в меню.
+      // true - show unread notifications counter in the menu.
+      // true - отображать счетчика непрочитанных уведомлений в меню.
       "showUnreadCounter": true
     },
     // Parameters of the "Session statistics" button.
@@ -66,6 +90,9 @@
     // true - enable locker for bonds.
     // true - включить замок для бонов.
     "enableCrystalLocker": true,
+    // Path to locker icons.
+    // Путь к иконкам замков.
+    "lockerIconsFolder": "xvm://res/locker/",
     // Show/hide server info or change its parameters.
     // Показать/спрятать информацию о сервере, или изменить ее параметры.
     "serverInfo": {
@@ -91,9 +118,6 @@
     // true - return crew check box is selected by default.
     // true - включить галочку возврата экипажа по умолчанию.
     "crewReturnByDefault": true,
-    // Number of perks to show without grouping.
-    // Количество перков, которые отображаются без группировки.
-    "crewMaxPerksCount": 8,
     // Show/hide common quests button or change its parameters.
     // Показать/спрятать кнопку общих задач, или изменить ее параметры.
     "commonQuests": {
@@ -157,15 +181,6 @@
     // Below this percentage, ammo is low. (0 - 100)
     // Ниже этого процента, снарядов считается мало. (0 - 100)
     "lowAmmoPercentage": 50,
-    // Behavior of the system channel notifications button on new notifications:
-    //   none  - do nothing;
-    //   blink - blink button;
-    //   full  - blink and show counter (default client behavior).
-    // Поведение кнопки оповещений системного канала при новых оповещениях:
-    //   none  - ничего не делать;
-    //   blink - мигать кнопкой;
-    //   full  - мигать и показать счетчик (поведение клиента по-умолчанию).
-    "notificationsButtonType": "full",
     // true - hide price button in tech tree.
     // true - прятать кнопку с ценой в дереве исследований.
     "hidePricesInTechTree": true,
@@ -175,12 +190,6 @@
     // true - allow to consider the exchange of experience with gold in tech tree.
     // true - разрешить учитывать обмен опыта за золото в дереве исследований.
     "allowExchangeXPInTechTree": false,
-    // true - show flags in barracks.
-    // true - показывать флаги в казарме.
-    "barracksShowFlags": true,
-    // true - show skills in barracks.
-    // true - показывать умения в казарме.
-    "barracksShowSkills": true,
     // true - restore selected battle type on switching to another server, at the next login to the client.
     // true - восстанавливать выбранный тип боя при переключении на другой сервер, при следующем входе в клиент.
     "restoreBattleType": false,
@@ -399,8 +408,17 @@
         "strength": 2
       }
     },
-    // Show/hide notifications counters in the main menu.
-    // Показывать/прятать счетчики уведомлений в главном меню.
+    // true - show counter on buttons in lobby menu.
+    // true - показать счетчики на кнопках в меню ангара.
+    "showLobbyMenuCounter": true,
+    // true - show counter on buttons in battle selector.
+    // true - показать счетчики на кнопках в меню выбора режима боя.
+    "showBattleSelectorCounter": true,
+    // true - show new crew books counter in crew widget in hangar.
+    // true - показать счетчики новых учебных материалов для прокачки экипажа в его виджете в ангаре.
+    "showNewCrewBooksCounter": true,
+    // Show/hide notifications counters in the lobby header.
+    // Показывать/прятать счетчики уведомлений в шапке ангара.
     "notificationCounter": {
       "storage": true,                       // Storage        / Склад
       "store": true,                         // Store          / Магазин
@@ -413,22 +431,15 @@
     // true - show notifications counters in the window and on the button "Exterior".
     // true - показать счетчики уведомлений в окне и на кнопке "Внешний вид".
     "showCustomizationCounter": true,
-    // Parameters of sorting tankmen in barracks.
-    // Параметры сортировки танкистов в казарме.
-    "barracks": {
-      // Order of nations.
-      // Порядок наций.
-      //"nations_order": ["ussr", "germany", "usa", "china", "france", "uk", "japan", "czech", "poland", "sweden", "italy"],
-      "nations_order": [],
-      // Order of crew roles.
-      // Порядок ролей экипажа.
-      // "roles_order": ["commander", "gunner", "driver", "radioman", "loader"],
-      "roles_order": [],
-      // Tankmen sorting criteria, available options: (minus = reverse order)
-      // Критерии сортировки танкистов, доступные значения: (минус = в обратном порядке)
-      // "nation", "role", "level", "-level", "XP", "-XP", "gender", "-gender", "inVehicle", "-inVehicle", "vehicle"
-      "sorting_criteria": ["nation", "inVehicle", "vehicle", "role"]
-    },
+    // true - show counter on notification list (service channel) button.
+    // true - показать счетчик уведомлений на кнопке центра оповещений (системного канала).
+    "showNotificationButtonCounter": true,
+    // true - show counter in notification list (service channel).
+    // true - показать счетчик уведомлений в центре оповещений (системном канале).
+    "showNotificationListCounters": true,
+    // true - allow notification list (service channel) button blinking.
+    // true - разрешить мигание кнопки центра оповещений (системного канала).
+    "allowNotificationsButtonBlinking": true,
     // Parameters for tank carousel.
     // Параметры карусели танков.
     "carousel": ${"carousel.xc":"carousel"},

@@ -92,8 +92,8 @@
       "x": -41,                         // положение по оси X
       "y": -33,                         // положение по оси Y
       "alpha": 100,                     // прозрачность (допускается использование динамической прозрачности, см. macros_ru.txt)
-      "color": "0x2ecc71",              // цвет основной (допускается использование динамического цвета, см. macros_ru.txt)
-      "lcolor": "0x27ae60",             // цвет дополнительный (для градиента)
+      "color": null,                    // цвет основной (допускается использование динамического цвета, см. macros_ru.txt)
+      "lcolor": null,                   // цвет дополнительный (для градиента)
       "width": 80,                      // ширина полосы здоровья
       "height": 12,                     // высота полосы здоровья
       // Substrate and frame parameters.
@@ -162,6 +162,20 @@
       "y": -67,          // Position on the Y axis / Положение по оси Y.
       "alpha": 100       // Opacity                / Прозрачность.
     },
+    // Hover marker
+    // Маркер по наведению
+    "hoverMarker": {
+      "enabled": true,   // false - disable        / не отображать.
+      "x": 0,            // Position on the X axis / Положение по оси X.
+      "y": -80,          // Position on the Y axis / Положение по оси Y.
+      "alpha": 100,      // Opacity                / Прозрачность.
+      "glow": {
+        "enabled": true,   // false - disable        / не отображать.
+        "x": 0,            // Position on the X axis / Положение по оси X.
+        "y": 85,           // Position on the Y axis / Положение по оси Y.
+        "alpha": 50        // Opacity                / Прозрачность.
+      }
+    },
     // Stun marker and consumables marker in "Frontline Returns" mode (smoke screen, morale boost, engineering crew).
     // Маркер оглушения и маркер боевого снаряжения в режиме "Линия фронта" (дымовая завеса, воодушевление, инженерный отряд).
     "vehicleStatusMarker": {
@@ -205,8 +219,8 @@
       "x": -41,
       "y": -33,
       "alpha": 100,
-      "color": "0xe74c3c",
-      "lcolor": "0xc0392b",
+      "color": null,
+      "lcolor": null,
       "width": 80,
       "height": 12,
       "border": {
@@ -259,6 +273,20 @@
       "x": 0,
       "y": -67,
       "alpha": 100
+    },
+    // Hover marker
+    // Маркер по наведению
+    "hoverMarker": {
+      "enabled": true,
+      "x": 0,
+      "y": -80,
+      "alpha": 100,
+      "glow": {
+        "enabled": true,
+        "x": 0,
+        "y": 85,
+        "alpha": 50
+      }
     },
     // Stun marker and consumables marker in "Frontline Returns" mode (smoke screen, morale boost, engineering crew).
     // Маркер оглушения и маркер боевого снаряжения в режиме "Линия фронта" (дымовая завеса, воодушевление, инженерный отряд).

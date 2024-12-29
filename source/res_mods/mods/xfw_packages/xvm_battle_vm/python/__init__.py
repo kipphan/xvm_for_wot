@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2024 XVM Contributors
 """
 
 #
@@ -11,21 +11,21 @@ __initialized = False
 
 def xfw_module_init():
     global __initialized
+
     if not __initialized:
         import vehicleMarkers
         vehicleMarkers.init()
 
         import eventsAvatar
         eventsAvatar.init()
-        
+
         import eventsBSDC
         eventsBSDC.init()
-        
+
         import eventsMM
         eventsMM.init()
 
         __initialized = True
-    
 
 
 def xfw_module_fini():
@@ -36,12 +36,13 @@ def xfw_module_fini():
 
         import eventsAvatar
         eventsAvatar.fini()
-        
+
         import eventsBSDC
         eventsBSDC.fini()
-        
+
         import eventsMM
         eventsMM.fini()
+
         __initialized = False
 
 
