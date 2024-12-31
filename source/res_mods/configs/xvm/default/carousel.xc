@@ -84,7 +84,7 @@
     // "battles", "-battles", "winRate", "-winRate", "markOfMastery", "-markOfMastery", "xtdb", "-xtdb",
     // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun"
     "sorting_criteria": ["-marksOnGun", "-xtdb", "-xte"],
-    "sorting_criteria": ["nation", "type", "level"],
+
     // true - suppress the tooltips for tanks in carousel.
     "suppressCarouselTooltips": false
   }
