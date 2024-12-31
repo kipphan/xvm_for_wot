@@ -1,4 +1,4 @@
-﻿/**
+/**
  * List of battle interface labels.
  */
  
@@ -24,9 +24,9 @@
       //${"battleLabelsTemplates.xc":"def.repairTimeSurveying"},
       //${"battleLabelsTemplates.xc":"def.repairTimeRadio"}
 	  
-      //HL1**${"battleLabelsTemplates.xc":"def.hitLogBody"},
-      //HL2**${"battleLabelsTemplates.xc":"def.hitLogHeader"},
-      //DL1**${"battleLabelsTemplates.xc":"def.damageLog"},
+      ${"battleLabelsTemplates.xc":"def.hitLogBody"},
+      ${"battleLabelsTemplates.xc":"def.hitLogHeader"},
+      ${"battleLabelsTemplates.xc":"def.damageLog"},
 	  
       ${"battleLabelsTemplates.xc":"def.totalHP"}
 	  

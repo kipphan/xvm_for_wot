@@ -32,10 +32,10 @@
   "damageLog": {
 
     // true - disable standard detailed damage.
-    "disabledDetailStats": true,
+    "disabledDetailStats": false,
 
     // true - disable standard summarized damage.
-    "disabledSummaryStats": true,
+    "disabledSummaryStats": false,  
 	
     // Log of the received damage.
     "log": {
