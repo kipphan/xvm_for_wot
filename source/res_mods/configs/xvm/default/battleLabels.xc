@@ -24,9 +24,9 @@
       //${"battleLabelsTemplates.xc":"def.repairTimeSurveying"},
       //${"battleLabelsTemplates.xc":"def.repairTimeRadio"}
 	  
-      ${"battleLabelsTemplates.xc":"def.hitLogBody"},
-      ${"battleLabelsTemplates.xc":"def.hitLogHeader"},
-      ${"battleLabelsTemplates.xc":"def.damageLog"},
+      //${"battleLabelsTemplates.xc":"def.hitLogBody"},
+      //${"battleLabelsTemplates.xc":"def.hitLogHeader"},
+      //${"battleLabelsTemplates.xc":"def.damageLog"},
 	  
       ${"battleLabelsTemplates.xc":"def.totalHP"}
 	  
