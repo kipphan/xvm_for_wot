@@ -1,11 +1,12 @@
 ﻿/**
  * Shared data for minimap labels.
- * Общие данные для надписей на миникарте.
+ * ProMod - Updated 24.09.2016
  */
+
 {
   "labelsData": {
-    // Color sets.
-    // Наборы цветов.
+ 
+    // Color sets
     "colors": {
       "txt": {
         "ally_alive":          "#C8FFA6",
@@ -21,6 +22,7 @@
         "enemy_dead":          "#996763",
         "enemy_blowedup":      "#996763"
       },
+
       "dot": {
         "ally_alive":          "#96FF00",
         "ally_dead":           "#004D00",
@@ -35,6 +37,7 @@
         "enemy_dead":          "#4D0300",
         "enemy_blowedup":      "#4D0300"
       },
+
       "lostDot": {
         "ally_alive":          "#B4E595",
         "ally_dead":           "#004D00",
@@ -50,23 +53,23 @@
         "enemy_blowedup":      "#4D0300"
       }
     },
-    // Text for {{.minimap.labelsData.vtype.{{vtype-key}}}} macro.
-    // Текст для макроса {{.minimap.labelsData.vtype.{{vtype-key}}}}.
+
+    // Text for {{.minimap.labelsData.vtype.{{vtype-key}}}} macro
     "vtype": {
-      // Text for light tanks.
-      // Текст для легких танков.
+
+      // Text for light tanks
       "LT":  "<font face='xvm'>&#x3A;</font>",
-      // Text for medium tanks.
-      // Текст для средних танков.
+
+      // Text for medium tanks
       "MT":  "<font face='xvm'>&#x3B;</font>",
-      // Text for heavy tanks.
-      // Текст для тяжелых танков.
+
+      // Text for heavy tanks
       "HT":  "<font face='xvm'>&#x3F;</font>",
-      // Text for SPG.
-      // Текст для САУ.
+
+      // Text for arty
       "SPG": "<font face='xvm'>&#x2D;</font>",
-      // Text for tank destroyers.
-      // Текст для ПТ-САУ.
+
+      // Text for tank destroyers
       "TD":  "<font face='xvm'>&#x2E;</font>"
     }
   }

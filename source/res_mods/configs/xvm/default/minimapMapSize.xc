@@ -1,36 +1,35 @@
 ﻿/**
- * Textfield for map side size.
- * Поле размера стороны карты.
- *
- * Example:
- * Например:
- *   1000 m, 700 m, 600 m.
+ * Textfield for map side size. 1000 m, 700 m, 600 m.
+ * ProMod - Updated 02.09.2016
  */
+
 {
-  // The settings correspond to the extra fields parameters.
-  // Настройки соответствуют параметрам дополнительных полей.
+
+  // The settings correspond to the extra fields parameters
   "mapSize": {
+
     "enabled": true,
+    "alpha": 40,
     "x": 0,
     "y": 0,
-    "alpha": 70,
+    "width": 100,
+    "height": 30,
     "textFormat": {
-      "font": "Times New Roman",
       "size": 10,
       "color": "0xFFCC66",
-      "align": "left",
-      "bold": true,
-      "italic": false
+      "bold": true
     },
+
     "format": "{{cellsize}}0 {{l10n:m}}",
+	
     "shadow": {
       "enabled": true,
-      "color": "0x000000",
-      "alpha": 70,
-      "blur": 2,
-      "strength": 3,
       "distance": 0,
-      "angle": 0
+      "angle": 0,
+      "color": "0x000000",
+      "alpha": 80,
+      "blur": 2,
+      "strength": 3
     }
   }
 }

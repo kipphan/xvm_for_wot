@@ -1,88 +1,74 @@
 ﻿/**
  * General parameters for minimap.
- * Общие параметры миникарты.
- *
- * Видео по некоторым аспектам редактирования:
- *   https://www.youtube.com/watch?feature=player_embedded&v=NBJcqWuEoLo
+ * ProMod - Updated 24.09.2016
  */
+ 
 {
   "minimap": {
-    // false - disable.
-    // false - отключить.
-    "enabled": true,
+
+    // false - Disable.
+    "enabled": false,
+
     // Map image transparency.
-    // Прозрачность изображения карты.
     "mapBackgroundImageAlpha": 100,
-    // Self icon color. White pointing arrow.
-    // Цвет своей иконки. Белая стрелка.
-    "selfIconColor": "{{player?0xFFFFFF|{{c:system}}}}",
+
     // Self icon transparency. White pointing arrow.
-    // Прозрачность своей иконки. Белая стрелка.
     "selfIconAlpha": 75,
+
     // Self icon scale. White pointing arrow.
-    // Масштаб своей иконки. Белая стрелка.
-    "selfIconScale": 1,
+    "selfIconScale": 1.1,
+
     // Vehicle type icons transparency.
-    // Прозрачность иконок типа техники.
-    "iconAlpha": 100,
-    // Transparency of animation when destroying vehicles.
-    // Прозрачность анимации при уничтожении техники.
-    "deadAnimationAlpha": 100,
+    "iconAlpha": 75,
+
     // Vehicles icon scale. Does not affect attached geometry and textfields. Floating point allowed: 0.7, 1.4.
-    // Масштаб иконки техники. Не влияет на прикрепленную геометрию и текстовые поля. Можно дробные: 0.7, 1.4.
-    "iconScale": 1,
+    "iconScale": 1.3,
+
     // Camera direction green triangle transparency.
-    // Прозрачность зеленого треугольника направления камеры.
     "directionTriangleAlpha": 100,
+
     // Standard camera direction line transparency.
-    // Прозрачность стандартного луча направления камеры.
     "directionLineAlpha": 100,
-    // Show camera line after death.
-    // Отображать линию направления камеры после смерти.
+
+    // Show camera line after death
     "showDirectionLineAfterDeath": true,
-    // Show cell click animation.
-    // Отображать анимацию клика по ячейке.
-    "showCellClickAnimation": true,
-    // Path to icon for arty aim.
-    // Путь к иконке для артиллерийского прицела.
+
+    // Path to icon for arty aim
     "minimapAimIcon": "xvm://res/MinimapAim.png",
-    // Scale factor for the minimap aim icon (in percents).
-    // Масштаб иконки для артиллерийского прицела (в процентах).
+
+    // Scale factor for the minimap aim icon (in percents)
     "minimapAimIconScale": 50,
+
     // Map zoom by key pressing. Key is defined at file "hotkeys.xc".
-    // Увеличение миникарты по нажатию кнопки. Кнопка задается в файле "hotkeys.xc".
     "zoom": {
+
       // Zoom index value for minimap zoom key (0..5).
-      // Значение масштаба миникарты при нажатии клавиши масштаба (0..5).
       "index": 5,
+
       // false - does not set zoomed minimap at display center.
-      // false - не устанавливать увеличенную миникарту по центру экрана.
-      "centered": false
+      "centered": true
     },
-    // Map size label.
-    // Поле размера карты.
+
+    // Map size label
     "mapSize": ${"minimapMapSize.xc":"mapSize"},
-    // false - use standard circles.
-    // false - использовать стандартные круги.
+
+    // false - use standard circles
     "circlesEnabled": true,
-    // false - use standard labels.
-    // false - использовать стандартные надписи.
+
+    // false - use standard labels
     "labelsEnabled": true,
-    // false - use standard lines.
-    // false - использовать стандартные линии.
+
+    // false - use standard lines
     "linesEnabled": true,
-    // false - use standard the number of hit points (HP) vehicle.
-    // false - использовать стандартное количество очков прочности (HP) техники.
-    "healthPointsEnabled": false,
+
     // Minimap labels.
-    // Надписи на миникарте.
     "labels": ${"minimapLabels.xc":"labels"},
     "labelsData": ${"minimapLabelsData.xc":"labelsData"},
+
     // Minimap circles.
-    // Круги на миникарте.
     "circles": ${"minimapCircles.xc":"circles"},
+
     // Minimap lines.
-    // Линии на миникарте.
     "lines": ${"minimapLines.xc":"lines"}
   }
 }
