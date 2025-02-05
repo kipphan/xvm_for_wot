@@ -2,6 +2,7 @@
  * GUI elements settings (experts only)
  * http://www.koreanrandom.com/forum/topic/1761-
  */
+
 {
     // Minimap coordinates font
     "minimapFont": {

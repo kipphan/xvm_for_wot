@@ -12,24 +12,27 @@
       "src": "{{clanicon}}"
     }
   },
- 
+
   "statisticForm": {
 
     // true - Enable display of battle tier.
     "showBattleTier": false,
 
-    // true - Disable Platoon icons.
+    // true - disable platoon icons.
     "removeSquadIcon": false,
 
-    // true - disable rank badge icons
+    // true - disable badge icons.
     "removeRankBadgeIcon": false,
-	
+
     // true - disable alpha/beta testers icons.
     "removeTesterIcon": false,
-	
+
     // true - hide elite levels.
     "removePrestigeLevel": false,
-	
+
+    // Opacity percentage of vehicle icon. 0 - transparent ... 100 - opaque.
+    "vehicleIconAlpha": 100,
+
     // true - disable vehicle level indicator.
     "removeVehicleLevel": false,
 
@@ -95,15 +98,15 @@
 
     // Display format for the left panel (macros allowed, see macros.txt).
     "formatLeftNick": "{{name%.20s~..}}<font alpha='#A0'>{{clan}}</font>",
-	
+
     // Display format for the right panel (macros allowed, see macros.txt).
     "formatRightNick": "{{name%.20s~..}}<font alpha='#A0'>{{clan}}</font>",
-	
+
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftVehicle": "{{vehicle}}",
-	
+    "formatLeftVehicle": "{{vehicle}} <font color='{{c:kb}}'>{{kb%2d~k}}</font> <font color='{{c:r}}'>{{r}}</font> <font color='{{c:rating}}'>{{rating%2d~%}}</font>",
+
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightVehicle": "{{vehicle}}",
+    "formatRightVehicle": "<font color='{{c:rating}}'>{{rating%2d~%}}</font> <font color='{{c:r}}'>{{r}}</font> <font color='{{c:kb}}'>{{kb%2d~k}}</font> {{vehicle}}",
 
     // Display format for the left panel (macros allowed, see macros.txt).
     "formatLeftFrags": "{{frags}}",

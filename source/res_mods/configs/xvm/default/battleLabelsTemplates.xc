@@ -1,12 +1,10 @@
 ﻿/**
  * Battle inteface text fields.
  */
- 
+
 {
   // Definitions.
-
   "def": {
-  
     // Header of the log of applied damage.
     "hitLogHeader": {
       "enabled": true,
@@ -18,7 +16,6 @@
       "textFormat": { "color": "0xF4EFE8", "size": 15 },
       "format": "<textformat leading='-4' tabstops='[20,50,90,150]'><font color='#dfdfdf'>HITS:</font><font color='#FFCC66'> {{py:xvm.numberHitsDealt}} </font><font color='#dfdfdf'>DMG:</font><font color='#FFCC66'> {{py:xvm.totalDamage}} </font><font color='#dfdfdf'>AVG:</font><font color='#FFCC66'> {{py:div({{py:xvm.totalDamage}}, {{py:xvm.numberHitsDealt}})%3.0f}}</textformat>"
     },
-	
     // Log of applied damage (see hitLog.xc).
     "hitLogBody": {
       "enabled": true,
@@ -36,14 +33,12 @@
         "mouseMove": "hitLog_mouseMove"
       }
     },
-	
     // Background of the log of applied damage.
     "hitLogBackground": {
       "enabled": true,
       "$ref": { "path":"def.hitLogBody" },
       "format": "{{py:xvm.hitLog.log.bg}}"
     },
-	
     "totalEfficiency": {
       "enabled": true,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY), ON_PANEL_MODE_CHANGED",
@@ -54,7 +49,6 @@
       "textFormat": { "size": 16 },
       "format": "<textformat tabstops='[65,130,196,261]' leading='-2' ><img src='xvm://res/icons/Efficiency/damage.png' vspace='-2'> <font color='{{py:xvm.totalDamage>0?{{py:xvm.totalDamageColor}}}}'>{{py:xvm.totalDamage}}</font><tab><img src='xvm://res/icons/Efficiency/assist.png' vspace='-2'> {{py:xvm.totalAssist}}<tab><img src='xvm://res/icons/Efficiency/reflect.png' vspace='-2'> {{py:xvm.totalBlocked}}<tab><img src='xvm://res/icons/Efficiency/discover.png' vspace='-2'> {{py:xvm.detection}}<tab><img src='xvm://res/icons/Efficiency/stun.png' vspace='-2'> {{py:xvm.totalStun}}</textformat>"
     },
-	
     // Total hp indicator.
     "totalHP": {
       "enabled": false,
@@ -67,7 +61,6 @@
       "textFormat": { "font": "mono", "size": 18, "align": "center" },
       "format": "{{py:xvm.total_hp.text}}"
     },
-	
     // Avg damage on current vehicle.
     "avgDamage": {
       "enabled": true,
@@ -80,7 +73,6 @@
       "textFormat": { "size": 15, "align": "center" },
       "format": "{{py:xvm.total_hp.avgDamage('{{l10n:avgDamage}}: ',{{py:xvm.totalDamage}})}}"
     },
-	
     // Threshold necessary for achievements "High caliber".
     "mainGun": {
       "enabled": true,
@@ -92,7 +84,6 @@
       "textFormat": { "size": 15, "align": "center" },
       "format": "{{py:xvm.total_hp.mainGun('{{l10n:mainGun}}: ',{{py:xvm.totalDamage}})}}"
     },
-	
     // Log of the received damage (see damageLog.xc).
     "damageLog": {
       "enabled": true,
@@ -103,8 +94,7 @@
       "height": 210,
       "layer": "bottom",
       "screenVAlign": "bottom",
-	  
-      "shadow": { 
+      "shadow": {
         "distance": "{{py:xvm.damageLog.log.shadow('distance')}}",
         "angle": "{{py:xvm.damageLog.log.shadow('angle')}}",
         "color": "{{py:xvm.damageLog.log.shadow('color')}}",
@@ -114,9 +104,8 @@
         "hideObject": "{{py:xvm.damageLog.log.shadow('hideObject')}}",
         "inner": "{{py:xvm.damageLog.log.shadow('inner')}}",
         "knockout": "{{py:xvm.damageLog.log.shadow('knockout')}}",
-        "quality": "{{py:xvm.damageLog.log.shadow('quality')}}" 
+        "quality": "{{py:xvm.damageLog.log.shadow('quality')}}"
       },
-	  
       "textFormat": { "color": "0xF4EFE8", "size": 16 },
       "format": "{{py:xvm.damageLog.log}}",
       "mouseEvents": {
@@ -126,14 +115,12 @@
         "mouseWheel": "damageLog_mouseWheel"
       }
     },
-	
-    // Background of the log of the received damage (see damageLog.xc). 
+    // Background of the log of the received damage (see damageLog.xc).
     "damageLogBackground": {
       "enabled": true,
       "$ref": { "path":"def.damageLog" },
       "format": "{{py:xvm.damageLog.log.bg}}"
-    },  
-	
+    },
     // Display the last damage (hit) (see damageLog.xc).
     "lastHit": {
       "enabled": true,
@@ -145,8 +132,7 @@
       "layer": "bottom",
       "screenHAlign": "center",
       "screenVAlign": "center",
-	  
-      "shadow": { 
+      "shadow": {
         "distance": "{{py:xvm.damageLog.lastHit.shadow('distance')}}",
         "angle": "{{py:xvm.damageLog.lastHit.shadow('angle')}}",
         "color": "{{py:xvm.damageLog.lastHit.shadow('color')}}",
@@ -156,9 +142,8 @@
         "hideObject": "{{py:xvm.damageLog.lastHit.shadow('hideObject')}}",
         "inner": "{{py:xvm.damageLog.lastHit.shadow('inner')}}",
         "knockout": "{{py:xvm.damageLog.lastHit.shadow('knockout')}}",
-        "quality": "{{py:xvm.damageLog.lastHit.shadow('quality')}}" 
+        "quality": "{{py:xvm.damageLog.lastHit.shadow('quality')}}"
       },
-	  
       "textFormat": {"align": "center", "color": "0xF4EFE8", "size": 16 },
       "format": "{{py:xvm.damageLog.lastHit}}",
       "mouseEvents": {
@@ -167,7 +152,6 @@
         "mouseMove": "lastHit_mouseMove"
       }
     },
-	
     "fire": {
       "enabled": true,
       "updateEvent": "PY(ON_FIRE)",
@@ -183,7 +167,6 @@
       "textFormat": {"align": "center", "color": "0xF4EFE8", "size": 16 },
       "format": "ПОЖАР"
     },
-	
     // Rewritable timer format.
     "repairTimeItem": {
       "width": 47,
@@ -193,7 +176,6 @@
       "shadow": { "distance": 1, "angle": 90, "alpha": 90, "blur": 5, "strength": 4 },
       "textFormat": { "color": "0xF4EFE8", "size": 17, "align": "center", "valign": "center" }
     },
-	
     // Repair timer for engine.
     "repairTimeEngine": {
       "$ref": { "path":"def.repairTimeItem" },
@@ -203,7 +185,6 @@
       "y": -147,
       "format": "<b>{{py:repairTimeEngine}}</b>"
     },
-	
     // Repair timer for gun.
     "repairTimeGun": {
       "$ref": { "path":"def.repairTimeItem" },
@@ -213,7 +194,6 @@
       "y": -69,
       "format": "<b>{{py:repairTimeGun}}</b>"
     },
-	
     // Repair timer for turret rotator.
     "repairTimeTurret": {
       "$ref": { "path":"def.repairTimeItem" },
@@ -223,7 +203,6 @@
       "y": -30,
       "format": "<b>{{py:repairTimeTurret}}</b>"
     },
-	
     // Repair timer for complex-items (chassis\wheels).
     "repairTimeComplex": {
       "$ref": { "path":"def.repairTimeItem" },
@@ -233,7 +212,6 @@
       "y": -147,
       "format": "<b>{{py:repairTimeComplex}}</b>"
     },
-	
     // Repair timer for surveying device.
     "repairTimeSurveying": {
       "$ref": { "path":"def.repairTimeItem" },
@@ -243,7 +221,6 @@
       "y": -108,
       "format": "<b>{{py:repairTimeSurveying}}</b>"
     },
-	
     // Repair timer for radio.
     "repairTimeRadio": {
       "$ref": { "path":"def.repairTimeItem" },
