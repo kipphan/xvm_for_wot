@@ -5,7 +5,7 @@
   // Transparency values for substitutions.
   "def": {
     // Dynamic transparency by various statistical parameters.
-    "def.alphaRating": {
+    "alphaRating": {
       "very_bad":      "100",  // very bad
       "bad":           "70",   // bad
       "normal":        "40",   // normal
@@ -94,16 +94,16 @@
       { "value": 1399,  "color": ${"def.alphaRating.very_bad"     } }, // Bronze III
       { "value": 1899,  "color": ${"def.alphaRating.bad"          } }, // Silver I
       { "value": 2699,  "color": ${"def.alphaRating.bad"          } }, // Silver II
-      { "value": 3199,  "color": ${"def.alphaRating.below_average"} }, // Silver III
-      { "value": 3899,  "color": ${"def.alphaRating.below_average"} }, // Gold I
-      { "value": 4799,  "color": ${"def.alphaRating.average"      } }, // Gold II
-      { "value": 5399,  "color": ${"def.alphaRating.average"      } }, // Gold III
-      { "value": 6199,  "color": ${"def.alphaRating.above_average"} }, // Ace I
+      { "value": 3199,  "color": ${"def.alphaRating.bad"          } }, // Silver III
+      { "value": 3899,  "color": ${"def.alphaRating.normal"       } }, // Gold I
+      { "value": 4799,  "color": ${"def.alphaRating.normal"       } }, // Gold II
+      { "value": 5399,  "color": ${"def.alphaRating.normal"       } }, // Gold III
+      { "value": 6199,  "color": ${"def.alphaRating.good"         } }, // Ace I
       { "value": 7299,  "color": ${"def.alphaRating.good"         } }, // Ace II
       { "value": 7999,  "color": ${"def.alphaRating.very_good"    } }, // Ace III
-      { "value": 8799,  "color": ${"def.alphaRating.great"        } }, // Legend I
-      { "value": 9899,  "color": ${"def.alphaRating.unicum"       } }, // Legend II
-      { "value": 99999, "color": ${"def.alphaRating.super_unicum" } }  // Legend III
+      { "value": 8799,  "color": ${"def.alphaRating.very_good"    } }, // Legend I
+      { "value": 9899,  "color": ${"def.alphaRating.unique"       } }, // Legend II
+      { "value": 99999, "color": ${"def.alphaRating.unique"       } }  // Legend III
     ],
     // Dynamic transparency by WGR rating.
     "wgr": [

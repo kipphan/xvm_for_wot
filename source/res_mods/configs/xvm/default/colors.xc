@@ -19,6 +19,18 @@
       "very_good": "0x02C9B3",     // very good
       "unique":    "0xD042F3"      // unique
     },
+    "colorRatingNew": {
+      "very_bad":       "0xBAAAAD", // bad
+      "bad":            "0xf11919", // bad
+      "below_average":  "0xff8a00", // below average
+      "average":        "0xe6df27", // average
+      "above_average":  "0x77e812", // above average
+      "good":           "0x459300", // good
+      "very_good":      "0x2ae4ff", // very good
+      "great":          "0x00a0b8", // great
+      "unicum":         "0xc64cff", // unicum
+      "super_unicum":   "0x8225ad"  // super_unicum
+    },
     // Dynamic color by remaining health points.
     "colorHP": {
       "very_low":      "0xFF0000", // very low
