@@ -1,16 +1,17 @@
 ﻿/**
  * Minimap labels (alternative mode).
- * ProMod - Updated 24.09.2016
+ * Надписи на миникарте (альтернативный режим).
  */
 {
   // Textfields for units on minimap.
+  // Текстовые поля юнитов на миникарте.
   "labels": {
-
-    // Format set
+    // Format set (extended format supported, see extra-field.txt).
+    // Набор форматов (поддерживается расширенный формат, см. extra-field_ru.txt).
     "formats": [
-      //${ "minimapLabelsTemplates.xc":"def.vtypeSpotted" },
-      ${ "minimapLabelsTemplates.xc":"def.vehicleSpottedCompany" },
-      ${ "minimapLabelsTemplates.xc":"def.nickSpottedCompany" },
+      ${ "minimapLabelsTemplates.xc":"def.vtypeSpotted" },
+      ${ "minimapLabelsTemplates.xc":"def.vehicleSpottedAlt" },
+      ${ "minimapLabelsTemplates.xc":"def.nickSpottedAlt" },
       ${ "minimapLabelsTemplates.xc":"def.xmqpEvent" },
       ${ "minimapLabelsTemplates.xc":"def.vtypeLost" },
       ${ "minimapLabelsTemplates.xc":"def.vehicleLost" },

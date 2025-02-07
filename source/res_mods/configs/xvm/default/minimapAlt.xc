@@ -1,15 +1,11 @@
 ﻿/**
  * General parameters for minimap (alternative mode).
- * ProMod - Updated 02.09.2016
+ * Общие параметры миникарты (альтернативный режим).
  */
-
 {
   "minimap": { "$ref": { "file": "minimap.xc", "path": "minimap" },
-  
-    // true - Enable minimap alternative mode.
-    "enabled": true,
-
     // Minimap labels.
+    // Надписи на миникарте.
     "labels": ${"minimapLabelsAlt.xc":"labels"}
   }
 }

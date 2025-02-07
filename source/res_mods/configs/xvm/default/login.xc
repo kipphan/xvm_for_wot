@@ -1,153 +1,223 @@
 ﻿/**
- * ProMod Parameters for login screen
+ * Parameters for login screen.
+ * Параметры экрана логина.
  */
 {
   "login": {
-  
-    // Skip intro movie
-    "skipIntro": true,
-	
-    // Save last server
-    "saveLastServer": true,
-	
-    // Auto enter to the game
+    // Auto enter to the game.
+    // Автоматический вход в игру.
+    //  - Опция вкл/откл автоматический вход в игру когда недоступен логин-менеджер WGC;
+    //    В противном случае входом в клиент управляет опция в клиенте "Показывать выбор сервера при запуске игры".
+    //  - Option to enable/disable automatic login to the game when the WGC login-manager is not available;
+    //    Otherwise, client login is controlled by an option in the client "Display server selection upon game launch".
     "autologin": false,
-	
-    // Auto confirm old replays playing
-    "confirmOldReplays": false,
-	
-    // Ping servers
+    // Auto confirm old replays playing.
+    // Автоматически подтверждать проигрывание старых реплеев.
+    "confirmOldReplays": true,
+    // Do not show the specified servers in the servers list, for example, ["RU1", "RU3"].
+    // Не показывать заданные серверы в выпадающем списке серверов, например, ["RU1", "RU3"].
+    "disabledServers": [],
+    // Ping servers.
+    // Пинг серверов.
     "pingServers": {
-      // true - Enable display of ping to the servers
-      "enabled": false,
-      // Update interval, in ms
-      "updateInterval": 10000,
-      // Axis field coordinates
+      // true - enable display of ping to the servers.
+      // true - показывать пинг до серверов.
+      "enabled": true,
+      // Update interval, in ms.
+      // Интервал обновления, в мс.
+      "updateInterval": 1000,
+      // Axis field coordinates.
+      // Положение поля по осям.
       "x": 5,
-      "y": 30,
+      "y": 40,
       // Horizontal alignment of field at screen ("left", "center", "right").
+      // Горизонтальное выравнивание поля на экране ("left", "center", "right").
       "hAlign": "left",
       // Vertical alignment of field at screen ("top", "center", "bottom").
+      // Вертикальное выравнивание поля на экране ("top", "center", "bottom").
       "vAlign": "top",
+      // Transparency (from 0 to 100).
+      // Прозрачность (от 0 до 100).
       "alpha": 80,
-      // Server to response time text delimiter
+      // If set, draw image at background.
+      // Фоновое изображение, если задано.
+      // example: "bgImage": "cfg://My/img/my.png",
+      "bgImage": null,
+      // Server to response time text delimiter.
+      // Разделитель сервера от времени отклика.
       "delimiter": ": ",
-      // Maximum number of column rows
+      // Maximum number of column rows.
+      // Максимальное количество строк одной колонки.
       "maxRows": 3,
-      // Gap between columns
+      // Gap between columns.
+      // Пространство между колонками.
       "columnGap": 10,
       // Leading between lines.
+      // Пространство между строками.
       "leading": 0,
-      // true - show title "Ping"
+      // true - show title "Ping".
+      // true - показывать заголовок "Пинг".
       "showTitle": true,
-      // true - show server names in list
+      // true - show server names in list.
+      // true - показывать названия серверов в списке.
       "showServerName": true,
-      // expand values to this amount of symbols. recommended to use monospace font if this option is set.
-      "minimalLength": 0,
-      // text to show in case of error
+      // Expand server names to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить названия серверов до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      "minimalNameLength": 4,
+      // Expand values to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить значения до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      "minimalValueLength": 0,
+      // Text to show in case of error.
+      // Текст показываемый в случае ошибки.
       "errorString": "--",
-      // Text style
+      // List of ignored servers, for example, ["RU1", "RU3"].
+      // Список игнорируемых серверов, например, ["RU1", "RU3"].
+      "ignoredServers": [],
+      // Text style.
+      // Стиль текста.
       "fontStyle": {
-        // Font name
+        // Font name.
+        // Название шрифта.
         "name": "$TextFont",
         "size": 12,
         "bold": false,
         "italic": false,
-        // Different colors depending on server response time
+        // Different colors depending on server response time.
+        // Разные цвета в зависимости от времени отклика сервера.
         "color": {
           "great": "0xFFCC66",
-          "good": "0xE5E4E1",
-          "poor": "0x96948F",
-          "bad": "0xD64D4D"
+          "good":  "0xE5E4E1",
+          "poor":  "0x96948F",
+          "bad":   "0xD64D4D"
         },
-        // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value
+        // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value.
+        // Цвет для названия сервера и разделителя (например, "0x8080FF"). Пустая строка "" - использовать цвет значения онлайна.
         "serverColor": ""
       },
-      // Threshold values defining response quality
+      // Threshold values defining response quality.
+      // Пороговые значения, определяющие качество отклика.
       "threshold": {
-        // Below this value response is great
-        "great": 35,
-        // Below this value response is good
-        "good": 60,
-        // Below this value response is poor
-        "poor": 100
-        // Values above define bad response
+        // Below this value response is great.
+        // До этого значения отклик отличный.
+        "great": 30,
+        // Below this value response is good.
+        // До этого значения отклик хороший.
+        "good": 50,
+        // Below this value response is poor.
+        // До этого значения отклик так себе.
+        "poor": 70
+        // Values above define bad response.
+        // Значения более считаются плохим откликом.
       },
+      // Shadow options.
+      // Параметры тени.
       "shadow": {
+        // false - no shadow.
+        // false - без тени.
         "enabled": true,
-        "color": "0x000000",
-        "distance": 0,
-        "angle": 0,
-        "alpha": 70,
-        "blur": 4,
-        "strength": 2
+        "distance": 0,       // (in pixels)    / offset distance
+        "angle": 0,          // (0.0 .. 360.0) / offset angle
+        "color": "0x000000", // "0xXXXXXX"     / color
+        "alpha": 70,         // (0 .. 100)     / opacity
+        "blur": 4,           // (0.0 .. 255.0) / blur
+        "strength": 2        // (0.0 .. 255.0) / intensity
       }
     },
     "onlineServers": {
-      // true - Enable display online of servers
+      // true - enable display online of servers.
+      // true - показывать онлайн серверов.
       "enabled": false,
-      // Axis field coordinates
+      // Axis field coordinates.
+      // Положение поля по осям.
       "x": -5,
-      "y": 30,
+      "y": 40,
       // Horizontal alignment of field at screen ("left", "center", "right").
+      // Горизонтальное выравнивание поля на экране ("left", "center", "right").
       "hAlign": "right",
       // Vertical alignment of field at screen ("top", "center", "bottom").
+      // Вертикальное выравнивание поля на экране ("top", "center", "bottom").
       "vAlign": "top",
-      // Transparency
+      // Transparency (from 0 to 100).
+      // Прозрачность (от 0 до 100).
       "alpha": 80,
-      // Server to online text delimiter
+      // If set, draw image at background.
+      // Фоновое изображение, если задано.
+      // example: "bgImage": "cfg://My/img/my.png",
+      "bgImage": null,
+      // Server to online text delimiter.
+      // Разделитель сервера от онлайна.
       "delimiter": ": ",
-      // Maximum number of column rows
+      // Maximum number of column rows.
+      // Максимальное количество строк одной колонки.
       "maxRows": 3,
-      // Gap between columns
+      // Gap between columns.
+      // Пространство между колонками.
       "columnGap": 10,
       // Leading between lines.
+      // Пространство между строками.
       "leading": 0,
-      // true - show title "Online"
+      // true - show title "Online".
+      // true - показывать заголовок "Онлайн".
       "showTitle": true,
-      // true - show server names in list
+      // true - show server names in list.
+      // true - показывать названия серверов в списке.
       "showServerName": true,
-      // expand values to this amount of symbols. recommended to use monospace font if this option is set.
-      "minimalLength": 0,
-      // text to show in case of error
+      // Expand server names to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить названия серверов до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      "minimalNameLength": 4,
+      // Expand values to this amount of symbols. recommended to use monospace font if this option is set.
+      // Расширить значения до данного количества символов. рекомендуется использовать моноширинный шрифт если данная опция задана.
+      "minimalValueLength": 0,
+      // Text to show in case of error.
+      // Текст показываемый в случае ошибки.
       "errorString": "--k",
-      // Text style
+      // List of ignored servers, for example, ["RU1", "RU3"].
+      // Список игнорируемых серверов, например, ["RU1", "RU3"].
+      "ignoredServers": [],
+      // Text style.
+      // Стиль текста.
       "fontStyle": {
-        // Font name
+        // Font name.
+        // Название шрифта.
         "name": "$TextFont",
         "size": 12,
         "bold": false,
         "italic": false,
-        // Different colors depending on people online
+        // Different colors depending on people online.
+        // Разные цвета в зависимости от количества игроков.
         "color": {
-          "great": "0x60ff00",
-          "good": "0xF8F400",
-          "poor": "0xFE7903",
-          "bad": "0xFE0E00"
+          "great": "0xFFCC66",
+          "good":  "0xE5E4E1",
+          "poor":  "0x96948F",
+          "bad":   "0xD64D4D"
         },
-        // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value
-         "serverColor": ""
+        // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value.
+        // Цвет для названия сервера и разделителя (например, "0x8080FF"). Пустая строка "" - использовать цвет значения онлайна.
+        "serverColor": ""
       },
-      // Threshold values defining server online and thus shorter battle queue
+      // Threshold values defining server online and thus shorter battle queue.
+      // Пороговые значения, определяющие количество человек онлайн и следовательно меньшую очередь в бой.
       "threshold": {
         "great": 30000,
         "good": 10000,
         "poor": 3000
-        //below this value the queue might be long
+        // Below this value the queue might be long.
+        // Ниже этого значения очередь может быть долгой.
       },
+      // Shadow options.
+      // Параметры тени.
       "shadow": {
         "enabled": true,
-        "color": "0x000000",
         "distance": 0,
         "angle": 0,
+        "color": "0x000000",
         "alpha": 70,
         "blur": 4,
         "strength": 2
       }
     },
-	
-	// Parameters for widgets
+    // Parameters for widgets
+    // Параметры виджетов
     "widgets": ${"widgets.xc":"widgets.login"}
-
   }
 }

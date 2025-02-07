@@ -1,19 +1,28 @@
 ﻿/**
- * ProMod Config File - Icon sets. Path relative res_mods/xvm/res.
+ * Icons set atlases.
+ * Атласы с набором иконок.
+ *
+ * Path relative to:
+ * Пути относительно:
+ *   res_mods/x.x.x/gui/flash/atlases.
  */
 {
   "iconset": {
-    // Folder containing the icon set for Battle Loading Screen.
-    "battleLoadingAlly": "contour/",
-    "battleLoadingEnemy": "contour/",
-    // Folder containing the icon set for Battle Statistics Form (pressing "Tab").
-    "statisticFormAlly": "contour/",
-    "statisticFormEnemy": "contour/",
-    // Folder containing the icon set for the Players Panels.
-    "playersPanelAlly":  "contour/",
-    "playersPanelEnemy":  "contour/",
-    // Folder containing the icon set for the Over-target markers.
-    "vehicleMarkerAlly": "contour/",
-    "vehicleMarkerEnemy": "contour/"
+    // Path to the atlas with icons for the battle loading screen.
+    // Путь к атласу с иконками для экрана загрузки боя.
+    "battleLoadingLeftAtlas": "battleAtlas",
+    "battleLoadingRightAtlas": "battleAtlas",
+    // Path to the atlas with icons for the players panels.
+    // Путь к атласу с иконками для "ушей".
+    "playersPanelLeftAtlas": "battleAtlas",
+    "playersPanelRightAtlas": "battleAtlas",
+    // Path to the atlas with icons for the full stats form (on "Tab" key pressed).
+    // Путь к атласу с иконками для формы подробной статистики (при нажатии клавиши "Tab").
+    "fullStatsLeftAtlas": "battleAtlas",
+    "fullStatsRightAtlas": "battleAtlas",
+    // Path to the atlas with icons for the over-target markers.
+    // Путь к атласу с иконками для маркеров над танками.
+    "vehicleMarkerAllyAtlas": "vehicleMarkerAtlas",
+    "vehicleMarkerEnemyAtlas": "vehicleMarkerAtlas"
   }
 }
