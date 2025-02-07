@@ -1,13 +1,13 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2013-2024 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
 # Imports
 #
 
-# WoT
+# BigWorld
 from gui.Scaleform.daapi.view.lobby.messengerBar.NotificationListButton import NotificationListButton
 
 # XFW

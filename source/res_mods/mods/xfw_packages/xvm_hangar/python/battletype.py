@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2013-2024 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 Copyright (c) 2020 Andrii Andrushchyshyn
 """
 
@@ -8,7 +8,7 @@ Copyright (c) 2020 Andrii Andrushchyshyn
 # Imports
 #
 
-# WoT
+# BigWorld
 from gui.Scaleform.daapi.view.lobby.header import battle_selector_items
 from gui.Scaleform.daapi.view.lobby.header.LobbyHeader import LobbyHeader
 from gui.shared import g_eventBus, events

@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2013-2024 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
@@ -54,14 +54,16 @@ if getRegion() != 'RU':
 # Lesta-only filter popover sections
 else:
     try:
-        from account_helpers.AccountSettings import VERSUS_AI_CAROUSEL_FILTER_2
-        from account_helpers.AccountSettings import VERSUS_AI_CAROUSEL_FILTER_CLIENT_1
+        from account_helpers.AccountSettings import VERSUS_AI_CAROUSEL_FILTER_2, BOB_CAROUSEL_FILTER_2
+        from account_helpers.AccountSettings import VERSUS_AI_CAROUSEL_FILTER_CLIENT_1, BOB_CAROUSEL_FILTER_CLIENT_1
 
         _ADDITIONAL_SUPPORTED_SECTIONS = (
             VERSUS_AI_CAROUSEL_FILTER_2,
+            BOB_CAROUSEL_FILTER_2,
         )
         _ADDITIONAL_SUPPORTED_CLIENT_SECTIONS = (
             VERSUS_AI_CAROUSEL_FILTER_CLIENT_1,
+            BOB_CAROUSEL_FILTER_CLIENT_1
         )
     except Exception:
         logging.getLogger('XVM/TankCarousel').exception('filterSections/Lesta')
@@ -71,21 +73,26 @@ _SUPPORTED_CLIENT_SECTIONS += _ADDITIONAL_SUPPORTED_CLIENT_SECTIONS
 
 class PREFS(object):
     # Standard
+    BONUS = 'bonus'
+    FAVORITE = 'favorite'
     PREMIUM = 'premium'
     ELITE = 'elite'
     RENTED = 'rented'
     CRYSTALS = 'crystals'
     EVENT = 'event'
     IGR = 'igr'
+    PARAGONS = 'paragons'
     # Added by XVM
-    NORMAL = 'normal'
     SPECIAL = 'special'
+    NORMAL = 'normal'
     NON_ELITE = 'nonelite'
     FULL_CREW = 'fullCrew'
     TRAINING_CREW = 'trainingCrew'
     NO_MASTER = 'noMaster'
     RESERVE = 'reserve'
-    XVM_KEYS = (NORMAL, SPECIAL, NON_ELITE, FULL_CREW, TRAINING_CREW, NO_MASTER, RESERVE)
+    # Available in tank carousel
+    TO_REMOVE = [BONUS, FAVORITE]
+    XVM_KEYS = [SPECIAL, NORMAL, NON_ELITE, FULL_CREW, TRAINING_CREW, NO_MASTER, RESERVE]
 
 
 class USERPREFS(object):
