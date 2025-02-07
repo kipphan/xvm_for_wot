@@ -11,10 +11,13 @@
   "normal": {
     // Cell width
     "width": 160,
+
     // Cell height
     "height": 100,
+
     // Spacing between carousel cells.
     "gap": 10,
+
     // Standard cell elements.
     "fields": {
       // "enabled"  - the visibility of the element
@@ -53,42 +56,24 @@
       // Mastery level
       { "x": -1, "y": 10, "format": "<img src='img://gui/maps/icons/library/proficiency/class_icons_{{v.mastery}}.png' width='23' height='23'>" },
       // MOE on Vehicle Select
-      {
-        "x": 62,
-        "y": 52,
-        "format": "<font size='11' face='$TitleFont' color='{{v.c_damageRating}}'>{{v.damageRating%-3.1f~%}}</font>",
-        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 }
-      },
+      { "x": 62, "y": 52, "format": "<font size='11' face='$TitleFont' color='{{v.c_damageRating}}'>{{v.damageRating%-3.1f~%}}</font>",
+        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 } },
+
       // Damage per Battle
-      {
-        "x": 150,
-        "y": 44,
-        "align": "right",
-        "format": "<font size='11' face='$TitleFont' color='#FFFFFF'>{{v.tdb%-4d}}</font>",
-        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 }
-      },
+      { "x": 150, "y": 44, "align": "right", "format": "<font size='11' face='$TitleFont' color='#FFFFFF'>{{v.tdb%-4d}}</font>",
+        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 } },
+
       // Tank Name
-      // {
-      //   "x": 1,
-      //   "y": 68,
-      //   "format": "<font face='$TitleFont' color='{{v.premium?#DB834C|#ffffff}}' size='11'>{{v.name}}</font>",
-      //   "shadow": {"blur":0, "color": null, "strength": "{{v.premium?3|2}}"}
-      // },
+      //{ "x": 1, "y": 68, "format": "<font face='$TitleFont' color='{{v.premium?#DB834C|#ffffff}}' size='11'>{{v.name}}</font>",
+      //"shadow": {"blur":0, "color": null, "strength": "{{v.premium?3|2}}"} },
+
       // Gunmark Text on Select
-      {
-        "x": 5,
-        "y": 52,
-        "format": "<font size='11' face='$TitleFont' color='#FFFFFF'>Gunmark: </font>",
-        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 }
-      },
+      { "x": 5, "y": 52, "format": "<font size='11' face='$TitleFont' color='#FFFFFF'>Gunmark: </font>",
+        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 } },
+
       // Vehicle Winrate
-      {
-        "x": 150,
-        "y": 56,
-        "align": "right",
-        "format": "<font size='11' face='$TitleFont' color='{{v.c_winrate}}'>{{v.winrate%-3.1f~%}}</font>",
-        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 }
-      },
+      { "x": 150, "y": 56, "align": "right", "format": "<font size='11' face='$TitleFont' color='{{v.c_winrate}}'>{{v.winrate%-3.1f~%}}</font>",
+        "shadow": { "color": "0x000000", "alpha": 0.8, "blur": 2, "strength": 3, "distance": 0, "angle": 0 } }
     ]
   }
 }
