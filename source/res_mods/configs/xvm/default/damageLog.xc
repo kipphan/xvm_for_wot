@@ -92,7 +92,6 @@
         "minefield": "{{hit-effects}}{{critical-hit}}{{splash-hit}}<tab><font face='xvm'>&#x117;</font>"   // minefield.
       },
       // Color by kind of the received damage (macro {{c:dmg-kind}}).
-      // Цвет по типу полученного урона (макрос {{c:dmg-kind}}).
       "c:dmg-kind": {
         "shot": "{{c:hit-effects}}",       // shot.
         "fire": "#FF6655",                 // fire.
@@ -108,13 +107,11 @@
         "minefield": "{{c:hit-effects}}"   // minefield.
       },
       // Damage with shell splinters (HE/HESH). (macro {{splash-hit}}).
-      // Урон осколками снаряда (ОФ/ХФ). (макрос {{splash-hit}}).
       "splash-hit": {
         "splash": "<font face='xvm'>&#x2C;</font>", // splash damage.
         "no-splash": ""                             // no splash damage.
       },
       // Shell kind (macro {{type-shell}}).
-      // Тип снаряда (макрос {{type-shell}}).
       "type-shell": {
         "armor_piercing": "<font color='{{c:costShell}}'>{{l10n:armor_piercing}}</font>",           // armor piercing.
         "high_explosive": "<font color='{{c:costShell}}'>{{l10n:high_explosive}}</font>",           // high explosive.
@@ -127,7 +124,6 @@
         "not_shell": ""                                                                             // another source of damage.
       },
       // Color by shell kind (macro {{c:type-shell}}).
-      // Цвет по типу снаряда (макрос {{c:type-shell}}).
       "c:type-shell": {
         "armor_piercing": "#CCCCCC",      // armor piercing.
         "high_explosive": "#CCCCCC",      // high explosive.
@@ -140,7 +136,6 @@
         "not_shell": "#CCCCCC"            // another source of damage.
       },
       // Vehicle type (macro {{vtype}}).
-      // Тип техники (макрос {{vtype}}).
       "vtype": {
         "HT": "<font face='xvm'>&#x3F;</font>",  // heavy tank.
         "MT": "<font face='xvm'>&#x3B;</font>",  // medium tank.
@@ -150,7 +145,6 @@
         "not_vehicle": ""                        // another source of damage.
       },
       // Color by vehicle type (macro {{c:vtype}}).
-      // Цвет по типу техники (макрос {{c:vtype}}).
       "c:vtype": {
         "HT": "#FFACAC",         // heavy tank.
         "MT": "#FFF198",         // medium tank.
@@ -160,7 +154,6 @@
         "not_vehicle": "#CCCCCC" // another source of damage.
       },
       // Hit kind (macro {{hit-effects}}).
-      // Тип попадания (макрос {{hit-effects}}).
       "hit-effects": {
         "armor_pierced": "{{dmg}}",                                    // penetrated.
         "intermediate_ricochet": "{{l10n:intermediate_ricochet}}",     // ricochet (intermediate).
@@ -171,7 +164,6 @@
         "unknown": "{{l10n:armor_pierced_no_damage}}"                  // unknown.
       },
       // Color by hit kind (macro {{c:hit-effects}}).
-      // Цвет по типу попадания (макрос {{c:hit-effects}}).
       "c:hit-effects": {
         "armor_pierced": "#FF4D3C",           // penetrated (damage).
         "intermediate_ricochet": "#CCCCCC",   // ricochet (intermediate).
@@ -182,13 +174,11 @@
         "unknown": "#CCCCCC"                  // unknown.
       },
       // Critical hit (macro {{critical-hit}}).
-      // Критическое попадание (макрос {{critical-hit}}).
       "critical-hit": {
         "critical": "*",  // critical hit.
         "no-critical": "" // without critical hit.
       },
       // Damaged module or shell-shocked crew member (macro {{crit-device}}).
-      // Поврежденный модуль или контуженный член экипажа (макрос {{crit-device}}).
       "crit-device": {
         "engine_crit": "{{l10n:engine}}",
         "ammo_bay_crit": "{{l10n:ammo_bay}}",
@@ -216,7 +206,6 @@
         "no-critical": ""
       },
       // Part of vehicle (macro {{comp-name}}).
-      // Часть техники (макрос {{comp-name}}).
       "comp-name": {
         "turret": "{{l10n:turret}}",   // turret.
         "hull": "{{l10n:hull}}",       // body.
@@ -226,7 +215,6 @@
         "unknown": ""                  // unknown.
       },
       // Team attachment of the attacker (macro {{team-dmg}}).
-      // Команданя принадлежность атакующего (макрос {{team-dmg}}).
       "team-dmg": {
         "ally-dmg": "",  // ally.
         "enemy-dmg": "", // enemy.
@@ -234,7 +222,6 @@
         "unknown": ""    // unknown.
       },
       // Color by team attachment of the attacker (macro {{c:team-dmg}}).
-      // Цвет по командной принадлежности атакующего (макрос {{c:team-dmg}}).
       "c:team-dmg": {
         "ally-dmg": "#00EAFF",  // ally.
         "enemy-dmg": "#CCCCCC", // enemy.
@@ -242,21 +229,18 @@
         "unknown": "#CCCCCC"    // unknown.
       },
       // Shell currency (macro {{costShell}}).
-      // Валюта снаряда (макрос {{costShell}}).
       "costShell": {
         "gold-shell": "",   // gold.
         "silver-shell": "", // credits.
         "unknown": ""       // unknown.
       },
       // Color by shell currency (macro {{c:costShell}}).
-      // Цвет по валюте снаряда (макрос {{c:costShell}}).
       "c:costShell": {
         "gold-shell": "#FFCC66",   // gold.
         "silver-shell": "#CCCCCC", // credits.
         "unknown": ""              // unknown.
       },
       // Shadow settings.
-      // Настройки тени.
       "shadow": {
         "distance": 1,
         "angle": 90,
@@ -270,55 +254,41 @@
         "quality": 1
       },
       // Damage log format.
-      // Формат лога повреждений.
       "formatHistory": "<textformat tabstops='[30,130,165,180]'><font face='mono' size='12'>{{number%3d~.}}</font><tab><font color='{{c:dmg-kind}}'>{{dmg-kind}}</font><tab><font color='{{c:vtype}}'>{{vtype}}</font><tab><font color='{{c:team-dmg}}'>{{vehicle}}</font></textformat>"
     },
     // Background of the log of the received damage.
-    // Подложка лога полученного урона.
     "logBackground": {
       "$ref": { "path":"damageLog.log" },
       // Damage log background format.
-      // Формат подложки лога повреждений.
       "formatHistory": "<img height='20' width='310' src='xvm://res/icons/damageLog/{{dmg=0?no_dmg|dmg}}.png'>"
     },
     // Log of the received damage (alternative mode).
-    // Лог полученного урона (альтернативный режим).
     "logAlt": {
       "$ref": { "path":"damageLog.log" },
       // true - show hits without damage.
-      // true - отображать попадания без урона.
       "showHitNoDamage": true,
       // Damage log format.
-      // Формат лога повреждений.
       "formatHistory": "<textformat tabstops='[30,130,165]'><font face='mono' size='12'>{{number%3d~.}}</font><tab><font color='{{c:dmg-kind}}'>{{dmg-kind}}</font><tab><font color='{{c:team-dmg}}'>{{name}}</font></textformat>"
     },
     // Background of the log of the received damage (alternative mode).
-    // Подложка лога полученного урона (альтернативный режим).
     "logAltBackground": {
       "$ref": { "path":"damageLog.logBackground" },
       // Damage log background format.
-      // Формат подложки лога повреждений.
       "formatHistory": "<img height='20' width='310' src='xvm://res/icons/damageLog/{{dmg=0?no_dmg|dmg}}.png'>"
     },
     // Last damage (hit).
-    // Последний урон (попадание).
     "lastHit": {
       "$ref": { "path":"damageLog.log" },
       // true - allow to move last damage in battle and disallow macros for "x" and "y" settings.
       // false - disallow to move last damage in battle and allow macros for "x" and "y" settings.
-      // true - разрешить перемещение последнего урона в бою и запретить макросы в настройках "x" и "y".
-      // false - запретить перемещение последнего урона в бою и разрешить макросы в настройках "x" и "y".
       "moveInBattle": false,
       "x": -120,
       "y": 200,
       // true - show hits without damage.
-      // true - отображать попадания без урона.
       "showHitNoDamage": true,
       // Display duration (seconds).
-      // Продолжительность отображения (секунды).
       "timeDisplayLastHit": 5,
       // Shadow settings.
-      // Настройки тени.
       "shadow": {
         "distance": 0,
         "blur": 6,
@@ -326,7 +296,6 @@
         "color": "{{dmg=0?#000000|#770000}}"
       },
       // Kind of the received damage (macro {{dmg-kind}}).
-      // Тип полученного урона (макрос {{dmg-kind}}).
       "dmg-kind": {
         "shot": "{{hit-effects}}",            // shot.
         "fire": "{{hit-effects}}",            // fire.
@@ -342,11 +311,9 @@
         "minefield": "{{hit-effects}}"        // minefield.
       },
       // Last damage format.
-      // Формат последнего урона.
       "formatLastHit": "<font size='36' color='{{c:dmg-kind}}'>{{dmg-kind}}</font>"
     },
     // Background of the last damage (hit).
-    // Подложка последнего урона (попадание).
     "lastHitBackground": {
       "$ref": { "path":"damageLog.lastHit" },
       "enabled": false,

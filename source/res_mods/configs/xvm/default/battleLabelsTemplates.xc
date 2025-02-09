@@ -1,13 +1,10 @@
 ﻿/**
  * Battle interface text fields.
- * Текстовые поля боевого интерфейса.
  */
 {
   // Definitions.
-  // Шаблоны.
   "def": {
     // Header of the log of applied damage.
-    // Заголовок лога нанесенного урона.
     "hitLogHeader": {
       "enabled": false,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY), ON_PANEL_MODE_CHANGED",
@@ -19,7 +16,6 @@
       "format": "{{py:xvm.totalDamage=0?{{l10n:Hits}}: <font size='13'>#0</font>|{{l10n:Hits}}: <font size='13'>#{{py:xvm.numberHitsDealt}}</font> {{l10n:Total}}: <font color='{{py:xvm.totalDamageColor}}'><b>{{py:xvm.totalDamage}}</b></font> {{l10n:Last}}: <font color='{{py:xvm.dmgKindColor}}'><b>{{py:xvm.dmg}}</b></font>}}"
     },
     // Log of applied damage (see hitLog.xc).
-    // Лог нанесенного урона (см. hitLog.xc).
     "hitLogBody": {
       "enabled": false,
       "updateEvent": "PY(ON_HIT_LOG), ON_PANEL_MODE_CHANGED",
@@ -37,15 +33,13 @@
         "mouseWheel": "hitLog_mouseWheel"
       }
     },
-    // Background of the log of applied damage.
-    // Подложка лога нанесенного урона.
+    // Background of the log of applied damage.                                       
     "hitLogBackground": {
       "enabled": false,
       "$ref": { "path":"def.hitLogBody" },
       "format": "{{py:xvm.hitLog.log.bg}}"
     },
     // Panel with total player efficiency.
-    // Панель с общей эффективностью игрока.
     "totalEfficiency": {
       "enabled": false,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY), ON_PANEL_MODE_CHANGED",
@@ -57,7 +51,6 @@
       "format": "<textformat tabstops='[65,130,196,261]' leading='-2'><img src='xvm://res/icons/Efficiency/damage.png' vspace='-2'> <font color='{{py:xvm.totalDamage>0?{{py:xvm.totalDamageColor}}}}'>{{py:xvm.totalDamage}}</font><tab><img src='xvm://res/icons/Efficiency/assist.png' vspace='-2'> {{py:xvm.totalAssist}}<tab><img src='xvm://res/icons/Efficiency/reflect.png' vspace='-2'> {{py:xvm.totalBlocked}}<tab><img src='xvm://res/icons/Efficiency/discover.png' vspace='-2'> {{py:xvm.detection}}<tab><img src='xvm://res/icons/Efficiency/stun.png' vspace='-2'> {{py:xvm.totalStun}}</textformat>"
     },
     // Total hp indicator.
-    // Индикатор общего HP команд.
     "totalHP": {
       "enabled": false,
       "updateEvent": "PY(ON_UPDATE_HP)",
@@ -70,7 +63,6 @@
       "format": "{{battletype-key!=epic_battle?{{py:xvm.total_hp.text}}}}"
     },
     // Avg damage on current vehicle.
-    // Средний урон на текущей технике.
     "avgDamage": {
       "enabled": false,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY)",
@@ -83,7 +75,6 @@
       "format": "{{py:xvm.total_hp.avgDamage('{{l10n:avgDamage}}: ',{{py:xvm.totalDamage}})}}"
     },
     // Threshold necessary for achievements "High caliber".
-    // Порог необходимый для получения достижения "Основной калибр".
     "mainGun": {
       "enabled": false,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY)",
@@ -95,7 +86,6 @@
       "format": "{{py:xvm.total_hp.mainGun('{{l10n:mainGun}}: ',{{py:xvm.totalDamage}})}}"
     },
     // Log of the received damage (see damageLog.xc).
-    // Лог полученного урона (см. damageLog.xc).
     "damageLog": {
       "enabled": false,
       "updateEvent": "PY(ON_HIT)",
@@ -127,14 +117,12 @@
       }
     },
     // Background of the log of the received damage (see damageLog.xc).
-    // Подложка лога полученного урона (см. damageLog.xc).
     "damageLogBackground": {
       "enabled": false,
       "$ref": { "path":"def.damageLog" },
       "format": "{{py:xvm.damageLog.log.bg}}"
     },
     // Display the last damage (hit) (see damageLog.xc).
-    // Отображение последнего урона (попадания) (см. damageLog.xc).
     "lastHit": {
       "enabled": false,
       "updateEvent": "PY(ON_LAST_HIT)",
@@ -172,14 +160,12 @@
       }
     },
     // Background of the last damage (hit) (see damageLog.xc).
-    // Подложка последнего урона (попадания) (см. damageLog.xc).
     "lastHitBackground": {
       "enabled": false,
       "$ref": { "path":"def.lastHit" },
       "format": "{{py:xvm.damageLog.lastHit.bg}}"
     },
     // Message in case of fire in vehicle.
-    // Сообщение при возникновении пожара в технике.
     "fire": {
       "enabled": false,
       "updateEvent": "PY(ON_FIRE)",

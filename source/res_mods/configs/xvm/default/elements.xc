@@ -1,6 +1,5 @@
 ﻿/**
  * GUI elements settings (experts only)
- * Настройки графических элементов (только для экспертов!)
  * https://kr.cm/f/t/1761/
  *
  * TODO: doc
@@ -29,15 +28,15 @@
     {
       "$delay": 100,
       "playersPanel": {
-        // Left panel
+      // Left panel
         "listLeft": {
           "y": 65
-        },
-        // Right panel
+      },
+      // Right panel
         "listRight": {
           "y": 65
-        },
-        // Players panels switcher
+      },
+      // Players panels switcher
         "panelSwitch": {
           "y": 37
         }
@@ -96,5 +95,19 @@
     "recoveryPanel"                 - Recovery indicator (resupply point)
     "superPlatoonPanel"             - Platoon panel
     */
+    // Sixth sense duration
+    {
+      "$delay": 7000,
+      // Sixth sense lamp duration (in milliseconds). Example: "sixthSenseDuration": 7000,
+      "sixthSenseDuration": "sixthSenseDuration",
+      // Sixth sense lamp
+      "sixthSenseIndicator": {
+        // To use some settings in this section, you may need to remove "//" before "$interval". Reduces the performance!
+        // "$interval": 0,
+        "alpha": 100,
+        "x": "sixthSenseIndicator.x",
+        "y": "sixthSenseIndicator.y"
+      }
+    }
   ]
 }

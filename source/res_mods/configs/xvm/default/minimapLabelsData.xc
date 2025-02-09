@@ -1,11 +1,9 @@
 ﻿/**
  * Shared data for minimap labels.
- * Общие данные для надписей на миникарте.
  */
 {
   "labelsData": {
     // Color sets.
-    // Наборы цветов.
     "colors": {
       "txt": {
         "ally_alive":          "#C8FFA6",
@@ -51,22 +49,16 @@
       }
     },
     // Text for {{.minimap.labelsData.vtype.{{vtype-key}}}} macro.
-    // Текст для макроса {{.minimap.labelsData.vtype.{{vtype-key}}}}.
     "vtype": {
       // Text for light tanks.
-      // Текст для легких танков.
       "LT":  "<font face='xvm'>&#x3A;</font>",
       // Text for medium tanks.
-      // Текст для средних танков.
       "MT":  "<font face='xvm'>&#x3B;</font>",
       // Text for heavy tanks.
-      // Текст для тяжелых танков.
       "HT":  "<font face='xvm'>&#x3F;</font>",
       // Text for SPG.
-      // Текст для САУ.
       "SPG": "<font face='xvm'>&#x2D;</font>",
       // Text for tank destroyers.
-      // Текст для ПТ-САУ.
       "TD":  "<font face='xvm'>&#x2E;</font>"
     }
   }

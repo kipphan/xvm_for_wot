@@ -1,8 +1,6 @@
 ﻿/**
- * Log of applied damage.
- * For additional settings see battleLabelsTemplates.xc
- * Лог нанесенного урона.
- * Дополнительные настройки см. в battleLabelsTemplates.xc
+  * Log of applied damage.
+  * For additional settings see battleLabelsTemplates.xc
  *
  * https://kr.cm/f/t/40466/
 
@@ -56,38 +54,27 @@
 {
   "hitLog": {
     // false - disable.
-    // false - отключить.
     "enabled": false,
     // true - show damage by oneself.
-    // true - отображать урон по себе.
     "showSelfDamage": true,
     // true - show damage by allies.
-    // true - отображать урон по союзникам.
     "showAllyDamage": true,
     // Log of applied damage.
-    // Лог нанесенного урона.
     "log": {
       // true - allow to move log in battle and disallow macros for "x" and "y" settings.
       // false - disallow to move log in battle and allow macros for "x" and "y" settings.
-      // true - разрешить перемещение лога в бою и запретить макросы в настройках "x" и "y".
-      // false - запретить перемещение лога в бою и разрешить макросы в настройках "x" и "y".
       "moveInBattle": false,
       "x": 50,
       "y": 60,
       // true - allow scrolling of the contents of the log.
-      // true - разрешить прокрутку содержимого лога.
       "scrollLog": true,
       // Group hits by players name.
-      // Группировать попадания по имени игрока.
       "groupHitsByPlayer": true,
       // Number of lines. It is possible to use the macro {{battle type-key}}.
-      // Количество строк. Можно использовать макрос {{battletype-key}}.
       "lines": 15,
       // Insert order: false - insert new values to begin, true - add to end.
-      // Сортировка попаданий: false - новые значения добавляются сверху, true - снизу.
       "addToEnd": false,
       // Type of damage (macro {{dmg-kind}}).
-      // Тип нанесенного урона (макрос {{dmg-kind}}).
       "dmg-kind": {
         "shot":            "<font face='$FieldFont'>{{type-shell}}</font>",          // shot.
         "fire":            "<font size='6'> </font><font face='xvm'>&#x51;</font>",  // fire.
@@ -102,7 +89,6 @@
         "minefield":       "<font face='xvm'>&#x117;</font>"                         // minefield.
       },
       // Color by damage kind (macro {{c:dmg-kind}}).
-      // Цвет по типу нанесенного урона (макрос {{c:dmg-kind}}).
       "c:dmg-kind": {
         "shot": "#FFAA55",            // shot.
         "fire": "#FF6655",            // fire.
@@ -117,7 +103,6 @@
         "minefield": "#CCCCCC"        // minefield.
       },
       // Type of damage (macro {{dmg-kind-player}}).
-      // Тип нанесенного урона (макрос {{dmg-kind-player}}).
       "dmg-kind-player": {
         "shot":            "<font size='6'> </font><font face='xvm'>&#x50;</font>",  // shot.
         "fire":            "<font size='6'> </font><font face='xvm'>&#x51;</font>",  // fire.
@@ -132,7 +117,6 @@
         "minefield":       "<font face='xvm'>&#x117;</font>"                         // minefield.
       },
       // Shell kind (macro {{type-shell}}).
-      // Тип снаряда (макрос {{type-shell}}).
       "type-shell": {
         "armor_piercing":      "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing}}</font>",      // armor piercing.
         "high_explosive":      "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:high_explosive}}</font>",      // high explosive.
@@ -144,8 +128,7 @@
         "armor_piercing_fsds": "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing_fsds}}</font>", // armor piercing fin-stabilized discarding sabot. (Lesta)
         "not_shell": "НД"                                                                                             // another source of damage.
       },
-      // Color by shell kind (macro {{c:type-shell}}).
-      // Цвет по типу снаряда (макрос {{c:type-shell}}).
+      // Color by shell kind (macro {{type-shell}}).
       "c:type-shell": {
         "armor_piercing": "#CCCCCC",      // armor piercing.
         "high_explosive": "#CCCCCC",      // high explosive.
@@ -153,12 +136,9 @@
         "armor_piercing_cr": "#CCCCCC",   // armor piercing composite rigid.
         "armor_piercing_he": "#CCCCCC",   // armor piercing high explosive.
         "hollow_charge": "#CCCCCC",       // high explosive anti-tank.
-        "flame": "#CCCCCC",               // flame. (Lesta)
-        "armor_piercing_fsds": "#CCCCCC", // armor piercing fin-stabilized discarding sabot. (Lesta)
         "not_shell": "#CCCCCC"            // another source of damage.
       },
       // Vehicle type (macro {{vtype}}).
-      // Тип техники (макрос {{vtype}}).
       "vtype": {
         "HT": "<font face='xvm'>&#x3F;</font>",          // heavy tank.
         "MT": "<font face='xvm'>&#x3B;</font>",          // medium tank.
@@ -168,7 +148,6 @@
         "not_vehicle": "<font face='xvm'>&#x105;</font>" // another source of damage.
       },
       // Color by vehicle type (macro {{c:vtype}}).
-      // Цвет по типу техники (макрос {{c:vtype}}).
       "c:vtype": {
         "HT": "#FFACAC",         // heavy tank.
         "MT": "#FFF198",         // medium tank.
@@ -178,7 +157,6 @@
         "not_vehicle": "#CCCCCC" // another source of damage.
       },
       // Part of vehicle (macro {{comp-name}}).
-      // Часть техники (макрос {{comp-name}}).
       "comp-name": {
         "turret": "{{l10n:turret}}",   // turret.
         "hull": "{{l10n:hull}}",       // body.
@@ -188,7 +166,6 @@
         "unknown": ""                  // unknown.
       },
       // Team attachment of the targets (macro {{team-dmg}}).
-      // Командная принадлежность цели (макрос {{team-dmg}}).
       "team-dmg": {
         "ally-dmg": "",  // ally.
         "enemy-dmg": "", // enemy.
@@ -196,7 +173,6 @@
         "unknown": ""    // unknown.
       },
       // Color by team attachment of the targets (macro {{c:team-dmg}}).
-      // Цвет по командной принадлежности цели (макрос {{c:team-dmg}}).
       "c:team-dmg": {
         "ally-dmg": "#00EAFF",  // ally.
         "enemy-dmg": "#CCCCCC", // enemy.
@@ -204,38 +180,32 @@
         "unknown": "#CCCCCC"    // unknown.
       },
       // Shell currency (macro {{costShell}}).
-      // Валюта снаряда (макрос {{costShell}}).
       "costShell": {
         "gold-shell": "",   // gold.
         "silver-shell": "", // credits.
         "unknown": ""       // unknown.
       },
       // Color by shell currency (macro {{c:costShell}}).
-      // Цвет по валюте снаряда (макрос {{c:costShell}}).
       "c:costShell": {
         "gold-shell":   "#FFCC66", // gold.
         "silver-shell": "#CCCCCC", // credits.
         "unknown":      "#FFFFFF"  // unknown.
       },
       // List of hits format (macros allowed, see macros.txt).
-      // Формат лога попаданий (допускаются макроподстановки, см. macros.txt)
       "formatHistory": "<textformat leading='-4' tabstops='[20,50,90,205]'><font size='12'>\u00D7{{n-player}}:</font><tab><font color='{{c:dmg-kind}}'>{{dmg}}</font><tab>| {{dmg-player}}<tab>|<font color='{{c:vtype}}'>{{vehicle}}</font> <font face='xvm' size='15' color='#FF0000'>{{alive? |{{blownup?&#x7C;|<font size='19'>&#x77;</font>}}}}</font><tab>|{{name%.15s~..}} <font alpha='#A0'>{{clan}}</font></textformat>"
     },
     // Log of applied damage (alternative mode).
-    // Лог нанесенного урона (альтернативный режим).
     "logAlt": {
       "$ref": { "path":"hitLog.log" },
       "formatHistory": ""
       //"formatHistory": "<textformat leading='-4' tabstops='[20,50,90,205]'><font size='12'>\u00D7{{n-player}}:</font><tab><font color='{{c:dmg-kind}}'>{{dmg-ratio~%}}</font><tab>| {{dmg-ratio-player~%}}<tab>|<font color='{{c:vtype}}'>{{vehicle}}</font> <font face='xvm' size='15' color='#FF0000'>{{alive? |{{blownup?&#x7C;|<font size='19'>&#x77;</font>}}}}</font><tab>|{{name%.15s~..}} <font alpha='#A0'>{{clan}}</font></textformat>"
     },
     // Background of the log of applied damage.
-    // Подложка лога нанесенного урона.
     "logBackground": {
       "$ref": { "path":"hitLog.log" },
       "formatHistory": "<img height='17' width='310' src='xvm://res/icons/damageLog/{{alive?no_dmg|dmg}}.png'>"
     },
     // Background of the log of applied damage (alternative mode).
-    // Подложка лога нанесенного урона (альтернативный режим).
     "logAltBackground": {
       "$ref": { "path":"hitLog.log" },
       "formatHistory": ""

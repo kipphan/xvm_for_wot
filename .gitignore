@@ -26,3 +26,4 @@ source/res_mods/mods/shared_resources/xvm/res/clanicons/EU/clan/W-A-Y.png
 source/res_mods/mods/shared_resources/xvm/res/clanicons/EU/clan/WYM.png
 source/res_mods/mods/shared_resources/xvm/res/clanicons/EU/clan/X__G.png
 /source/res_mods/configs/xvm/kipphan/.vscode
+*.code-workspace

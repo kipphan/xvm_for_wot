@@ -1,40 +1,31 @@
 ﻿/**
  * Options for alive with Alt markers.
- * Настройки маркеров для живых с Alt.
  */
 {
   // Definitions.
-  // Шаблоны.
   "def": {
     // Floating damage values.
-    // Всплывающий урон.
     "damageText": {
       // false - disable.
       "enabled": false,
       // Axis field coordinates.
-      // Положение поля по осям.
       "x": 0,
       "y": -67,
       // Opacity (dynamic transparency allowed, see macros.txt).
-      // Прозрачность (допускается использование динамической прозрачности, см. macros_ru.txt).
       "alpha": 100,
       "align": "center",
       // Font options.
-      // Параметры шрифта.
       "textFormat": {
         "font": "$FieldFont",           // Font name
         "size": 18,                     // Font size
         // Color (dynamic colors allowed, see macros.txt).
-        // Цвет (допускается использование динамического цвета, см. macros_ru.txt)
         "color": null,
         "bold": false,                  // True - bold
         "italic": false                 // True - italic
       },
       // Shadow options.
-      // Параметры тени.
       "shadow": {
         // false - no shadow.
-        // false - без тени.
         "enabled": true,
         "distance": 0,                  // (in pixels)    / offset distance
         "angle": 45,                    // (0.0 .. 360.0) / offset angle
@@ -44,20 +35,15 @@
         "strength": 1                   // (0.0 .. 255.0) / intensity
       },
       // Rising speed of displayed damage (float up speed).
-      // Время отображения отлетающего урона.
       "speed": 2,
       // Maximum distance of target for which damage rises.
-      // Расстояние, на которое отлетает урон.
       "maxRange": 40,
       // Text for normal damage (see description of macros in the macros.txt).
-      // Текст при обычном уроне (см. описание макросов в macros_ru.txt).
       "damageMessage": "{{dmg}}",
       // Text for ammo rack explosion (see description of macros in the macros.txt).
-      // Текст при взрыве боеукладки (см. описание макросов в macros_ru.txt).
       "blowupMessage": "{{l10n:blownUp}}\n{{dmg}}"
     },
     // Text field with the name of the player.
-    // Текстовое поле с именем игрока.
     "playerName": {
       "name": "Player name",
       "enabled": true,
@@ -66,7 +52,6 @@
       "alpha": 100,
       "align": "center",
       // Font options.
-      // Параметры шрифта.
       "textFormat": {
         "font": "$FieldFont",
         "size": 13,
@@ -75,10 +60,8 @@
         "italic": false
       },
       // Shadow options.
-      // Параметры тени.
       "shadow": {
         // false - no shadow.
-        // false - без тени.
         "enabled": true,
         "distance": 0,
         "angle": 45,
@@ -88,11 +71,9 @@
         "strength": 2
       },
       // Text format (see description of macros in the macros.txt).
-      // Формат текста (см. описание макросов в macros_ru.txt).
       "format": "{{nick}}"
     },
     // Text field with the percentage of remaining health.
-    // Текстовое поле с процентом оставшегося здоровья.
     "hpPercent": {
       "name": "Percent of HP",
       "enabled": true,
@@ -119,7 +100,6 @@
       "format": "{{hp-ratio}}% / {{hp-max}}"
     },
     // Text field with rating.
-    // Текстовое поле с рейтингом.
     "rating": {
       "name": "Rating",
       "enabled": true,
@@ -147,35 +127,26 @@
     }
   },
   // Settings for allies.
-  // Настройки для союзников.
   "ally": {
     // Type of vehicle icon (HT/MT/LT/TD/Arty).
-    // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
       // false - disable.
       "enabled": true,
       // true - show speaker even if enabled=false.
-      // true - показывать спикер, даже если enabled=false.
       "showSpeaker": false,
       // Axis field coordinates.
-      // Положение поля по осям.
       "x": 0,
       "y": -16,
       // Opacity.
-      // Прозрачность.
       "alpha": 100,
       // Maximum scale (default is 100).
-      // Максимальный масштаб (по умолчанию 100).
       "maxScale": 100,
       // Offset along the X axis.
-      // Смещение по оси X.
       "offsetX": 0,
       // Offset along the Y axis.
-      // Смещение по оси Y.
       "offsetY": 0
     },
     // Health indicator.
-    // Индикатор здоровья.
     "healthBar": {
       "enabled": true,
       "x": -36,
@@ -186,19 +157,16 @@
       "width": 70,
       "height": 12,
       // Substrate and frame parameters.
-      // Параметры подложки и рамки.
       "border": {
         "alpha": 35,
         "color": "0x000000",
         "size": 1
       },
       // Parameters of the remaining health.
-      // Параметры оставшегося здоровья.
       "fill": {
         "alpha": 45
       },
       // Decreasing HP animation parameters.
-      // Параметры анимации отнимаемого здоровья.
       "damage": {
         "alpha": 80,
         "color": null,
@@ -206,7 +174,6 @@
       }
     },
     // Floating damage values for ally, player, squadman.
-    // Всплывающий урон для союзника, игрока, взводного.
     "damageText": {
       "$ref": { "path":"def.damageText" }
     },
@@ -217,7 +184,6 @@
       "$ref": { "path":"def.damageText" }
     },
     // Distance to allied vehicles.
-    // Дистанция до техники союзников.
     "vehicleDist": {
       "enabled": false,
       "x": 0,
@@ -242,26 +208,20 @@
       }
     },
     // Vehicle contour icon.
-    // Контурная иконка танка.
     "contourIcon": {
       // false - disable.
       "enabled": false,
       // Axis field coordinates.
-      // Положение поля по осям.
       "x": 6,
       "y": -65,
       // Opacity (dynamic transparency allowed, see macros.txt).
-      // Прозрачность (допускается использование динамической прозрачности, см. macros_ru.txt).
       "alpha": 100,
       // Color (dynamic colors allowed, see macros.txt).
-      // Цвет (допускается использование динамического цвета, см. macros_ru.txt).
       "color": null,
       // Color intensity from 0 to 100. The default is 0 (off).
-      // Интенсивность цвета от 0 до 100. По умолчанию 0, т.е. выключено.
       "amount": 0
     },
     // Vehicle tier.
-    // Уровень танка.
     "levelIcon": {
       "enabled": false,  // false - disable
       "x": 0,            // Position on the X axis
@@ -269,7 +229,6 @@
       "alpha": 100       // Opacity
     },
     // Markers "Help!" and "Attack!".
-    // Маркеры "Нужна помощь" и "Атакую".
     "actionMarker": {
       "enabled": true,   // false - disable
       "x": 0,            // Position on the X axis
@@ -277,7 +236,6 @@
       "alpha": 100       // Opacity
     },
     // Hover marker
-    // Маркер по наведению
     "hoverMarker": {
       "enabled": true,   // false - disable
       "x": 0,            // Position on the X axis
@@ -291,7 +249,6 @@
       }
     },
     // Stun marker and consumables marker in "Frontline Returns" mode (smoke screen, morale boost, engineering crew).
-    // Маркер оглушения и маркер боевого снаряжения в режиме "Линия фронта" (дымовая завеса, воодушевление, инженерный отряд).
     "vehicleStatusMarker": {
       "enabled": true,   // false - disable
       "x": 0,            // Position on the X axis
@@ -299,7 +256,6 @@
       "alpha": 100       // Opacity
     },
     // Damage indicator (ricochet, critical hit, ...).
-    // Индикатор урона (рикошет, критический урон, ...).
     "damageIndicator": {
       "enabled": true,   // false - disable
       "showText": true,  // false - show only icon
@@ -308,7 +264,6 @@
       "alpha": 100       // Opacity
     },
     // Block of text fields (extended format supported, see extra-field.txt).
-    // Блок текстовых полей (поддерживается расширенный формат, см. extra-field_ru.txt).
     "textFields": [
       ${ "def.playerName" },
       ${ "def.hpPercent" },
@@ -316,10 +271,8 @@
     ]
   },
   // Settings for enemies.
-  // Настройки для противников.
   "enemy": {
     // Type of vehicle icon (HT/MT/LT/TD/Arty).
-    // Иконка типа танка (ТТ/СТ/ЛТ/ПТ/Арта).
     "vehicleIcon": {
       "enabled": true,
       "showSpeaker": false,
@@ -331,7 +284,6 @@
       "offsetY": 0
     },
     // Health indicator.
-    // Индикатор здоровья.
     "healthBar": {
       "enabled": true,
       "x": -36,
@@ -356,7 +308,6 @@
       }
     },
     // Floating damage values for ally, player, squadman.
-    // Всплывающий урон для союзника, игрока, взводного.
     "damageText": {
       "$ref": { "path":"def.damageText" }
     },
@@ -367,7 +318,6 @@
       "$ref": { "path":"def.damageText" }
     },
     // Distance to enemy vehicles.
-    // Дистанция до техники противников.
     "vehicleDist": {
       "enabled": false,
       "x": 0,
@@ -392,7 +342,6 @@
       }
     },
     // Vehicle contour icon.
-    // Контурная иконка танка.
     "contourIcon": {
       "enabled": false,
       "x": 6,
@@ -402,7 +351,6 @@
       "amount": 0
     },
     // Vehicle tier.
-    // Уровень танка.
     "levelIcon": {
       "enabled": false,
       "x": 0,
@@ -410,7 +358,6 @@
       "alpha": 100
     },
     // Markers "Help!" and "Attack!".
-    // Маркеры "Нужна помощь" и "Атакую".
     "actionMarker": {
       "enabled": true,
       "x": 0,
@@ -418,7 +365,6 @@
       "alpha": 100
     },
     // Hover marker
-    // Маркер по наведению
     "hoverMarker": {
       "enabled": true,
       "x": 0,
@@ -432,7 +378,6 @@
       }
     },
     // Stun marker and consumables marker in "Frontline Returns" mode (smoke screen, morale boost, engineering crew).
-    // Маркер оглушения и маркер боевого снаряжения в режиме "Линия фронта" (дымовая завеса, воодушевление, инженерный отряд).
     "vehicleStatusMarker": {
       "enabled": true,
       "x": 0,
@@ -440,7 +385,6 @@
       "alpha": 100
     },
     // Damage indicator (ricochet, critical hit, ...).
-    // Индикатор урона (рикошет, критический урон, ...).
     "damageIndicator": {
       "enabled": true,
       "showText": true,
@@ -449,7 +393,6 @@
       "alpha": 100
     },
     // Block of text fields (extended format supported, see extra-field.txt).
-    // Блок текстовых полей (поддерживается расширенный формат, см. extra-field_ru.txt).
     "textFields": [
       ${ "def.playerName" },
       ${ "def.hpPercent" },

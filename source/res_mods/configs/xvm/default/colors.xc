@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Color settings.
  */
 {
@@ -19,17 +19,22 @@
       "very_good": "0x02C9B3",     // very good
       "unique":    "0xD042F3"      // unique
     },
-    "colorRatingNew": {
-      "very_bad":       "0xBAAAAD", // bad
-      "bad":            "0xf11919", // bad
-      "below_average":  "0xff8a00", // below average
-      "average":        "0xe6df27", // average
-      "above_average":  "0x77e812", // above average
-      "good":           "0x459300", // good
-      "very_good":      "0x2ae4ff", // very good
-      "great":          "0x00a0b8", // great
-      "unicum":         "0xc64cff", // unicum
-      "super_unicum":   "0x8225ad"  // super_unicum
+    "colorRatingExtended": {
+      "1":  "0xd1475e", // WTR - Bronze I
+      "2":  "0xd15e47", // WTR - Bronze II
+      "3":  "0xd18c47", // WTR - Bronze III
+      "4":  "0xd1ba47", // WTR - Silver I
+      "5":  "0xbad147", // WTR - Silver II
+      "6":  "0x8cd147", // WTR - Silver III
+      "7":  "0x5ed147", // WTR - Gold I
+      "8":  "0x47d15e", // WTR - Gold II
+      "9":  "0x47d18c", // WTR - Gold III
+      "10": "0x47d1ba", // WTR - Ace I
+      "11": "0x47bad1", // WTR - Ace II
+      "12": "0x478cd1", // WTR - Ace III
+      "13": "0x4775d1", // WTR - Legend I
+      "14": "0x5e47d1", // WTR - Legend II
+      "15": "0x8c47d1"  // WTR - Legend III
     },
     // Dynamic color by remaining health points.
     "colorHP": {
@@ -61,6 +66,15 @@
       "player_dead":         "0xDDAA00",
       "player_blowedup":     "0xBB9900"
     },
+    // Dynamic color by damage rating (percents for marks on gun)
+    "damageRating": [
+      { "value": 40,    "color": ${"def.colorRating.very_bad" } },  // 20% of players
+      { "value": 55,    "color": ${"def.colorRating.bad"      } },  // better then 40% of players
+      { "value": 65,    "color": ${"def.colorRating.normal"   } },  // better then 55% of players
+      { "value": 85,    "color": ${"def.colorRating.good"     } },  // better then 65% of players
+      { "value": 95,    "color": ${"def.colorRating.very_good"} },  // better then 85% of players
+      { "value": 100,   "color": ${"def.colorRating.unique"   } }   // better then 95% of players
+    ],
     // Dynamic color by damage kind.
     "dmg_kind": {
       "shot":            "0xFFAA55", // shot
@@ -74,12 +88,12 @@
     },
     // Dynamic color by vehicle type.
     "vtype": {
-      "LT":  "0xA2FF9A",
-      "MT":  "0xFFF198",
-      "HT":  "0xFFACAC",
-      "SPG": "0xEFAEFF",
-      "TD":  "0xA0CFFF",
-      "premium": "0xFFCC66",
+      "LT":              "0xA2FF9A",
+      "MT":              "0xFFF198",
+      "HT":              "0xFFACAC",
+      "SPG":             "0xEFAEFF",
+      "TD":              "0xA0CFFF",
+      "premium":         "0xFFCC66",
       "usePremiumColor": false
     },
     // Dynamic color by spotted status.
@@ -215,12 +229,21 @@
     // Dynamic color for XVM Scale.
     // https://kr.cm/f/t/2625/
     "x": [
-      { "value": 16.4, "color": ${"def.colorRating.very_bad" } }, // 00 - 16 - very bad  (20% of players)
-      { "value": 33.4, "color": ${"def.colorRating.bad"      } }, // 17 - 33 - bad       (better than 20% of players)
-      { "value": 52.4, "color": ${"def.colorRating.normal"   } }, // 34 - 52 - normal    (better than 60% of players)
-      { "value": 75.4, "color": ${"def.colorRating.good"     } }, // 53 - 75 - good      (better than 90% of players)
-      { "value": 92.4, "color": ${"def.colorRating.very_good"} }, // 76 - 92 - very good (better than 99% of players)
-      { "value": 999,  "color": ${"def.colorRating.unique"   } }  // 93 - XX - unique    (better than 99.9% of players)
+      { "value": 15.4, "color": ${"def.colorRatingExtended.1" } },  //  0 - 15
+      { "value": 22.4, "color": ${"def.colorRatingExtended.2" } },  // 16 - 22
+      { "value": 29.4, "color": ${"def.colorRatingExtended.3" } },  // 23 - 29
+      { "value": 36.4, "color": ${"def.colorRatingExtended.4" } },  // 30 - 36
+      { "value": 43.4, "color": ${"def.colorRatingExtended.5" } },  // 37 - 43
+      { "value": 50.4, "color": ${"def.colorRatingExtended.6" } },  // 44 - 50
+      { "value": 57.4, "color": ${"def.colorRatingExtended.7" } },  // 51 - 57
+      { "value": 64.4, "color": ${"def.colorRatingExtended.8" } },  // 58 - 64
+      { "value": 70.4, "color": ${"def.colorRatingExtended.9" } },  // 65 - 70
+      { "value": 76.4, "color": ${"def.colorRatingExtended.10" } }, // 71 - 76
+      { "value": 82.4, "color": ${"def.colorRatingExtended.11" } }, // 77 - 82
+      { "value": 87.4, "color": ${"def.colorRatingExtended.12" } }, // 83 - 87
+      { "value": 92.4, "color": ${"def.colorRatingExtended.13" } }, // 88 - 92
+      { "value": 96.4, "color": ${"def.colorRatingExtended.14" } }, // 93 - 96
+      { "value": 999,  "color": ${"def.colorRatingExtended.15" } }  // 97 - *
     ],
     // Current scales values for ratings are listed on this page: https://modxvm.com/en/ratings/xvm-scale/colors/
     //
@@ -246,34 +269,39 @@
     ],
     // Dynamic color by WN8 rating.
     "wn8": [
-      { "value": 300,  "color": ${"def.colorRatingNew.very_bad"     } },  //    0 - 300   - very bad
-      { "value": 450,  "color": ${"def.colorRatingNew.bad"          } },  //  301 - 450  - bad
-      { "value": 650,  "color": ${"def.colorRatingNew.below_average"} },  //  451 - 650  - below average
-      { "value": 900,  "color": ${"def.colorRatingNew.average"      } },  //  651 - 900  - average
-      { "value": 1200, "color": ${"def.colorRatingNew.above_average"} },  //  901 - 1200 - above average
-      { "value": 1600, "color": ${"def.colorRatingNew.good"         } },  // 1201 - 1600 - good
-      { "value": 2000, "color": ${"def.colorRatingNew.very_good"    } },  // 1601 - 2000 - very good
-      { "value": 2450, "color": ${"def.colorRatingNew.great"        } },  // 2001 - 2450 - great
-      { "value": 2900, "color": ${"def.colorRatingNew.unicum"       } },  // 2451 - 2900 - unicum
-      { "value": 9999, "color": ${"def.colorRatingNew.super_unicum" } }   // 2901 - *    - super unicum
+      { "value": 300,  "color": ${"def.colorRatingExtended.1" } },  //    0 -  300
+      { "value": 500,  "color": ${"def.colorRatingExtended.2" } },  //  301 -  500
+      { "value": 700,  "color": ${"def.colorRatingExtended.3" } },  //  501 -  700
+      { "value": 900,  "color": ${"def.colorRatingExtended.4" } },  //  701 -  900
+      { "value": 1100, "color": ${"def.colorRatingExtended.5" } },  //  901 - 1100
+      { "value": 1300, "color": ${"def.colorRatingExtended.6" } },  // 1101 - 1300
+      { "value": 1500, "color": ${"def.colorRatingExtended.7" } },  // 1301 - 1500
+      { "value": 1700, "color": ${"def.colorRatingExtended.8" } },  // 1501 - 1700
+      { "value": 1900, "color": ${"def.colorRatingExtended.9" } },  // 1701 - 1900
+      { "value": 2100, "color": ${"def.colorRatingExtended.10" } }, // 1901 - 2100
+      { "value": 2300, "color": ${"def.colorRatingExtended.11" } }, // 2101 - 2300
+      { "value": 2500, "color": ${"def.colorRatingExtended.12" } }, // 2301 - 2500
+      { "value": 2700, "color": ${"def.colorRatingExtended.13" } }, // 2501 - 2700
+      { "value": 2900, "color": ${"def.colorRatingExtended.14" } }, // 2701 - 2900
+      { "value": 9999, "color": ${"def.colorRatingExtended.15" } }  // 2901 - *
     ],
     // Dynamic color by WTR rating.
     "wtr": [
-      { "value": 399,   "color": ${"def.colorRatingNew.very_bad"     } }, // Bronze I
-      { "value": 999,   "color": ${"def.colorRatingNew.very_bad"     } }, // Bronze II
-      { "value": 1399,  "color": ${"def.colorRatingNew.very_bad"     } }, // Bronze III
-      { "value": 1899,  "color": ${"def.colorRatingNew.bad"          } }, // Silver I
-      { "value": 2699,  "color": ${"def.colorRatingNew.bad"          } }, // Silver II
-      { "value": 3199,  "color": ${"def.colorRatingNew.below_average"} }, // Silver III
-      { "value": 3899,  "color": ${"def.colorRatingNew.below_average"} }, // Gold I
-      { "value": 4799,  "color": ${"def.colorRatingNew.average"      } }, // Gold II
-      { "value": 5399,  "color": ${"def.colorRatingNew.average"      } }, // Gold III
-      { "value": 6199,  "color": ${"def.colorRatingNew.above_average"} }, // Ace I
-      { "value": 7299,  "color": ${"def.colorRatingNew.good"         } }, // Ace II
-      { "value": 7999,  "color": ${"def.colorRatingNew.very_good"    } }, // Ace III
-      { "value": 8799,  "color": ${"def.colorRatingNew.great"        } }, // Legend I
-      { "value": 9899,  "color": ${"def.colorRatingNew.unicum"       } }, // Legend II
-      { "value": 99999, "color": ${"def.colorRatingNew.super_unicum" } }  // Legend III
+      { "value": 399,   "color": ${"def.colorRatingExtended.1" } },  //    0 -  399
+      { "value": 999,   "color": ${"def.colorRatingExtended.2" } },  //  400 -  999
+      { "value": 1399,  "color": ${"def.colorRatingExtended.3" } },  // 1000 - 1399
+      { "value": 1899,  "color": ${"def.colorRatingExtended.4" } },  // 1400 - 1899
+      { "value": 2699,  "color": ${"def.colorRatingExtended.5" } },  // 1900 - 2699
+      { "value": 3199,  "color": ${"def.colorRatingExtended.6" } },  // 2700 - 3199
+      { "value": 3899,  "color": ${"def.colorRatingExtended.7" } },  // 3200 - 3899
+      { "value": 4799,  "color": ${"def.colorRatingExtended.8" } },  // 3900 - 4799
+      { "value": 5399,  "color": ${"def.colorRatingExtended.9" } },  // 4800 - 5399
+      { "value": 6199,  "color": ${"def.colorRatingExtended.10" } }, // 5400 - 6199
+      { "value": 7299,  "color": ${"def.colorRatingExtended.11" } }, // 6200 - 7299
+      { "value": 7999,  "color": ${"def.colorRatingExtended.12" } }, // 7300 - 7999
+      { "value": 8799,  "color": ${"def.colorRatingExtended.13" } }, // 8000 - 8799
+      { "value": 9899,  "color": ${"def.colorRatingExtended.14" } }, // 8800 - 9899
+      { "value": 99999, "color": ${"def.colorRatingExtended.15" } }  // 9900 - *
     ],
     // Dynamic color by WGR rating.
     "wgr": [
@@ -284,14 +312,32 @@
       { "value": 10000, "color": ${"def.colorRating.very_good"} },  // very good  (better then 99% of players)
       { "value": 20000, "color": ${"def.colorRating.unique"   } }   // unique     (better then 99.9% of players)
     ],
+    // Dynamic color by TEFF (E) rating
+    "e": [
+      { "value": 3,    "color": ${"def.colorRating.very_bad" } },
+      { "value": 6,    "color": ${"def.colorRating.bad"      } },
+      { "value": 7,    "color": ${"def.colorRating.normal"   } },
+      { "value": 8,    "color": ${"def.colorRating.good"     } },
+      { "value": 9,    "color": ${"def.colorRating.very_good"} },
+      { "value": 20,   "color": ${"def.colorRating.unique"   } }
+    ],
     // Dynamic color by win percent.
     "winrate": [
-      { "value": 46.49, "color": ${"def.colorRating.very_bad" } }, //  0   - 46.5  - very bad  (20% of players)
-      { "value": 48.49, "color": ${"def.colorRating.bad"      } }, // 46.5 - 48.5  - bad       (better than 20% of players)
-      { "value": 52.49, "color": ${"def.colorRating.normal"   } }, // 48.5 - 52.5  - normal    (better than 60% of players)
-      { "value": 57.49, "color": ${"def.colorRating.good"     } }, // 52.5 - 57.5  - good      (better than 90% of players)
-      { "value": 63.49, "color": ${"def.colorRating.very_good"} }, // 57.5 - 63.5  - very good (better than 99% of players)
-      { "value": 100,   "color": ${"def.colorRating.unique"   } }  // 63.5 - 100   - unique    (better than 99.9% of players)
+      { "value":  29.99, "color": ${"def.colorRatingExtended.1" } },
+      { "value":  39.99, "color": ${"def.colorRatingExtended.2" } },
+      { "value":  44.99, "color": ${"def.colorRatingExtended.3" } },
+      { "value":  47.99, "color": ${"def.colorRatingExtended.4" } },
+      { "value":  49.99, "color": ${"def.colorRatingExtended.5" } },
+      { "value":  52.99, "color": ${"def.colorRatingExtended.6" } },
+      { "value":  54.99, "color": ${"def.colorRatingExtended.7" } },
+      { "value":  57.99, "color": ${"def.colorRatingExtended.8" } },
+      { "value":  59.99, "color": ${"def.colorRatingExtended.9" } },
+      { "value":  62.99, "color": ${"def.colorRatingExtended.10" } },
+      { "value":  64.99, "color": ${"def.colorRatingExtended.11" } },
+      { "value":  67.99, "color": ${"def.colorRatingExtended.12" } },
+      { "value":  69.99, "color": ${"def.colorRatingExtended.13" } },
+      { "value":  79.99, "color": ${"def.colorRatingExtended.14" } },
+      { "value": 100,    "color": ${"def.colorRatingExtended.15" } }
     ],
     // Dynamic color by kilo-battles.
     "kb": [
@@ -367,10 +413,21 @@
     ],
     // Dynamic color by damage rating (percents for marks on gun).
     "damageRating": [
-      { "value": 64.99, "color": ${"def.colorRating.very_bad"} }, // 0-64.99
-      { "value": 84.99, "color": ${"def.colorRating.normal"  } }, // 65-84.99
-      { "value": 94.99, "color": ${"def.colorRating.good"    } }, // 85-94.99
-      { "value": 100,   "color": ${"def.colorRating.unique"  } }  // 95-*
+      { "value": 14.99, "color": ${"def.colorRatingExtended.1" } },
+      { "value": 24.99, "color": ${"def.colorRatingExtended.2" } },
+      { "value": 34.99, "color": ${"def.colorRatingExtended.3" } },
+      { "value": 44.99, "color": ${"def.colorRatingExtended.4" } },
+      { "value": 54.99, "color": ${"def.colorRatingExtended.5" } },
+      { "value": 64.99, "color": ${"def.colorRatingExtended.6" } },
+      { "value": 74.99, "color": ${"def.colorRatingExtended.7" } }, // 1st mark
+      { "value": 79.99, "color": ${"def.colorRatingExtended.8" } },
+      { "value": 84.99, "color": ${"def.colorRatingExtended.9" } },
+      { "value": 88.99, "color": ${"def.colorRatingExtended.10" } }, // 2nd mark
+      { "value": 92.99, "color": ${"def.colorRatingExtended.11" } },
+      { "value": 94.99, "color": ${"def.colorRatingExtended.12" } },
+      { "value": 96.49, "color": ${"def.colorRatingExtended.13" } }, // 3rd mark
+      { "value": 97.99, "color": ${"def.colorRatingExtended.14" } },
+      { "value": 100,   "color": ${"def.colorRatingExtended.15" } }
     ],
     // Dynamic color by hit ratio (percents of hits).
     "hitsRatio": [
