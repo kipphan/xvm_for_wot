@@ -1,7 +1,7 @@
 ﻿/**
  * Normal carousel cells settings.
  */
- {
+{
   // Definitions.
   "def": {
     // Text fields shadow.

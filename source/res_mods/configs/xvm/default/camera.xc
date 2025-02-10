@@ -7,8 +7,6 @@
     "enabled": false,
     // true - disable red flash when enemy hit your tank.
     "noFlashBang": false,
-    // true - hide the tips about switching to siege mode and aiming mode changing in strategic mode..
-    "hideHint": false,
     // Arcade mode.
     "arcade": {
       // Camera distance range: [min, max], default - [2, 25].

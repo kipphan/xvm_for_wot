@@ -26,27 +26,22 @@
       "offsetX": 0,
       // Y offset relative to initial position of the indicator
       "offsetY": 0,
+      // Use the old indicator position above crosshair in the middle of the screen
+      // (Only for Lesta)
+      "useOldInitialPosition": true,
       // Opacity of the indicator in percents (0..100)
       // (Only for WG, on Lesta use ingame settings)
       "alpha": 100,
       // Scale of the indicator (0..1)
       "scale": 1,
+      // Scale of the custom image indicator in permanent mode when lamp's size shrinks (0..1)
+      // (Only for Lesta)
+      "permanentScale": 0.7,
       // Path to sixth sense icon ("" for original icon).
       "icon": "",
       // Duration of the sixth sense indicator (msec).
       // On Lesta defines time after which indicator will enter permanent state.
       "duration": 7000
-    },
-    // true - hide the tips in battle.
-    "battleHint": {
-      // true - hide the tips aiming mode changing in strategic mode.
-      "hideTrajectoryView": false,
-      // true - hide the tips about switching to siege mode and changing the driving mode (for wheeled vehicles).
-      "hideSiegeIndicator": false,
-      // true - hide the tips about switching to menu Personal Missions.
-      "hideQuestProgress": false,
-      // true - hide the tips of the transition to the window of exploring the features of the machine (for wheeled vehicles).
-      "hideHelpScreen": false
     },
     // GUI elements settings (experts only).
     "elements": ${"elements.xc":"elements"},
@@ -59,12 +54,5 @@
   "fragCorrelation": {
     // true - show quantity of alive instead of dead.
     "showAliveNotFrags": false
-  },
-  // Ingame crits panel by "expert" skill.
-  "expertPanel": {
-    // Delay for panel disappear. Original value was 5.
-    "delay": 15,
-    // Panel scaling. Original value was 100.
-    "scale": 150
   }
 }

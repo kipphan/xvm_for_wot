@@ -3,10 +3,6 @@
  */
 {
   "login": {
-    // Skip intro movie
-    "skipIntro": true,
-    // Save last server
-    "saveLastServer": true,
     // Auto enter to the game.
     //  - Option to enable/disable automatic login to the game when the WGC login-manager is not available;
     //    Otherwise, client login is controlled by an option in the client "Display server selection upon game launch".

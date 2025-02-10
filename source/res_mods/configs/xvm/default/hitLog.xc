@@ -1,6 +1,6 @@
 ﻿/**
-  * Log of applied damage.
-  * For additional settings see battleLabelsTemplates.xc
+ * Log of applied damage.
+ * For additional settings see battleLabelsTemplates.xc
  *
  * https://kr.cm/f/t/40466/
 

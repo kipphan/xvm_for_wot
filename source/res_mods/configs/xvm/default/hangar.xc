@@ -41,8 +41,6 @@
     "showAchievementRewardWindow": true,
     // true - show popups in top right corner for unlocking new achievement.
     "showAchievementPopups": true,
-    // true - show counter on buttons for new items.
-    "showButtonCounters": true,
     // "Combat Intelligence" - show/hide notifications in the main window and counters in the menu.
     "combatIntelligence": {
       // true - show pop-up messages in the hangar.
@@ -121,27 +119,16 @@
       // Y offset.
       "offsetY": 0
     },
-    // true - enable removable equipment auto return.
-    "enableEquipAutoReturn": false,
     // true - make vehicle not ready for battle if low ammo.
-    "blockVehicleIfLowAmmo": true,
+    "blockVehicleIfLowAmmo": false,
     // Below this percentage, ammo is low. (0 - 100)
-    "lowAmmoPercentage": 80,
-    // Behavior of the system channel notifications button on new notifications:
-    //   none  - do nothing;
-    //   blink - blink button;
-    //   full  - blink and show counter (default client behavior).
-    "notificationsButtonType": "full",
+    "lowAmmoPercentage": 20,
     // true - hide price button in tech tree.
     "hidePricesInTechTree": false,
     // true - show mastery mark in tech tree.
     "masteryMarkInTechTree": true,
     // true - allow to consider the exchange of experience with gold in tech tree.
     "allowExchangeXPInTechTree": true,
-    // true - show flags in barracks.
-    "barracksShowFlags": true,
-    // true - show skills in barracks.
-    "barracksShowSkills": true,
     // true - restore selected battle type on switching to another server, at the next login to the client.
     "restoreBattleType": true,
     // Ping servers.
@@ -328,18 +315,6 @@
     "allowNotificationsButtonBlinking": true,
     // true - allow messenger bar channel (clan or private chat) button blinking.
     "allowChannelButtonBlinking": true,
-    // Parameters for barracks.
-    "barracks": {
-      // Order of nations.
-      //"nations_order": ["ussr", "germany", "usa", "china", "france", "uk", "japan", "czech", "poland", "sweden", "italy"],
-      "nations_order": [],
-      // Order of crew roles.
-      // "roles_order": ["commander", "gunner", "driver", "radioman", "loader"],
-      "roles_order": [],
-      // Tankmen sorting criteria, available options: (minus = reverse order)
-      // "nation", "role", "level", "-level", "XP", "-XP", "gender", "-gender", "inVehicle", "-inVehicle", "vehicle"
-      "sorting_criteria": ["nation", "inVehicle", "vehicle", "role"]
-    },
     // Parameters for tank carousel.
     "carousel": ${"carousel.xc":"carousel"},
     // Parameters for widgets.

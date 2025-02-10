@@ -4,7 +4,7 @@
 {
   // Definitions (extended format supported, see extra-field.txt).
   "def": {
-    // Enemy spotted status marker.
+    // Enemy spotted status marker definition.
     "enemySpottedMarker": {
       // false - disable.
       "enabled": true,
@@ -87,7 +87,7 @@
       // Layout ("vertical" or "horizontal").
       "layout": "vertical",
       // true - don't change players positions on dead (default false).
-      "fixedPosition": false,
+      "fixedPosition": true,
       // Opacity of dynamic squad invite indicator.
       "inviteIndicatorAlpha": 100,
       // X position offset of dynamic squad invite indicator.
@@ -175,8 +175,8 @@
       // Maximum width of the player name column. Default is 158.
       "nickMaxWidth": 158,
       // Display format for player name (macros allowed, see macros.txt).
-      "nickFormatLeft": "<font face='mono' size='{{xvm-stat?13|0}}' color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{r}}</font> {{name%.{{anonym?13|15}}s~..}}{{anonym? <font face='xvm' size='19'>&#x11E;</font>}}<font alpha='#A0'>{{clan}}</font>",
-      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font>{{name%.15s~..}} <font face='mono' size='{{xvm-stat?13|0}}' color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{r}}</font>",
+      "nickFormatLeft": "",
+      "nickFormatRight": "",
       // Shadow for player name field (default null = no shadow, as in vanillas client).
       "nickShadowLeft": null,
       "nickShadowRight": null,
@@ -189,8 +189,8 @@
       // Width of the vehicle name column. Default is 72.
       "vehicleWidth": 72,
       // Display format for vehicle name (macros allowed, see macros.txt).
-      "vehicleFormatLeft": "{{vehicle}}",
-      "vehicleFormatRight": "{{vehicle}}",
+      "vehicleFormatLeft": "",
+      "vehicleFormatRight": "",
       // Shadow for vehicle name field (default null = no shadow, as in vanillas client).
       "vehicleShadowLeft": null,
       "vehicleShadowRight": null,
@@ -203,7 +203,7 @@
       // Offset of Y value for enemy spotted status icons.
       "spottedIndicatorOffsetY": 0,
       // true - don't change players positions on dead (default false).
-      "fixedPosition": false,
+      "fixedPosition": true,
       // Extra fields. Each field have default size 350x25.
       // Fields are placed one above the other.
       // Set of formats for left panel (extended format supported, see above).
@@ -231,7 +231,7 @@
       "enabled": true,
       // Displayed standard fields in this mode and their order.
       // Available names: "frags", "badge", "nick", "vehicle", "prestige".
-      "standardFields": [ "frags", "badge", "nick" ],
+      "standardFields": [ "frags", "nick" ],
       // Width of area for switching to "large" mode on mouse over.
       "expandAreaWidth": 230,
       // true - disable platoon/rank icons.
@@ -272,8 +272,8 @@
       // Maximum width of the player name column. Default is 158.
       "nickMaxWidth": 158,
       // Display format for player nickname (macros allowed, see macros.txt).
-      "nickFormatLeft": "<font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{name%.{{anonym?10|12}}s~..}}</font>{{anonym? <font face='xvm' size='19'>&#x11E;</font>}} <font alpha='#A0'>{{clan}}</font>",
-      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font> <font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{name%.12s~..}}</font>",
+      "nickFormatLeft": "<font alpha='{{alive?#FF|#80}}'>{{name%.{{anonym?18|20}}s~..}}</font>{{anonym? <font face='xvm' size='19'>&#x11E;</font>}} <font alpha='#A0'>{{clan}}</font>",
+      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font> <font alpha='{{alive?#FF|#80}}'>{{name%.20s~..}}</font>",
       // Shadow for player name field (default null = no shadow, as in vanillas client).
       "nickShadowLeft": null,
       "nickShadowRight": null,
@@ -283,8 +283,8 @@
       // Width of the vehicle name column. Default is 72.
       "vehicleWidth": 72,
       // Display format for vehicle name (macros allowed, see macros.txt).
-      "vehicleFormatLeft": "<font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{vehicle}}</font>",
-      "vehicleFormatRight": "<font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{vehicle}}</font>",
+      "vehicleFormatLeft": "",
+      "vehicleFormatRight": "",
       // Shadow for vehicle name field (default null = no shadow, as in vanillas client).
       "vehicleShadowLeft": null,
       "vehicleShadowRight": null,
@@ -297,7 +297,7 @@
       // Offset of Y value for enemy spotted status icons.
       "spottedIndicatorOffsetY": 0,
       // true - don't change players positions on dead (default false).
-      "fixedPosition": false,
+      "fixedPosition": true,
       // Extra fields. Each field have size 350x25. Fields are placed one above the other.
       // Set of formats for left panel (extended format supported, see above).
       "extraFieldsLeft": [
@@ -365,8 +365,8 @@
       // Maximum width of the player name column. Default is 158.
       "nickMaxWidth": 158,
       // Display format for player nickname (macros allowed, see macros.txt).
-      "nickFormatLeft": "<font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{name%.{{anonym?10|12}}s~..}}{{anonym? <font face='xvm' size='19'>&#x11E;</font>}}</font> <font alpha='#A0'>{{clan}}</font>",
-      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font> <font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{name%.12s~..}}</font>",
+      "nickFormatLeft": "",
+      "nickFormatRight": "",
       // Shadow for player name field (default null = no shadow, as in vanillas client).
       "nickShadowLeft": null,
       "nickShadowRight": null,
@@ -393,7 +393,7 @@
       // Offset of Y value for enemy spotted status icons.
       "spottedIndicatorOffsetY": 0,
       // true - don't change players positions on dead (default false).
-      "fixedPosition": false,
+      "fixedPosition": true,
       // Extra fields. Each field have size 350x25. Fields are placed one above the other.
       // Set of formats for left panel (extended format supported, see above).
       "extraFieldsLeft": [
@@ -421,7 +421,7 @@
       "enabled": true,
       // Displayed standard fields in this mode and their order.
       // Available names: "frags", "badge", "nick", "vehicle", "prestige".
-      "standardFields": [ "frags", "badge", "nick", "vehicle"],
+      "standardFields": [ "frags", "nick", "vehicle"],
       // true - disable platoon/rank icons.
       "removeSquadIcon": false,
       // Transparency of the squad icon.
@@ -460,8 +460,8 @@
       // Maximum width of the player name column, Default is 158.
       "nickMaxWidth": 158,
       // Display format for player nickname (macros allowed, see macros.txt).
-      "nickFormatLeft": "<font face='mono' size='{{xvm-stat?13|0}}' color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{r|{{r_size>2?----|--}}}}</font> {{name%.{{anonym?12|{{xvm-stat?{{r_size>2?10|13}}|15}}}}s~..}}{{anonym? <font face='xvm' size='13'>&#x11E;</font>}}<font alpha='#A0'>{{clan}}</font>",
-      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font>{{name%.{{xvm-stat?{{r_size>2?10|13}}|15}}s~..}} <font face='mono' size='{{xvm-stat?13|0}}' color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{r|{{r_size>2?----|--}}}}</font>",
+      "nickFormatLeft": "{{name%.{{anonym?17|{{xvm-stat?{{r_size>2?15|18}}|20}}}}s~..}}{{anonym? <font face='xvm' size='13'>&#x11E;</font>}} <font alpha='#A0'>{{clan}}</font>",
+      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font> {{name%.{{xvm-stat?{{r_size>2?15|18}}|20}}s~..}}",
       // Shadow for player name field (default null = no shadow, as in vanillas client).
       "nickShadowLeft": null,
       "nickShadowRight": null,
@@ -488,7 +488,7 @@
       // Offset of Y value for enemy spotted status icons.
       "spottedIndicatorOffsetY": 0,
       // true - don't change players positions on dead (default false).
-      "fixedPosition": false,
+      "fixedPosition": true,
       // Extra fields. Each field have size 350x25. Fields are placed one above the other.
       // Set of formats for left panel (extended format supported, see above).
       "extraFieldsLeft": [

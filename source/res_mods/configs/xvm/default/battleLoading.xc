@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Parameters of the Battle Loading screen.
  */
 {
@@ -14,12 +14,10 @@
     // Format of clock on the Battle Loading Screen.
     // http://php.net/date
     "clockFormat": "H:i:s",
-    // true - enable display of battle tier.
-    "showBattleTier": false,
     // true - disable platoon/rank icons. This blank space can house, for example, clan logos.
     "removeSquadIcon": false,
     // true - disable badge icons.
-    "removeRankBadgeIcon": false,
+    "removeRankBadgeIcon": true,
     // true - disable alpha/beta testers icons.
     "removeTesterIcon": false,
     // true - hide elite levels.
@@ -47,27 +45,27 @@
     // Width delta for enemies player names field.
     "nameFieldWidthDeltaRight": 0,
     // X offset for allies vehicle names field.
-    "vehicleFieldOffsetXLeft": 26,
+    "vehicleFieldOffsetXLeft": -15,
     // Width delta for allies vehicle names field.
     "vehicleFieldWidthDeltaLeft": 0,
     // X offset for enemies vehicle names field.
-    "vehicleFieldOffsetXRight": 23,
+    "vehicleFieldOffsetXRight": -15,
     // Width delta for enemies vehicle names field.
     "vehicleFieldWidthDeltaRight": 0,
     // X offset for allies vehicle icons.
-    "vehicleIconOffsetXLeft": 23,
+    "vehicleIconOffsetXLeft": 15,
     // X offset for enemies vehicle icons.
-    "vehicleIconOffsetXRight": 20,
+    "vehicleIconOffsetXRight": 15,
     // false - disable highlight of icons during battle start depends on ready state.
     "darkenNotReadyIcon": true,
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftNick": "</font>{{name%.20s~..}} <font alpha='#A0'>{{clan}}</font>",
+    "formatLeftNick": "<font size='12'>{{name%.20s~..}} <font alpha='#A0'>{{clan}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightNick": "<font alpha='#A0'>{{clan}}</font> {{name%.20s~..}}",
+    "formatRightNick": "<font size='12'><font alpha='#A0'>{{clan}}</font> {{name%.20s~..}}</font>",
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
+    "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?12|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightVehicle": "<font face='mono' size='{{xvm-stat?13|0}}'><font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> </font>{{vehicle}}",
+    "formatRightVehicle": "<font face='mono' size='{{xvm-stat?12|0}}'><font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> </font>{{vehicle}}",
     // Extra fields. Fields are placed one above the other.
     // Set of formats for left panel (extended format supported, see extra-field.txt).
     "extraFieldsLeft": [

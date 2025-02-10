@@ -17,10 +17,6 @@
     "showStandardFrontLineInterface": true,
     // true - display battle rating (player satisfaction) widget (WG only, 1.27.1+).
     "showPlayerSatisfactionWidget": true,
-    // true - Show totals for your battle efficiency in first page
-    "showTotals": true,
-    // true - Enable display of battle tier.
-    "showBattleTier": true,
     // Customize "Manageable bonus to experience" panel.
     "bonusState": {
       // false - disable.

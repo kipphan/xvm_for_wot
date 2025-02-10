@@ -4,20 +4,13 @@
 {
   "captureBar": {
     // false - disable.
-    "enabled": false,
+    "enabled": true,
     // Y value (34 for vanilla client).
     "y": 65,
     // Change the distance between capture bars.
     "distanceOffset": 0,
     // Hide capture progress bar.
     "hideProgressBar": false,
-    // Ally and enemy bars colors (default: use system color)
-    "allyColor": null,
-    "enemyColor": null,
-    // Upper textfield offset in case of big font size.
-    "primaryTitleOffset": 7,
-    // Append plus to three capturers. Cant calculate more than three.
-    "appendPlus" : true,
     // Enemies capturing ally base.
     "enemy": {
       // Capture bar color (default: use system color).
@@ -32,20 +25,20 @@
         "format": "<font size='15' color='#FFFFFF'>{{l10n:allyBaseCapture}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
         // Full capture text format.
         "done": "<font size='15' color='#FFCC66'>{{l10n:allyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
-      // Shadow options.
-      "shadow": {
-          // false - no shadow.
-          "enabled": false,
-          "distance": 0,       // (in pixels)    / offset distance
-          "angle": 0,          // (0.0 .. 360.0) / offset angle
-          "color": "0x000000", // "0xXXXXXX"     / color
-          "alpha": 35,         // (0 .. 100)     / opacity
-          "blur": 3,           // (0.0 .. 255.0) / blur
-          "strength": 1        // (0.0 .. 255.0) / intensity
-      }
-    },
-    // Vehicles count textfield (left).
-    "players": {
+        // Shadow options.
+        "shadow": {
+            // false - no shadow.
+            "enabled": false,
+            "distance": 0,       // (in pixels)    / offset distance
+            "angle": 0,          // (0.0 .. 360.0) / offset angle
+            "color": "0x000000", // "0xXXXXXX"     / color
+            "alpha": 35,         // (0 .. 100)     / opacity
+            "blur": 3,           // (0.0 .. 255.0) / blur
+            "strength": 1        // (0.0 .. 255.0) / intensity
+        }
+      },
+      // Vehicles count textfield (left).
+      "players": {
         "x": -225,
         "y": 0,
         "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x113;</font>  <font color='#FFCC66'><b>{{cap.tanks}}</b></font>",
@@ -56,9 +49,9 @@
           "blur": 3,
           "strength": 1
         }
-    },
-    // Timer textfield (right).
-    "timer": {
+      },
+      // Timer textfield (right).
+      "timer": {
         "x": 200,
         "y": 0,
         "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x114;</font>  <font color='#FFCC66'><b>{{cap.time}}</b></font>",
@@ -69,9 +62,9 @@
           "blur": 3,
           "strength": 1
         }
-    },
-    // Background field.
-    "background": {
+      },
+      // Background field.
+      "background": {
         "x": 0,
         "y": 0,
         "format": "",
@@ -89,40 +82,24 @@
     "ally": {
       "color": null,
       "title": {
-        "$ref": {
-          "path": "captureBar.enemy.title"
-        },
+        "$ref": { "path":"captureBar.enemy.title" },
         "format": "<font size='15' color='#FFFFFF'>{{l10n:enemyBaseCapture}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
         "done": "<font size='15' color='#FFCC66'>{{l10n:enemyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>"
       },
-      "players": ${
-        "captureBar.enemy.players"
-      },
-      "timer": ${
-        "captureBar.enemy.timer"
-      },
-      "background": ${
-        "captureBar.enemy.background"
-      }
+      "players": ${"captureBar.enemy.players"},
+      "timer": ${"captureBar.enemy.timer"},
+      "background": ${"captureBar.enemy.background"}
     },
     // Base capture blocked.
     "block": {
       "color": null,
       "title": {
-        "$ref": {
-          "path": "captureBar.enemy.title"
-        },
+        "$ref": { "path":"captureBar.enemy.title" },
         "format": "<font size='15' color='#FFFFFF'>{{l10n:baseCaptureBlocked}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>"
       },
-      "players": ${
-        "captureBar.enemy.players"
-      },
-      "timer": ${
-        "captureBar.enemy.timer"
-      },
-      "background": ${
-        "captureBar.enemy.background"
-      }
+      "players": ${"captureBar.enemy.players"},
+      "timer": ${"captureBar.enemy.timer"},
+      "background": ${"captureBar.enemy.background"}
     }
   }
 }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Parameters of the Battle Statistics form.
  */
 {
@@ -46,33 +46,33 @@
     // Show border for frags field (useful for config tuning).
     "fragsFieldShowBorder": false,
     // X offset for allies squad icons.
-    "squadIconOffsetXLeft": -1,
+    "squadIconOffsetXLeft": 0,
     // X offset for enemies squad icons.
     "squadIconOffsetXRight": 0,
     // X offset for allies player names field.
-    "nameFieldOffsetXLeft": -15,
+    "nameFieldOffsetXLeft": 0,
     // X offset for enemies player names field.
-    "nameFieldOffsetXRight": -15,
+    "nameFieldOffsetXRight": 0,
     // Width of allies player names field.
     "nameFieldWidthLeft": 200,
     // Width of enemies names field.
     "nameFieldWidthRight": 200,
     // X offset for "formatLeftVehicle" field.
-    "vehicleFieldOffsetXLeft": 55,
+    "vehicleFieldOffsetXLeft": 36,
     // X offset for "formatRightVehicle" field.
-    "vehicleFieldOffsetXRight": 36,
+    "vehicleFieldOffsetXRight": 24,
     // Width of "formatLeftVehicle" field.
     "vehicleFieldWidthLeft": 160,
     // Width of "formatRightVehicle" field.
     "vehicleFieldWidthRight": 160,
     // X offset for allies vehicle icons.
-    "vehicleIconOffsetXLeft": 31,
+    "vehicleIconOffsetXLeft": 45,
     // X offset for enemies vehicle icons.
-    "vehicleIconOffsetXRight": 27,
+    "vehicleIconOffsetXRight": 45,
     // X offset for allies elite levels icons.
-    "prestigeOffsetXLeft": 26,
+    "prestigeOffsetXLeft": 0,
     // X offset for enemies elite levels icons.
-    "prestigeOffsetXRight": 26,
+    "prestigeOffsetXRight": 0,
     // X offset for allies frags.
     "fragsFieldOffsetXLeft": 19,
     // X offset for enemies frags.
@@ -82,13 +82,13 @@
     // Width of frags field for enemies.
     "fragsFieldWidthRight": 30,
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftNick": "{{name%.{{anonym?13|20}}s~..}}{{anonym? <font face='xvm' size='13'><b>&#x11E;</b></font>}} <font alpha='#A0'>{{clan}}</font>",
+    "formatLeftNick": "<font size='12'>{{name%.{{anonym?18|20}}s~..}}{{anonym? <font face='xvm' size='12'><b>&#x11E;</b></font>}} <font alpha='#A0'>{{clan}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightNick": "{{name%.20s~..}}<font alpha='#A0'>{{clan}}</font>",
+    "formatRightNick": "<font size='12'><font alpha='#A0'>{{clan}}</font> {{name%.20s~..}}</font>",
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
+    "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?12|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightVehicle": "<font face='mono' size='{{xvm-stat?13|0}}'><font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> </font>{{vehicle}}",
+    "formatRightVehicle": "<font face='mono' size='{{xvm-stat?12|0}}'><font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> </font>{{vehicle}}",
     // Display format for the left panel (macros allowed, see macros.txt).
     "formatLeftFrags": "{{frags}}",
     // Display format for the right panel (macros allowed, see macros.txt).
