@@ -41,8 +41,12 @@
   "battleLabels": ${"battleLabels.xc":"labels"},
   // Log of the received hits.
   "damageLog": ${"damageLog.xc":"damageLog"},
+  // ?
+  "expertPanel": ${"battle.xc":"expertPanel"},
   // Special XVM hotkeys.
   "hotkeys": ${"hotkeys.xc":"hotkeys"},
+  // ?
+  "squad": ${"squad.xc":"squad"},
   // Parameters of the Battle Loading screen.
   "battleLoading": ${"battleLoading.xc":"battleLoading"},
   // Parameters for the alternative view of the Battle Loading screen.
@@ -73,6 +77,8 @@
   "iconset": ${"iconset.xc":"iconset"},
   // Vehicle names mapping.
   "vehicleNames": ${"vehicleNames.xc":"vehicleNames"},
+  // ?
+  "export": ${"export.xc":"export"},
   // Parameters for tooltips.
   "tooltips": ${"tooltips.xc":"tooltips"},
   // Extra sounds settings.

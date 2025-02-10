@@ -20,8 +20,22 @@
     //    "statistics"   - "Statistics" page
     //    "vehicles"     - "Vehicles" page
     "contactsStartPage": "summary",
+    // number of column for sorting by default.
+    // Sort order: >0 - ascending, <0 - descending
+    // 1 - Nation
+    // 2 - Type
+    // 3 - Level
+    // 4 - Name
+    // 5 - Fights
+    // 6 - Wins
+    // 7 - Average XP
+    // 8 - Class mark
+    // 9 - xTE
+    "sortColumn": -5,
     // true - show xTE column in the vehicle list.
     "showXTEColumn": true,
+    // true - show extra data in profile (experimental).
+    "showExtraDataInProfile": true,
     // true - enable filter tanks in hangar by default.
     "inHangarFilterEnabled": false,
     // true - show filters on tanks.

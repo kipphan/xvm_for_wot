@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tooltips of vehicles in hangar.
  */
 {
@@ -176,10 +176,8 @@
     "logLocalization": false
   }
 }
-
 /*
   List of possible values: (if the parameter is not relevant for some tank, it will be omitted)
-
   "circularVisionRadius",                 - Vision
   "piercingPower",                        - Penetration of basic shell (from - to)
   "piercingPowerAvg",                     - Penetration of basic shell (avg)

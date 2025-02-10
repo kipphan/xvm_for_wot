@@ -1,12 +1,14 @@
 ﻿/**
  * Camera settings.
  */
- {
+{
   "camera": {
     // false - disable camera settings.
     "enabled": false,
     // true - disable red flash when enemy hit your tank.
     "noFlashBang": false,
+    // true - hide the tips about switching to siege mode and aiming mode changing in strategic mode..
+    "hideHint": false,
     // Arcade mode.
     "arcade": {
       // Camera distance range: [min, max], default - [2, 25].
@@ -40,7 +42,7 @@
     "sniper": {
       // List of multiplicities for the sniper mode,
       // Default: [ 2, 4, 8 ]. It's possible to use a greater number of values.
-      "zooms": [2, 4, 8, 16, 24, 32],
+      "zooms": [2, 4, 8],
       // Start zoom value (null for default behavior - depends on the settings in the client).
       "startZoom": null,
       // Zoom Indicator (see extra-field.txt for parameters description),
@@ -86,7 +88,7 @@
         }
       },
       // false - disable the shot recoil effect (for the enabled dynamic camera option).
-      "shotRecoilEffect": false,
+      "shotRecoilEffect": true,
       // true - disable dimming and greening in sniper scope.
       "noBinoculars": false
     }

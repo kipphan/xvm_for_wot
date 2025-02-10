@@ -82,9 +82,9 @@
     // Width of frags field for enemies.
     "fragsFieldWidthRight": 30,
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftNick": "{{name%.{{anonym?13|15}}s~..}}{{anonym? <font face='xvm' size='13'><b>&#x11E;</b></font>}} <font alpha='#A0'>{{clan}}</font>",
+    "formatLeftNick": "{{name%.{{anonym?13|20}}s~..}}{{anonym? <font face='xvm' size='13'><b>&#x11E;</b></font>}} <font alpha='#A0'>{{clan}}</font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightNick": "<font alpha='#A0'>{{clan}}</font> {{name%.15s~..}}",
+    "formatRightNick": "{{name%.20s~..}}<font alpha='#A0'>{{clan}}</font>",
     // Display format for the left panel (macros allowed, see macros.txt).
     "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).

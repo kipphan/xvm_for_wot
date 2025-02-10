@@ -32,8 +32,8 @@
         "format": "<font size='15' color='#FFFFFF'>{{l10n:allyBaseCapture}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
         // Full capture text format.
         "done": "<font size='15' color='#FFCC66'>{{l10n:allyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
-        // Shadow options.
-        "shadow": {
+      // Shadow options.
+      "shadow": {
           // false - no shadow.
           "enabled": false,
           "distance": 0,       // (in pixels)    / offset distance
@@ -42,10 +42,10 @@
           "alpha": 35,         // (0 .. 100)     / opacity
           "blur": 3,           // (0.0 .. 255.0) / blur
           "strength": 1        // (0.0 .. 255.0) / intensity
-        }
-      },
-      // Vehicles count textfield (left).
-      "players": {
+      }
+    },
+    // Vehicles count textfield (left).
+    "players": {
         "x": -225,
         "y": 0,
         "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x113;</font>  <font color='#FFCC66'><b>{{cap.tanks}}</b></font>",
@@ -56,9 +56,9 @@
           "blur": 3,
           "strength": 1
         }
-      },
-      // Timer textfield (right).
-      "timer": {
+    },
+    // Timer textfield (right).
+    "timer": {
         "x": 200,
         "y": 0,
         "format": "<font face='xvm' size='15' color='#FFFFFF'>&#x114;</font>  <font color='#FFCC66'><b>{{cap.time}}</b></font>",
@@ -69,9 +69,9 @@
           "blur": 3,
           "strength": 1
         }
-      },
-      // Background field.
-      "background": {
+    },
+    // Background field.
+    "background": {
         "x": 0,
         "y": 0,
         "format": "",

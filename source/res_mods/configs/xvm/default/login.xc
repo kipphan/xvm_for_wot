@@ -3,6 +3,10 @@
  */
 {
   "login": {
+    // Skip intro movie
+    "skipIntro": true,
+    // Save last server
+    "saveLastServer": true,
     // Auto enter to the game.
     //  - Option to enable/disable automatic login to the game when the WGC login-manager is not available;
     //    Otherwise, client login is controlled by an option in the client "Display server selection upon game launch".
@@ -16,7 +20,7 @@
       // true - enable display of ping to the servers.
       "enabled": false,
       // Update interval, in ms.
-      "updateInterval": 1000,
+      "updateInterval": 10000,
       // Axis field coordinates.
       "x": 5,
       "y": 40,

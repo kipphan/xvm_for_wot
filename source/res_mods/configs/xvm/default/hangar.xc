@@ -47,7 +47,7 @@
     "combatIntelligence": {
       // true - show pop-up messages in the hangar.
       "showPopUpMessages": true,
-      // true - show unread notifications counter in the menu.
+      // false - disable display unread notifications counter in the menu.
       "showUnreadCounter": true
     },
     // Parameters of the "Session statistics" button.
@@ -79,9 +79,11 @@
       "offsetY": 0
     },
     // true - enable crew auto return function (the option works if there are free places in the barracks).
-    "enableCrewAutoReturn": true,
+    "enableCrewAutoReturn": false,
     // true - return crew check box is selected by default.
-    "crewReturnByDefault": true,
+    "crewReturnByDefault": false,
+    // Number of perks to show without grouping.
+    "crewMaxPerksCount": 8,
     // Show/hide common quests button or change its parameters.
     "commonQuests": {
       // Show common quests button in hangar.
@@ -301,7 +303,7 @@
         "strength": 2
       }
     },
-    // true - show counter on buttons in lobby menu.
+// true - show counter on buttons in lobby menu.
     "showLobbyMenuCounter": true,
     // true - show counter on buttons in battle selector.
     "showBattleSelectorCounter": true,
@@ -327,6 +329,18 @@
     "allowNotificationsButtonBlinking": true,
     // true - allow messenger bar channel (clan or private chat) button blinking.
     "allowChannelButtonBlinking": true,
+    // Parameters for barracks.
+    "barracks": {
+      // Order of nations.
+      //"nations_order": ["ussr", "germany", "usa", "china", "france", "uk", "japan", "czech", "poland", "sweden", "italy"],
+      "nations_order": [],
+      // Order of crew roles.
+      // "roles_order": ["commander", "gunner", "driver", "radioman", "loader"],
+      "roles_order": [],
+      // Tankmen sorting criteria, available options: (minus = reverse order)
+      // "nation", "role", "level", "-level", "XP", "-XP", "gender", "-gender", "inVehicle", "-inVehicle", "vehicle"
+      "sorting_criteria": ["nation", "inVehicle", "vehicle", "role"]
+    },
     // Parameters for tank carousel.
     "carousel": ${"carousel.xc":"carousel"},
     // Parameters for widgets.
