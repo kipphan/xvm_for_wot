@@ -7,7 +7,7 @@
     // Floating damage values.
     "damageText": {
       // false - disable.
-      "enabled": false,
+      "enabled": true,
       // Axis field coordinates.
       "x": 0,
       "y": -67,
@@ -470,7 +470,7 @@
       "y": -92,
       "alpha": 100
     },
-    // Damage indicator (ricochet, critical hit,...).
+    // Damage indicator (ricochet, critical hit, ...).
     "damageIndicator": {
       "enabled": true,
       "showText": true,

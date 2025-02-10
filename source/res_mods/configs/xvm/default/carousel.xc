@@ -55,12 +55,12 @@
     //"nations_order": ["ussr", "germany", "usa", "china", "france", "uk", "japan", "czech", "poland", "sweden", "italy"],
     "nations_order": [],
     // Order of types of vehicles.
-    "types_order": ["lightTank", "mediumTank", "heavyTank", "AT-SPG", "SPG"],
+    "types_order": [],
     // Tank sorting criteria, available options: (minus = reverse order)
     // "nation", "type", "level", "-level", "maxBattleTier", "-maxBattleTier", "premium", "-premium",
     // "battles", "-battles", "winRate", "-winRate", "markOfMastery", "-markOfMastery", "xtdb", "-xtdb",
     // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun"
-    "sorting_criteria": ["nation", "type", "level"],
+    "sorting_criteria": ["-marksOnGun", "-damageRating", "-xte", "-xtdb"],
     // true - suppress the tooltips for tanks in carousel.
     "suppressCarouselTooltips": false
   }

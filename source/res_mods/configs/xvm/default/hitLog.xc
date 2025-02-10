@@ -90,17 +90,17 @@
       },
       // Color by damage kind (macro {{c:dmg-kind}}).
       "c:dmg-kind": {
-        "shot": "#FFAA55",            // shot.
-        "fire": "#FF6655",            // fire.
-        "ramming": "#998855",         // ramming.
+        "shot":            "#FFAA55", // shot.
+        "fire":            "#FF6655", // fire.
+        "ramming":         "#998855", // ramming.
         "world_collision": "#228855", // world collision.
-        "drowning": "#CCCCCC",        // drowning.
-        "overturn": "#CCCCCC",        // overturn.
-        "death_zone": "#CCCCCC",      // death zone.
-        "gas_attack": "#CCCCCC",      // gas attack.
-        "art_attack": "#CCCCCC",      // art attack.
-        "air_strike": "#CCCCCC",      // air strike.
-        "minefield": "#CCCCCC"        // minefield.
+        "drowning":        "#CCCCCC", // drowning.
+        "overturn":        "#CCCCCC", // overturn.
+        "death_zone":      "#CCCCCC", // death zone.
+        "gas_attack":      "#CCCCCC", // gas attack.
+        "art_attack":      "#CCCCCC", // art attack.
+        "air_strike":      "#CCCCCC", // air strike.
+        "minefield":       "#CCCCCC"  // minefield.
       },
       // Type of damage (macro {{dmg-kind-player}}).
       "dmg-kind-player": {
@@ -130,60 +130,62 @@
       },
       // Color by shell kind (macro {{type-shell}}).
       "c:type-shell": {
-        "armor_piercing": "#CCCCCC",      // armor piercing.
-        "high_explosive": "#CCCCCC",      // high explosive.
+        "armor_piercing":      "#CCCCCC", // armor piercing.
+        "high_explosive":      "#CCCCCC", // high explosive.
         "high_explosive_stun": "#CCCCCC", // stunning high explosive.
-        "armor_piercing_cr": "#CCCCCC",   // armor piercing composite rigid.
-        "armor_piercing_he": "#CCCCCC",   // armor piercing high explosive.
-        "hollow_charge": "#CCCCCC",       // high explosive anti-tank.
-        "not_shell": "#CCCCCC"            // another source of damage.
+        "armor_piercing_cr":   "#CCCCCC", // armor piercing composite rigid.
+        "armor_piercing_he":   "#CCCCCC", // armor piercing high explosive.
+        "hollow_charge":       "#CCCCCC", // high explosive anti-tank.
+        "flame":               "#CCCCCC", // flame. (Lesta)
+        "armor_piercing_fsds": "#CCCCCC", // armor piercing fin-stabilized discarding sabot. (Lesta)
+        "not_shell":           "#CCCCCC"  // another source of damage.
       },
       // Vehicle type (macro {{vtype}}).
       "vtype": {
-        "HT": "<font face='xvm'>&#x3F;</font>",          // heavy tank.
-        "MT": "<font face='xvm'>&#x3B;</font>",          // medium tank.
-        "LT": "<font face='xvm'>&#x3A;</font>",          // light tank.
-        "TD": "<font face='xvm'>&#x2E;</font>",          // tank destroyer.
-        "SPG": "<font face='xvm'>&#x2D;</font>",         // SPG.
+        "HT":          "<font face='xvm'>&#x3F;</font>", // heavy tank.
+        "MT":          "<font face='xvm'>&#x3B;</font>", // medium tank.
+        "LT":          "<font face='xvm'>&#x3A;</font>", // light tank.
+        "TD":          "<font face='xvm'>&#x2E;</font>", // tank destroyer.
+        "SPG":         "<font face='xvm'>&#x2D;</font>", // SPG.
         "not_vehicle": "<font face='xvm'>&#x105;</font>" // another source of damage.
       },
       // Color by vehicle type (macro {{c:vtype}}).
       "c:vtype": {
-        "HT": "#FFACAC",         // heavy tank.
-        "MT": "#FFF198",         // medium tank.
-        "LT": "#A2FF9A",         // light tank.
-        "TD": "#A0CFFF",         // tank destroyer.
-        "SPG": "#EFAEFF",        // SPG.
-        "not_vehicle": "#CCCCCC" // another source of damage.
+        "HT":          "#FFACAC", // heavy tank.
+        "MT":          "#FFF198", // medium tank.
+        "LT":          "#A2FF9A", // light tank.
+        "TD":          "#A0CFFF", // tank destroyer.
+        "SPG":         "#EFAEFF", // SPG.
+        "not_vehicle": "#CCCCCC"  // another source of damage.
       },
       // Part of vehicle (macro {{comp-name}}).
       "comp-name": {
-        "turret": "{{l10n:turret}}",   // turret.
-        "hull": "{{l10n:hull}}",       // body.
+        "turret":  "{{l10n:turret}}",  // turret.
+        "hull":    "{{l10n:hull}}",    // body.
         "chassis": "{{l10n:chassis}}", // suspension.
-        "wheel": "{{l10n:wheel}}",     // wheel.
-        "gun": "{{l10n:gun}}",         // gun.
+        "wheel":   "{{l10n:wheel}}",   // wheel.
+        "gun":     "{{l10n:gun}}",     // gun.
         "unknown": ""                  // unknown.
       },
       // Team attachment of the targets (macro {{team-dmg}}).
       "team-dmg": {
-        "ally-dmg": "",  // ally.
+        "ally-dmg":  "", // ally.
         "enemy-dmg": "", // enemy.
-        "player": "",    // self damage.
-        "unknown": ""    // unknown.
+        "player":    "", // self damage.
+        "unknown":   ""  // unknown.
       },
       // Color by team attachment of the targets (macro {{c:team-dmg}}).
       "c:team-dmg": {
-        "ally-dmg": "#00EAFF",  // ally.
+        "ally-dmg":  "#00EAFF", // ally.
         "enemy-dmg": "#CCCCCC", // enemy.
-        "player": "#228855",    // self damage.
-        "unknown": "#CCCCCC"    // unknown.
+        "player":    "#228855", // self damage.
+        "unknown":   "#CCCCCC"  // unknown.
       },
       // Shell currency (macro {{costShell}}).
       "costShell": {
-        "gold-shell": "",   // gold.
+        "gold-shell":   "", // gold.
         "silver-shell": "", // credits.
-        "unknown": ""       // unknown.
+        "unknown":      ""  // unknown.
       },
       // Color by shell currency (macro {{c:costShell}}).
       "c:costShell": {

@@ -17,7 +17,7 @@
     },
     // Log of applied damage (see hitLog.xc).
     "hitLogBody": {
-      "enabled": false,
+      "enabled": true,
       "updateEvent": "PY(ON_HIT_LOG), ON_PANEL_MODE_CHANGED",
       "x": "{{pp.mode=0?{{battletype-key=epic_battle?240|5}}|{{py:sum({{pp.widthLeft}},{{py:xvm.hitLog.log.x}})}}}}",
       "y": "{{pp.mode=0?{{battletype-key=epic_battle?80|90}}|{{py:xvm.hitLog.log.y}}}}",
@@ -41,7 +41,7 @@
     },
     // Panel with total player efficiency.
     "totalEfficiency": {
-      "enabled": false,
+      "enabled": true,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY), ON_PANEL_MODE_CHANGED",
       "x": "{{pp.mode=0?{{battletype-key=epic_battle?240|5}}|{{py:sum({{pp.widthLeft}},50)}}}}",
       "y": "{{pp.mode=0?{{battletype-key=epic_battle?55|65}}|35}}",
@@ -64,7 +64,7 @@
     },
     // Avg damage on current vehicle.
     "avgDamage": {
-      "enabled": false,
+      "enabled": true,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY)",
       "x": -170,
       "y": 45,
@@ -76,7 +76,7 @@
     },
     // Threshold necessary for achievements "High caliber".
     "mainGun": {
-      "enabled": false,
+      "enabled": true,
       "updateEvent": "PY(ON_TOTAL_EFFICIENCY)",
       "x": 170,
       "y": 45,
@@ -87,7 +87,7 @@
     },
     // Log of the received damage (see damageLog.xc).
     "damageLog": {
-      "enabled": false,
+      "enabled": true,
       "updateEvent": "PY(ON_HIT)",
       "x": "{{py:xvm.damageLog.log.x}}",
       "y": "{{py:xvm.damageLog.log.y}}",
@@ -124,7 +124,7 @@
     },
     // Display the last damage (hit) (see damageLog.xc).
     "lastHit": {
-      "enabled": false,
+      "enabled": true,
       "updateEvent": "PY(ON_LAST_HIT)",
       "tweens": [
         // "damageLog"/"timeDisplayLastHit"
@@ -193,7 +193,7 @@
     // Repair timer for engine.
     "repairTimeEngine": {
       "$ref": { "path":"def.repairTimeItem" },
-      "enabled": true,
+      "enabled": false,
       "updateEvent": "PY(ON_ENGINE_UPDATE)",
       "x": 4,
       "y": -147,
@@ -202,7 +202,7 @@
     // Repair timer for gun.
     "repairTimeGun": {
       "$ref": { "path":"def.repairTimeItem" },
-      "enabled": true,
+      "enabled": false,
       "updateEvent": "PY(ON_GUN_UPDATE)",
       "x": 4,
       "y": -69,
@@ -211,7 +211,7 @@
     // Repair timer for turret rotator.
     "repairTimeTurret": {
       "$ref": { "path":"def.repairTimeItem" },
-      "enabled": true,
+      "enabled": false,
       "updateEvent": "PY(ON_TURRETROTATOR_UPDATE)",
       "x": 4,
       "y": -30,
@@ -220,7 +220,7 @@
     // Repair timer for complex-items (chassis\wheels).
     "repairTimeComplex": {
       "$ref": { "path":"def.repairTimeItem" },
-      "enabled": true,
+      "enabled": false,
       "updateEvent": "PY(ON_COMPLEX_UPDATE)",
       "x": 177,
       "y": -147,
@@ -229,7 +229,7 @@
     // Repair timer for surveying device.
     "repairTimeSurveying": {
       "$ref": { "path":"def.repairTimeItem" },
-      "enabled": true,
+      "enabled": false,
       "updateEvent": "PY(ON_SURVEYINGDEVICE_UPDATE)",
       "x": 177,
       "y": -108,
@@ -238,7 +238,7 @@
     // Repair timer for radio.
     "repairTimeRadio": {
       "$ref": { "path":"def.repairTimeItem" },
-      "enabled": true,
+      "enabled": false,
       "updateEvent": "PY(ON_RADIO_UPDATE)",
       "x": 177,
       "y": -69,

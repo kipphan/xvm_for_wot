@@ -7,7 +7,7 @@
 {
   "minimap": {
     // false - disable.
-    "enabled": false,
+    "enabled": true,
     // Map image transparency.
     "mapBackgroundImageAlpha": 100,
     // Self icon color. White pointing arrow.

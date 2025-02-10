@@ -89,24 +89,40 @@
     "ally": {
       "color": null,
       "title": {
-        "$ref": { "path":"captureBar.enemy.title" },
+        "$ref": {
+          "path": "captureBar.enemy.title"
+        },
         "format": "<font size='15' color='#FFFFFF'>{{l10n:enemyBaseCapture}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>",
         "done": "<font size='15' color='#FFCC66'>{{l10n:enemyBaseCaptured}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>"
       },
-      "players": ${"captureBar.enemy.players"},
-      "timer": ${"captureBar.enemy.timer"},
-      "background": ${"captureBar.enemy.background"}
+      "players": ${
+        "captureBar.enemy.players"
+      },
+      "timer": ${
+        "captureBar.enemy.timer"
+      },
+      "background": ${
+        "captureBar.enemy.background"
+      }
     },
     // Base capture blocked.
     "block": {
       "color": null,
       "title": {
-        "$ref": { "path":"captureBar.enemy.title" },
+        "$ref": {
+          "path": "captureBar.enemy.title"
+        },
         "format": "<font size='15' color='#FFFFFF'>{{l10n:baseCaptureBlocked}}</font> <font size='14' color='#F0F0F0'>({{cap.points}})</font>"
       },
-      "players": ${"captureBar.enemy.players"},
-      "timer": ${"captureBar.enemy.timer"},
-      "background": ${"captureBar.enemy.background"}
+      "players": ${
+        "captureBar.enemy.players"
+      },
+      "timer": ${
+        "captureBar.enemy.timer"
+      },
+      "background": ${
+        "captureBar.enemy.background"
+      }
     }
   }
 }

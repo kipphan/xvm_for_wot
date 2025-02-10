@@ -34,7 +34,7 @@
     // Strategic mode (arty).
     "strategic": {
       // Camera distance range: [min, max], default - [40, 120].
-      "distRange": [40, 160],
+      "distRange": [40, 120],
       // false - disable the shot recoil effect (for the enabled dynamic camera option).
       "shotRecoilEffect": true
     },

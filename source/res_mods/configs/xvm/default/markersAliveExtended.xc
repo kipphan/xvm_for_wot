@@ -7,7 +7,7 @@
     // Floating damage values.
     "damageText": {
       // false - disable.
-      "enabled": false,
+      "enabled": true,
       // Axis field coordinates.
       "x": 0,
       "y": -67,

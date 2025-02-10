@@ -8,7 +8,7 @@
     // true - display total experience in first page.
     "showTotalExperience": true,
     // true - display crew experience in first page.
-    "showCrewExperience": true,
+    "showCrewExperience": false,
     // true - display net income of credits in first page.
     "showNetIncome": true,
     // true - display shots precision and damage in first page under credits and XP.

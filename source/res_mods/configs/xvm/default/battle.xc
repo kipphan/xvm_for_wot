@@ -17,7 +17,7 @@
     "highlightVehicleIcon": true,
     // Format of clock on the Debug Panel (near FPS).
     // http://php.net/date
-    "clockFormat": "",
+    "clockFormat": "H:i",
     // Path to clan icons folder relative to res_mods/mods/shared_resources/xvm/res.
     "clanIconsFolder": "clanicons/",
     // Sixth sense indicator settings

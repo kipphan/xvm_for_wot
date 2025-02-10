@@ -13,7 +13,7 @@
   "battleLoadingTips": {
     // Format of clock on the Battle Loading Screen.
     // http://php.net/date
-    "clockFormat": "",
+    "clockFormat": "H:i:s",
     // true - enable display of battle tier.
     "showBattleTier": false,
     // true - disable platoon/rank icons. This blank space can house, for example, clan logos.
@@ -65,15 +65,15 @@
     // Display format for the right panel (macros allowed, see macros.txt).
     "formatRightNick": "<font alpha='#A0'>{{clan}}</font> {{name%.15s~..}} <img src='xvm://res/icons/xvm/xvm-user-{{xvm-user|none}}.png'> <img src='xvm://res/icons/flags/{{flag|default}}.png' width='16' height='13' vspace='-2'>",
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:r}}'>{{r}}</font></font>",
+    "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:xr}}'>{{r}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightVehicle": "<font face='mono' size='{{xvm-stat?13|0}}'><font color='{{c:r}}'>{{r}}</font> </font>{{vehicle}}",
+    "formatRightVehicle": "<font face='mono' size='{{xvm-stat?13|0}}'><font color='{{c:xr}}'>{{r}}</font> </font>{{vehicle}}",
     // Extra fields. Fields are placed one above the other.
     // Set of formats for left panel (extended format supported, see extra-field.txt)
     "extraFieldsLeft": [
       ${"templates.clanIcon"}
     ],
-    // Set of formats for right panel (extended format supported, see extra-field.txt)
+    // Set of formats for right panel (extended format supported, see extra-field.txt).
     "extraFieldsRight": [
       ${"templates.clanIcon"}
     ]

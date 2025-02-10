@@ -13,7 +13,7 @@
   "battleLoading": {
     // Format of clock on the Battle Loading Screen.
     // http://php.net/date
-    "clockFormat": "",
+    "clockFormat": "H:i:s",
     // true - enable display of battle tier.
     "showBattleTier": false,
     // true - disable platoon/rank icons. This blank space can house, for example, clan logos.
@@ -61,9 +61,9 @@
     // false - disable highlight of icons during battle start depends on ready state.
     "darkenNotReadyIcon": true,
     // Display format for the left panel (macros allowed, see macros.txt).
-    "formatLeftNick": "</font> {{name%.20s~..}}<font alpha='#A0'>{{clan}}</font>",
+    "formatLeftNick": "</font>{{name%.20s~..}} <font alpha='#A0'>{{clan}}</font>",
     // Display format for the right panel (macros allowed, see macros.txt).
-    "formatRightNick": "{{name%.20s~..}}<font alpha='#A0'>{{clan}}</font>",
+    "formatRightNick": "<font alpha='#A0'>{{clan}}</font> {{name%.20s~..}}",
     // Display format for the left panel (macros allowed, see macros.txt).
     "formatLeftVehicle": "{{vehicle}}<font face='mono' size='{{xvm-stat?13|0}}'> <font color='{{c:kb}}'>{{kb%2d~k|--k}}</font> <font color='{{c:xr}}'>{{r}}</font> <font color='{{c:winrate}}'>{{winrate%2d~%|--%}}</font></font>",
     // Display format for the right panel (macros allowed, see macros.txt).

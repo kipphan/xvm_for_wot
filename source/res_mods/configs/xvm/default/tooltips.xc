@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tooltips of vehicles in hangar.
  */
 {

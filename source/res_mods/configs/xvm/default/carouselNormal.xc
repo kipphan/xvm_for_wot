@@ -122,8 +122,7 @@
         "x": 145, "y": 54, "align": "right", "alpha": 100,
         "format": "<b><font face='$FieldFont' size='11' color='{{v.c_damageRating|#CFCFCF}}'>{{v.damageRating%2d~%}}</font></b>",
         "shadow": ${ "def.textFieldShadow" }
-      },
-      {}
+      }
     ]
   }
 }

@@ -365,8 +365,8 @@
       // Maximum width of the player name column. Default is 158.
       "nickMaxWidth": 158,
       // Display format for player nickname (macros allowed, see macros.txt).
-      "nickFormatLeft": "<font alpha='{{alive?#FF|#80}}'>{{name%.{{anonym?10|12}}s~..}}{{anonym? <font face='xvm' size='19'>&#x11E;</font>}}</font> <font alpha='#A0'>{{clan}}</font>",
-      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font> <font alpha='{{alive?#FF|#80}}'>{{name%.12s~..}}</font>",
+      "nickFormatLeft": "<font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{name%.{{anonym?10|12}}s~..}}{{anonym? <font face='xvm' size='19'>&#x11E;</font>}}</font> <font alpha='#A0'>{{clan}}</font>",
+      "nickFormatRight": "<font alpha='#A0'>{{clan}}</font> <font color='{{c:xr}}' alpha='{{alive?#FF|#80}}'>{{name%.12s~..}}</font>",
       // Shadow for player name field (default null = no shadow, as in vanillas client).
       "nickShadowLeft": null,
       "nickShadowRight": null,

@@ -21,7 +21,7 @@
       // "dy"       - vertical shift
       // "alpha"    - transparency
       // "scale"    - scale
-
+      //
       // Nation flag.
       "flag": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1 },
       // Vehicle icon.
@@ -41,11 +41,11 @@
       // Info text for "Buy vehicle" and "Buy slot" slots.
       "infoBuy": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1, "textFormat": {}, "shadow": {} },
       // Clan lock timer.
-      "clanLock": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100 },
+      "clanLock": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1 },
       // Price.
-      "price": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100 },
+      "price": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1 },
       // Action price.
-      "actionPrice": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100 },
+      "actionPrice": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1 },
       // Favorite vehicle mark.
       "favorite": { "enabled": true, "dx": 16, "dy": 3.5, "alpha": 100, "scale": 0.9 },
       // Vehicle mark with the ability to earn bonds.
@@ -55,7 +55,7 @@
       // Core Vehicles mark for the Battle Pass.
       "coreBorder": { "enabled": true, "alpha": 100 },
       // Stats field that appears on the mouse hover.
-      "stats": { "enabled": false, "dx": 0, "dy": 0, "alpha": 100, "textFormat": {}, "shadow": {} },
+      "stats": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1, "textFormat": {}, "shadow": {} },
       // Battle Pass progression points.
       "progressionPoints": { "enabled": true, "dx": 0, "dy": 0, "alpha": 100, "scale": 1 }
     },

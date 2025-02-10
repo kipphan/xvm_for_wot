@@ -47,6 +47,15 @@
       { "value": 50.4, "alpha": ${"def.alphaHP.average"      } }, // alpha for HP <= 50%
       { "value": 100,  "alpha": ${"def.alphaHP.above_average"} }  // alpha for HP > 50%
     ],
+    // Dynamic transparency for XVM Scale.
+    "x": [
+      { "value": 16.4, "alpha": ${"def.alphaRating.very_bad" } }, // 00 - 16 - very bad  (20% of players)
+      { "value": 33.4, "alpha": ${"def.alphaRating.bad"      } }, // 17 - 33 - bad       (better than 20% of players)
+      { "value": 52.4, "alpha": ${"def.alphaRating.normal"   } }, // 34 - 52 - normal    (better than 60% of players)
+      { "value": 75.4, "alpha": ${"def.alphaRating.good"     } }, // 53 - 75 - good      (better than 90% of players)
+      { "value": 92.4, "alpha": ${"def.alphaRating.very_good"} }, // 76 - 92 - very good (better than 99% of players)
+      { "value": 999,  "alpha": ${"def.alphaRating.unique"   } }  // 93 - XX - unique    (better than 99.9% of players)
+    ],
     // Current scales values for ratings are listed on this page: https://modxvm.com/en/ratings/xvm-scale/colors/
     //
     // Custom dynamic transparency by ratings.
@@ -60,15 +69,6 @@
     //  { "value": 5000,  "alpha": ${"def.alphaRating.very_good"} }, // 3001 - 5000  - very good
     //  { "value": 99999, "alpha": ${"def.alphaRating.unique"   } }  // 5001 - 99999 - unique
     // ],
-    // Dynamic transparency for XVM Scale.
-    "x": [
-      { "value": 16.4, "alpha": ${"def.alphaRating.very_bad" } }, // 00 - 16 - very bad  (20% of players)
-      { "value": 33.4, "alpha": ${"def.alphaRating.bad"      } }, // 17 - 33 - bad       (better than 20% of players)
-      { "value": 52.4, "alpha": ${"def.alphaRating.normal"   } }, // 34 - 52 - normal    (better than 60% of players)
-      { "value": 75.4, "alpha": ${"def.alphaRating.good"     } }, // 53 - 75 - good      (better than 90% of players)
-      { "value": 92.4, "alpha": ${"def.alphaRating.very_good"} }, // 76 - 92 - very good (better than 99% of players)
-      { "value": 999,  "alpha": ${"def.alphaRating.unique"   } }  // 93 - XX - unique    (better than 99.9% of players)
-    ],
     // Dynamic transparency by efficiency.
     "eff": [
       { "value": 615,   "alpha": ${"def.alphaRating.very_bad"  } },

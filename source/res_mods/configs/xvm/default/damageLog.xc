@@ -50,15 +50,14 @@
     {{n-crits}}        - number of crits received per hit, 0 - if not received.
     {{hp}}             - текущий запас прочности.
 */
-
 {
   "damageLog": {
     // false - disable.
     "enabled": false,
     // true - disable standard detailed damage.
-    "disabledDetailStats": false,
+    "disabledDetailStats": true,
     // true - disable standard summarized damage.
-    "disabledSummaryStats": false,
+    "disabledSummaryStats": true,
     // Log of the received damage.
     "log": {
       // true - allow to move log in battle and disallow macros for "x" and "y" settings.

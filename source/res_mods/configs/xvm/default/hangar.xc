@@ -47,7 +47,7 @@
     "combatIntelligence": {
       // true - show pop-up messages in the hangar.
       "showPopUpMessages": true,
-      // false - disable display unread notifications counter in the menu.
+      // true - show unread notifications counter in the menu.
       "showUnreadCounter": true
     },
     // Parameters of the "Session statistics" button.
@@ -79,11 +79,9 @@
       "offsetY": 0
     },
     // true - enable crew auto return function (the option works if there are free places in the barracks).
-    "enableCrewAutoReturn": false,
+    "enableCrewAutoReturn": true,
     // true - return crew check box is selected by default.
     "crewReturnByDefault": false,
-    // Number of perks to show without grouping.
-    "crewMaxPerksCount": 8,
     // Show/hide common quests button or change its parameters.
     "commonQuests": {
       // Show common quests button in hangar.
@@ -291,6 +289,7 @@
         "great": 30000,
         "good": 10000,
         "poor": 3000
+        // Below this value the queue might be long.
       },
       // Shadow options.
       "shadow": {

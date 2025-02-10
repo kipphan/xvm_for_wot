@@ -12,7 +12,7 @@
     //    Otherwise, client login is controlled by an option in the client "Display server selection upon game launch".
     "autologin": false,
     // Auto confirm old replays playing.
-    "confirmOldReplays": true,
+    "confirmOldReplays": false,
     // Do not show the specified servers in the servers list, for example, ["RU1", "RU3"].
     "disabledServers": [],
     // Ping servers.
@@ -73,11 +73,11 @@
       // Threshold values defining response quality.
       "threshold": {
         // Below this value response is great.
-        "great": 30,
+        "great": 35,
         // Below this value response is good.
-        "good": 50,
+        "good": 60,
         // Below this value response is poor.
-        "poor": 70
+        "poor": 100
         // Values above define bad response.
       },
       // Shadow options.
