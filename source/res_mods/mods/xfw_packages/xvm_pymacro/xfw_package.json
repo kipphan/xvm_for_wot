@@ -3,7 +3,7 @@
     "name": "XVM",
     "description": "XVM",
 
-    "version": "12.0.0.0080",
+    "version": "12.1.0.0099",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",

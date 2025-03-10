@@ -289,7 +289,7 @@
         "strength": 2
       }
     },
-// true - show counter on buttons in lobby menu.
+    // true - show counter on buttons in lobby menu.
     "showLobbyMenuCounter": true,
     // true - show counter on buttons in battle selector.
     "showBattleSelectorCounter": true,

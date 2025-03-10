@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Main configuration file (hereinafter - the configuration).
  *
  * Attention! Use \n as newline character instead of <br> tag
@@ -33,6 +33,7 @@
 
     // Address to config updates.
     "url": "https://modxvm.com/"
+
   },
 
   // Parameters for login screen.

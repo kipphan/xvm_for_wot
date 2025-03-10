@@ -3,7 +3,7 @@
     "name": "XVM Tooltips",
     "description": "XVM Tooltips module",
 
-    "version": "12.0.0.0080",
+    "version": "12.1.0.0099",
     "dependencies": ["com.modxvm.xvm","com.modxvm.xvm.limits"],
 
     "url": "https://modxvm.com/",

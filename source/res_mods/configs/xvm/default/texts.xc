@@ -15,7 +15,7 @@
       "SPG": "{{l10n:SPG}}",
       // Text for tank destroyers.
       "TD":  "{{l10n:TD}}"
-	},
+    },
     // Text for {{marksOnGun}}, {{v.marksOnGun}} macros.
     "marksOnGun": {
       "_0": "0",
@@ -112,5 +112,5 @@
       "persist": "persist",
       "regular": ""
     }
-   }
+  }
 }

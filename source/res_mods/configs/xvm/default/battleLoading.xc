@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Parameters of the Battle Loading screen.
  */
 {
