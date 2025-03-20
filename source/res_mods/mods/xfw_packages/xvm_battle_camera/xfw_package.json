@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.camera",
     "name": "XVM Battle Camera",
     "description": "XVM Battle Camera module",
-    "version": "12.1.0.0099",
+    "version": "12.2.0.0015",
     "dependencies": [
         "com.modxvm.xfw.actionscript",
         "com.modxvm.xfw.libraries",

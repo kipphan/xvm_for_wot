@@ -59,7 +59,8 @@
     // Tank sorting criteria, available options: (minus = reverse order)
     // "nation", "type", "level", "-level", "maxBattleTier", "-maxBattleTier", "premium", "-premium",
     // "battles", "-battles", "winRate", "-winRate", "markOfMastery", "-markOfMastery", "xtdb", "-xtdb",
-    // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun"
+    // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun",
+    // "battlePassPoints", "-battlePassPoints"
     "sorting_criteria": ["-marksOnGun", "-damageRating", "-xte", "-xtdb"],
     // true - suppress the tooltips for tanks in carousel.
     "suppressCarouselTooltips": false
