@@ -7,8 +7,8 @@
     // false - disable customizable carousel.
     // false - отключить настраиваемую карусель.
     "enabled": true,
-    // Type of cells - "default" (depends from window size), "normal" or "small".
-    // Вид ячеек - "default" (в зависимости от размера окна), "normal" (обычные), "small" (маленькие).
+    // Type of cells - "default" (use client settings), "normal" or "small".
+    // Вид ячеек - "default" (использовать настройки клиента), "normal" (обычные), "small" (маленькие).
     "cellType": "default",
     // Normal cells settings.
     // Настройки ячеек обычного размера.
@@ -83,7 +83,8 @@
     // Критерии сортировки танков, доступные значения: (минус = в обратном порядке)
     // "nation", "type", "level", "-level", "maxBattleTier", "-maxBattleTier", "premium", "-premium",
     // "battles", "-battles", "winRate", "-winRate", "markOfMastery", "-markOfMastery", "xtdb", "-xtdb",
-    // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun"
+    // "xte", "-xte", "wtr", "-wtr", "damageRating", "-damageRating", "marksOnGun", "-marksOnGun",
+    // "battlePassPoints", "-battlePassPoints"
     "sorting_criteria": ["nation", "type", "level"],
     // true - suppress the tooltips for tanks in carousel.
     // true - убрать подсказки к танкам в карусели.

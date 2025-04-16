@@ -1,19 +1,6 @@
 """
-This file is part of the XVM project.
-
-Copyright (c) 2013-2021 XVM Team.
-
-XVM is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as
-published by the Free Software Foundation, version 3.
-
-XVM is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 __all__ = ['load', 'get', 'config_data', 'lang_data']
@@ -227,7 +214,7 @@ def _tuneup_config(config):
     config['__xvmVersion'] = XVM.XVM_VERSION
     config['__wotVersion'] = XVM.WOT_VERSION
     config['__xvmIntro'] = XVM.XVM_INTRO
-    config['__wgApiAvailable'] = getRegion() in xfw_constants.URLS.WG_API_SERVERS
+    config['__wgApiAvailable'] = getRegion() in xfw_constants.SUPPORTED_API_REALMS
     try:
         from __version__ import __revision__
         config['__xvmRevision'] = __revision__
@@ -302,7 +289,7 @@ class XvmServicesToken(object):
             (data, errStr) = xvmapi.getToken()
             #log(utils.hide_guid(data))
             self.update(data, errStr)
-        except Exception, ex:
+        except Exception as ex:
             err(traceback.format_exc())
 
     def update(self, data={}, errStr=None):

@@ -1,4 +1,7 @@
-""" XVM (c) https://modxvm.com 2013-2021 """
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2025 XVM Contributors
+"""
 
 from xfw import *
 
@@ -98,7 +101,7 @@ def BattleResultsCache_get(base, self, arenaUniqueID, callback):
                 if callback is not None:
                     #log('callback: ' + str(callback))
                     callback(AccountCommands.RES_CACHE, BattleResultsCache.convertToFullForm(battleResults))
-    except Exception, ex:
+    except Exception as ex:
         err(traceback.format_exc())
         base(self, arenaUniqueID, callback)
 

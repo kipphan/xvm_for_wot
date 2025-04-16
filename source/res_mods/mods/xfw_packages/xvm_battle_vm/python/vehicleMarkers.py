@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
@@ -17,13 +17,17 @@ from helpers import dependency
 from PlayerEvents import g_playerEvents
 from gui import g_keyEventHandlers
 from gui.battle_control import avatar_getter
+from gui.battle_control.battle_constants import PLAYER_GUI_PROPS
+from gui.impl import backport
+from gui.impl.gen import R
 from gui.shared import g_eventBus, events
 from gui.Scaleform.daapi.view.battle.shared.markers2d.manager import MarkersManager
+from gui.shared.utils.TimeInterval import TimeInterval
 from skeletons.gui.battle_session import IBattleSessionProvider
 
 
 # XFW
-from xfw import IS_DEVELOPMENT
+from xfw import *
 
 # XVM Main
 from xvm_main.python.consts import XVM_COMMAND, XVM_EVENT, XVM_PROFILER_COMMAND
@@ -37,7 +41,7 @@ from xvm_battle.python.consts import INV, XVM_BATTLE_COMMAND
 from xvm_battle.python.shared import getGlobalBattleData
 
 # XVM Battle VM
-from .consts import XVM_VM_COMMAND, UNSUPPORTED_BATTLE_TYPES, UNSUPPORTED_GUI_TYPES
+from .consts import UNSUPPORTED_BATTLE_TYPES, UNSUPPORTED_GUI_TYPES, XVM_VM_COMMAND, DAMAGE_TYPE
 
 
 
@@ -64,15 +68,18 @@ def daapi_as2pyS(self, *args, **kwargs):
 #
 
 class VehicleMarkers(object):
-
+    sessionProvider = dependency.descriptor(IBattleSessionProvider)
     enabled = True
+    allyVehicleDistEnabled = False
+    enemyVehicleDistEnabled = False
     initialized = False
     populated = False
     guiType = None
     battleType = None
     playerVehicleID = 0
     manager = None
-    sessionProvider = dependency.descriptor(IBattleSessionProvider)
+    vehiclePlugin = None
+    distanceInterval = None
     pending_commands = []
 
     @property
@@ -82,10 +89,10 @@ class VehicleMarkers(object):
             and self.battleType not in UNSUPPORTED_BATTLE_TYPES \
             and self.guiType not in UNSUPPORTED_GUI_TYPES \
 
-
     @property
-    def plugins(self):
-        return self.manager._MarkersManager__plugins if self.manager else None
+    def distanceBackportEnabled(self):
+        return IS_WG and self.active \
+            and (self.allyVehicleDistEnabled or self.enemyVehicleDistEnabled)
 
     #
     # Initialization
@@ -98,6 +105,10 @@ class VehicleMarkers(object):
         g_playerEvents.onAvatarBecomePlayer += self.onBecomePlayer
         g_playerEvents.onAvatarBecomeNonPlayer += self.onBecomeNonPlayer
 
+    @staticmethod
+    def isValidManager(manager):
+        return type(manager).__name__ != 'KillCamMarkersManager'
+
     def init(self, manager):
         self.manager = manager
         self.playerVehicleID = self.sessionProvider.getArenaDP().getPlayerVehicleID()
@@ -109,19 +120,24 @@ class VehicleMarkers(object):
         g_playerEvents.onAvatarBecomeNonPlayer -= self.onBecomeNonPlayer
 
     def populate(self):
+        self.getVehiclePlugin()
         self.respondConfig()
         self.process_pending_commands()
         self.updatePlayerStates()
+        self.startDistanceInterval()
         self.populated = True
 
     def destroy(self):
+        self.stopDistanceInterval()
         self.pending_commands = []
         self.initialized = False
         self.populated = False
         self.guiType = None
         self.battleType = None
         self.playerVehicleID = 0
+        self.vehiclePlugin = None
         self.manager = None
+        self.distanceInterval = None
 
 
     #
@@ -173,9 +189,9 @@ class VehicleMarkers(object):
 
 
     #
-    # event handlers
+    # Event handlers
     #
-    
+
     def onBecomePlayer(self, *args, **kwargs):
         try:
             arena = avatar_getter.getArena()
@@ -194,10 +210,17 @@ class VehicleMarkers(object):
 
     def onConfigLoaded(self, *args, **kwargs):
         self.enabled = config.get('markers/enabled', True)
+        self.allyVehicleDistEnabled = any((config.get('markers/ally/alive/{0}/vehicleDist/enabled'.format(mode), False) for mode in ('normal', 'extended')))
+        self.enemyVehicleDistEnabled = any((config.get('markers/enemy/alive/{0}/vehicleDist/enabled'.format(mode), False) for mode in ('normal', 'extended')))
         self.respondConfig()
 
     def onVehicleStatisticsUpdate(self, vehicleID):
         self.updatePlayerState(vehicleID, INV.FRAGS)
+
+    def getVehiclePlugin(self):
+        if self.manager is None:
+            return
+        self.vehiclePlugin = self.manager.getPlugin('vehicles')
 
     def respondConfig(self):
         try:
@@ -279,21 +302,81 @@ class VehicleMarkers(object):
         except Exception:
             self._logger.exception('updatePlayerState')
 
+    def startDistanceInterval(self):
+        if not self.distanceBackportEnabled:
+            return
+
+        if self.distanceInterval is None:
+            self.distanceInterval = TimeInterval(.2, self, 'updateVehicleDistance')
+
+        self.distanceInterval.start()
+
+    def stopDistanceInterval(self):
+        if self.distanceInterval is None:
+            return
+
+        self.distanceInterval.stop()
+
+    def updateVehicleDistance(self):
+        try:
+            if self.vehiclePlugin is None:
+                self.stopDistanceInterval()
+                return
+
+            player = BigWorld.player()
+            ownVehicle = player.getVehicleAttached()
+            ownPosition = player.position
+            # Get real vehicle position
+            if ownVehicle is not None and ownVehicle.isAlive():
+                ownPosition = player.getOwnVehiclePosition()
+
+            markers = self.vehiclePlugin._markers
+            metersString = R.strings.ingame_gui.distance.meters()
+
+            for marker in markers.itervalues():
+                vehicle = marker.getVehicleEntity()
+                if vehicle is None:
+                    continue
+
+                isPlayerTeam = marker.getIsPlayerTeam()
+                processAlly = self.allyVehicleDistEnabled and isPlayerTeam
+                processEnemy = self.enemyVehicleDistEnabled and not isPlayerTeam
+                if not (processAlly or processEnemy):
+                    continue
+
+                distance = (vehicle.position - ownPosition).length
+                text = backport.text(metersString, meters=distance)
+                self.vehiclePlugin._invokeMarker(marker.getMarkerID(), 'xvm_setDistance', text)
+        except:
+            self._logger.exception('updateVehicleDistance')
 
     def recreateMarkers(self):
         try:
-            if self.plugins:
-                plugin = self.plugins.getPlugin('vehicles')
-                if plugin:
-                    arenaDP = self.sessionProvider.getArenaDP()
-                    for vInfo in arenaDP.getVehiclesInfoIterator():
-                        vehicleID = vInfo.vehicleID
-                        if vehicleID == self.playerVehicleID or vInfo.isObserver():
-                            continue
-                        plugin._destroyVehicleMarker(vInfo.vehicleID)
-                        plugin.addVehicleInfo(vInfo, arenaDP)
+            if self.vehiclePlugin:
+                arenaDP = self.sessionProvider.getArenaDP()
+                for vInfo in arenaDP.getVehiclesInfoIterator():
+                    vehicleID = vInfo.vehicleID
+                    if vehicleID == self.playerVehicleID or vInfo.isObserver():
+                        continue
+                    self.vehiclePlugin._destroyVehicleMarker(vInfo.vehicleID)
+                    self.vehiclePlugin.addVehicleInfo(vInfo, arenaDP)
         except Exception:
             self._logger.exception('recreateMarkers')
+
+    def getVehicleDamageType(self, attackerInfo):
+        if not attackerInfo:
+            return DAMAGE_TYPE.FROM_UNKNOWN
+        attackerID = attackerInfo.vehicleID
+        if attackerID == self.playerVehicleID:
+            return DAMAGE_TYPE.FROM_PLAYER
+        entityName = self.sessionProvider.getCtx().getPlayerGuiProps(attackerID, attackerInfo.team)
+        if entityName == PLAYER_GUI_PROPS.squadman:
+            return DAMAGE_TYPE.FROM_SQUAD
+        if entityName == PLAYER_GUI_PROPS.ally:
+            return DAMAGE_TYPE.FROM_ALLY
+        if entityName == PLAYER_GUI_PROPS.enemy:
+            return DAMAGE_TYPE.FROM_ENEMY
+        return DAMAGE_TYPE.FROM_UNKNOWN
 
 
 

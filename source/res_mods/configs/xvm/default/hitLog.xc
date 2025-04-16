@@ -21,7 +21,10 @@
     {{c:team-dmg}}         - color by team attachment of the targets / цвет по командной принадлежности цели (союзник, противник, урон по себе).
     {{costShell}}          - shell currency (gold, credits) / валюта снаряда (золото, кредиты).
     {{c:costShell}}        - color by shell currency / цвет по валюте снаряда.
-    {{vehicle}}            - attacker vehicle name (for firing points, the name is taken from the localization files, the "pillbox" parameter) / название техники цели (для огневых точек название берется из файлов локализации, параметр "pillbox").
+    {{vehicle}}            - attacker vehicle name (for firing points, the name is taken from the localization files, the "pillbox" parameter, for vehicles from the file vehicleNames.xc)
+                             название техники цели (для огневых точек название берется из файлов локализации, параметр "pillbox", для техники из файла vehicleNames.xc).
+    {{vehicle-short}}      - attacker shortened vehicle name (for firing points, the name is taken from the localization files, the "pillbox" parameter, for vehicles from the file vehicleNames.xc)
+                             укороченое название техники цели (для огневых точек название берется из файлов локализации, параметр "pillbox", для техники из файла vehicleNames.xc).
     {{name}}               - nickname target / никнейм цели.
     {{comp-name}}          - vehicle part that was hit (turret, hull, chassis, gun) / часть техники, в которую было попадание (башня, корпус, ходовая, орудие).
     {{clan}}               - clan name with brackets (empty if no clan) / название клана в скобках (пусто, если игрок не в клане).
@@ -131,13 +134,15 @@
       // Shell kind (macro {{type-shell}}).
       // Тип снаряда (макрос {{type-shell}}).
       "type-shell": {
-        "armor_piercing":      "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing}}</font>",    // armor piercing / бронебойный.
-        "high_explosive":      "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:high_explosive}}</font>",    // high explosive / осколочно-фугасный.
-        "high_explosive_stun": "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:high_explosive}}</font>",    // stunning high explosive / оглушающий осколочно-фугасный.
-        "armor_piercing_cr":   "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing_cr}}</font>", // armor piercing composite rigid / бронебойный подкалиберный.
-        "armor_piercing_he":   "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing_he}}</font>", // armor piercing high explosive / бронебойно-фугасный.
-        "hollow_charge":       "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:hollow_charge}}</font>",     // high explosive anti-tank / кумулятивный.
-        "not_shell": "НД"                                                                                           // another source of damage / другой источник урона.
+        "armor_piercing":      "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing}}</font>",      // armor piercing / бронебойный.
+        "high_explosive":      "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:high_explosive}}</font>",      // high explosive / осколочно-фугасный.
+        "high_explosive_stun": "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:high_explosive}}</font>",      // stunning high explosive / оглушающий осколочно-фугасный.
+        "armor_piercing_cr":   "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing_cr}}</font>",   // armor piercing composite rigid / бронебойный подкалиберный.
+        "armor_piercing_he":   "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing_he}}</font>",   // armor piercing high explosive / бронебойно-фугасный.
+        "hollow_charge":       "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:hollow_charge}}</font>",       // high explosive anti-tank / кумулятивный.
+        "flame":               "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:flame}}</font>",               // flame / пламя. (Lesta)
+        "armor_piercing_fsds": "<font color='{{c:costShell}}' face='$FieldFont'>{{l10n:armor_piercing_fsds}}</font>", // armor piercing fin-stabilized discarding sabot / бронебойный подкалиберный оперенный. (Lesta)
+        "not_shell": "НД"                                                                                             // another source of damage / другой источник урона.
       },
       // Color by shell kind (macro {{c:type-shell}}).
       // Цвет по типу снаряда (макрос {{c:type-shell}}).
@@ -148,6 +153,8 @@
         "armor_piercing_cr": "#CCCCCC",   // armor piercing composite rigid / бронебойный подкалиберный.
         "armor_piercing_he": "#CCCCCC",   // armor piercing high explosive / бронебойно-фугасный.
         "hollow_charge": "#CCCCCC",       // high explosive anti-tank / кумулятивный.
+        "flame": "#CCCCCC",               // flame / пламя. (Lesta)
+        "armor_piercing_fsds": "#CCCCCC", // armor piercing fin-stabilized discarding sabot / бронебойный подкалиберный оперенный. (Lesta)
         "not_shell": "#CCCCCC"            // another source of damage / другой источник урона.
       },
       // Vehicle type (macro {{vtype}}).

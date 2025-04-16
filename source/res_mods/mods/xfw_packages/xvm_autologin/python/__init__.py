@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
@@ -24,7 +24,7 @@ def xfw_module_init():
         autologin.init()
         version_label.init()
         __initialized = True
-    
+
 
 def xfw_module_fini():
     global __initialized

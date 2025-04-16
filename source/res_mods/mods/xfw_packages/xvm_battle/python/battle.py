@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2013-2022 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
@@ -17,36 +17,33 @@ import constants
 from PlayerEvents import g_playerEvents
 from Avatar import PlayerAvatar
 from Vehicle import Vehicle
-from helpers import dependency
-from skeletons.gui.app_loader import IAppLoader
-from skeletons.gui.battle_session import IBattleSessionProvider
 from gui.app_loader.settings import APP_NAME_SPACE
-from gui.shared import g_eventBus, events
-from gui.shared.gui_items.Vehicle import VEHICLE_CLASS_NAME
-from gui.shared.utils.functions import getBattleSubTypeBaseNumber
 from gui.battle_control import avatar_getter
 from gui.battle_control.arena_info.settings import INVALIDATE_OP
-from gui.battle_control.battle_constants import PLAYER_GUI_PROPS
-from gui.battle_control.battle_constants import FEEDBACK_EVENT_ID
-from gui.battle_control.battle_constants import VEHICLE_VIEW_STATE
+from gui.battle_control.battle_constants import FEEDBACK_EVENT_ID, VEHICLE_VIEW_STATE
 from gui.battle_control.controllers.battle_field_ctrl import BattleFieldCtrl
+from gui.battle_control.controllers.dog_tags_ctrl import DogTagsController
 from gui.battle_control.controllers.dyn_squad_functional import DynSquadFunctional
-from gui.Scaleform.genConsts.BATTLE_VIEW_ALIASES import BATTLE_VIEW_ALIASES
 from gui.Scaleform.daapi.settings.views import VIEW_ALIAS
+from gui.Scaleform.daapi.view.battle.classic.players_panel import PlayersPanel
 from gui.Scaleform.daapi.view.battle.epic.stats_exchange import EpicStatisticsDataController
 from gui.Scaleform.daapi.view.battle.shared import battle_loading
 from gui.Scaleform.daapi.view.battle.shared.damage_panel import DamagePanel
-from gui.Scaleform.daapi.view.battle.shared.markers2d import settings as markers2d_settings
 from gui.Scaleform.daapi.view.battle.shared.minimap.plugins import ArenaVehiclesPlugin
 from gui.Scaleform.daapi.view.battle.shared.page import SharedPage
 from gui.Scaleform.daapi.view.battle.shared.postmortem_panel import PostmortemPanel
 from gui.Scaleform.daapi.view.battle.shared.stats_exchange import BattleStatisticsDataController
-from gui.Scaleform.daapi.view.battle.shared.hint_panel.plugins import CommanderCameraHintPlugin, TrajectoryViewHintPlugin, SiegeIndicatorHintPlugin, PreBattleHintPlugin, RadarHintPlugin, RoleHelpPlugin, MapsTrainingHelpHintPlugin
-from gui.Scaleform.daapi.view.meta.PlayersPanelMeta import PlayersPanelMeta
+from gui.Scaleform.daapi.view.battle.shared.hint_panel import plugins as hint_panel_plugins
+from gui.Scaleform.genConsts.BATTLE_VIEW_ALIASES import BATTLE_VIEW_ALIASES
+from gui.shared import g_eventBus, events
+from gui.shared.gui_items.Vehicle import VEHICLE_CLASS_NAME
+from gui.shared.utils.functions import getBattleSubTypeBaseNumber
+from skeletons.gui.app_loader import IAppLoader
+from skeletons.gui.battle_session import IBattleSessionProvider
+from helpers import dependency
 
 # XFW
-from xfw.constants import XFW_COMMAND, XFW_EVENT
-from xfw.events import registerEvent, overrideMethod
+from xfw import *
 
 # XFW Actionscript
 from xfw_actionscript.python import as_xfw_cmd
@@ -55,24 +52,8 @@ from xfw_actionscript.python import as_xfw_cmd
 import xvm_main.python.config as config
 
 # XVM Battle
-from consts import INT_CD, INV, SPOTTED_STATUS, XVM_BATTLE_COMMAND, XVM_BATTLE_EVENT
-import shared
-
-
-
-#
-# Constants
-#
-
-NOT_SUPPORTED_BATTLE_TYPES = [ constants.ARENA_GUI_TYPE.EVENT_BATTLES,
-                           constants.ARENA_GUI_TYPE.BOOTCAMP,
-                           constants.ARENA_GUI_TYPE.BATTLE_ROYALE,
-                           constants.ARENA_GUI_TYPE.MAPS_TRAINING,
-                           constants.ARENA_GUI_TYPE.RTS,
-                           constants.ARENA_GUI_TYPE.RTS_TRAINING,
-                           constants.ARENA_GUI_TYPE.RTS_BOOTCAMP,
-                           constants.ARENA_GUI_TYPE.COMP7
-                           ]
+from consts import NOT_SUPPORTED_BATTLE_TYPES, INT_CD, INV, SPOTTED_STATUS, XVM_BATTLE_COMMAND, XVM_BATTLE_EVENT
+import shared as xvm_battle_shared
 
 
 
@@ -101,7 +82,7 @@ def _PlayerAvatar_vehicle_onAppearanceReady(self, vehicle):
 
 
 # Vehicle
-def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
+def _Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID, *args, **kwargs):
     # any vehicle health changed
     # update only for player vehicle, others handled on vehicle feedback event
     if self.isPlayerVehicle:
@@ -134,7 +115,7 @@ def _DynSquadFunctional_updateVehiclesInfo(self, updated, arenaDP):
 def _DamagePanel_updateDeviceState(self, value):
     try:
         as_xfw_cmd(XVM_BATTLE_COMMAND.AS_UPDATE_DEVICE_STATE, *value)
-    except:
+    except Exception:
         logging.getLogger('XVM/Battle').exception('_DamagePanel_updateDeviceState')
 
 
@@ -144,18 +125,27 @@ def _ArenaVehiclesPlugin_setInAoI(self, entry, isInAoI):
         for vehicleID, entry2 in self._entries.iteritems():
             if entry == entry2:
                 g_battle.updateSpottedStatus(vehicleID, isInAoI)
-    except:
+    except Exception:
         logging.getLogger('XVM/Battle').exception('_ArenaVehiclesPlugin_setInAoI')
 
 
 # SharedPage
-def _SharedPage_as_setPostmortemTipsVisibleS(base, self, value):
-    if not config.get('battle/showPostmortemTips'):
+IGNORED_BATTLE_PAGES = ()
+
+# In some event battle pages we shouldn't hide postmortem tips
+# as it handles postmortem timers or something else
+def isIgnoredBattlePage(battlePage):
+    return type(battlePage).__name__ in IGNORED_BATTLE_PAGES
+
+
+def _SharedPage_as_handlePostmortemTips(base, self, value):
+    if not config.get('battle/showPostmortemTips') and not isIgnoredBattlePage(self):
         value = False
     base(self, value)
 
+
 def _SharedPage_switchToPostmortem(base, self):
-    if config.get('battle/showPostmortemTips'):
+    if config.get('battle/showPostmortemTips') and not isIgnoredBattlePage(self):
         base(self)
 
 
@@ -166,61 +156,19 @@ def _BattleStatisticsDataController_as_setQuestsInfoS(base, self, data, setForce
 
 
 # Hints
-def _CommanderCameraHintPlugin_displayHint(base, self, hint):
-    # disable battle hints
+def _hint_panel_plugins_createPlugins(base):
     if not config.get('battle/showBattleHint'):
-        return
-    base(self, hint)
+        return {}
+    return base()
 
 
-def _TrajectoryViewHintPlugin_addHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return
-    base(self)
-
-
-def _SiegeIndicatorHintPlugin__updateHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return
-    base(self)
-
-
-def _PreBattleHintPlugin__canDisplayQuestHint(base, self):
-    if not config.get('battle/showBattleHint'):
+# Disable DogTags
+def _DogTagsController__canShowMarkers(base, self):
+    if not config.get('battle/showPrebattleDogTags', True):
         return False
-    base(self)
+    return base(self)
 
 
-def _PreBattleHintPlugin__canDisplayVehicleHelpHint(base, self, typeDescriptor):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self, typeDescriptor)
-
-
-def _PreBattleHintPlugin__canDisplayBattleCommunicationHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self)
-
-
-def _RadarHintPlugin__areOtherIndicatorsShown(base, self):
-    if not config.get('battle/showBattleHint'):
-        return True
-    base(self)
-
-
-def _RoleHelpPlugin__handleBattleLoading(base, self, event):
-    if not config.get('battle/showBattleHint'):
-        return
-    base(self, event)
-
-
-def _MapsTrainingHelpHintPlugin_canDisplayCustomHelpHint(base, self):
-    if not config.get('battle/showBattleHint'):
-        return False
-    base(self)
-
-# disable DogTag's
 def _PostmortemPanel_onDogTagKillerInPlaySound(base, self):
     if not config.get('battle/showPostmortemDogTag', True) or not config.get('battle/showPostmortemTips', True):
         return
@@ -233,7 +181,7 @@ def _PostmortemPanel__onKillerDogTagSet(base, self, dogTagInfo):
     base(self, dogTagInfo)
 
 
-def _PlayersPanelMetaas_setPanelHPBarVisibilityStateS(base, self, value):
+def _PlayersPanel_as_setPanelHPBarVisibilityStateS(base, self, value):
     if config.get('playersPanel/enabled') and config.get('playersPanel/removeHealthPoints'):
         return
     base(self, value)
@@ -275,7 +223,7 @@ class Battle(object):
         g_playerEvents.onAvatarBecomeNonPlayer -= self.onBecomeNonPlayer
 
     def onNewVehicleListReceived(self):
-        as_xfw_cmd(XVM_BATTLE_COMMAND.AS_RESPONSE_BATTLE_GLOBAL_DATA, *shared.getGlobalBattleData())
+        as_xfw_cmd(XVM_BATTLE_COMMAND.AS_RESPONSE_BATTLE_GLOBAL_DATA, *xvm_battle_shared.getGlobalBattleData())
 
 
     def onBecomePlayer(self, *args, **kwargs):
@@ -354,7 +302,8 @@ class Battle(object):
                                         VIEW_ALIAS.EPIC_BATTLE_PAGE,
                                         VIEW_ALIAS.RANKED_BATTLE_PAGE,
                                         VIEW_ALIAS.BATTLE_ROYALE_PAGE,
-                                        VIEW_ALIAS.STRONGHOLD_BATTLE_PAGE]:
+                                        VIEW_ALIAS.STRONGHOLD_BATTLE_PAGE,
+                                        'winbackBattlePage']:
             self.battle_page = weakref.proxy(view)
 
     def onStartBattle(self):
@@ -510,7 +459,7 @@ class Battle(object):
         try:
             if cmd == XVM_BATTLE_COMMAND.REQUEST_BATTLE_GLOBAL_DATA:
                 self.xvm_battle_swf_initialized = True
-                as_xfw_cmd(XVM_BATTLE_COMMAND.AS_RESPONSE_BATTLE_GLOBAL_DATA, *shared.getGlobalBattleData())
+                as_xfw_cmd(XVM_BATTLE_COMMAND.AS_RESPONSE_BATTLE_GLOBAL_DATA, *xvm_battle_shared.getGlobalBattleData())
                 return (None, True)
 
             elif cmd == XVM_BATTLE_COMMAND.BATTLE_CTRL_SET_VEHICLE_DATA:
@@ -527,23 +476,6 @@ class Battle(object):
             return (None, True)
 
         return (None, False)
-
-    # misc
-
-    def _getVehicleDamageType(self, attackerID):
-        entryVehicle = avatar_getter.getArena().vehicles.get(attackerID, None)
-        if not entryVehicle:
-            return markers2d_settings.DAMAGE_TYPE.FROM_UNKNOWN
-        if attackerID == avatar_getter.getPlayerVehicleID():
-            return markers2d_settings.DAMAGE_TYPE.FROM_PLAYER
-        entityName = self.sessionProvider.getCtx().getPlayerGuiProps(attackerID, entryVehicle['team'])
-        if entityName == PLAYER_GUI_PROPS.squadman:
-            return markers2d_settings.DAMAGE_TYPE.FROM_SQUAD
-        if entityName == PLAYER_GUI_PROPS.ally:
-            return markers2d_settings.DAMAGE_TYPE.FROM_ALLY
-        if entityName == PLAYER_GUI_PROPS.enemy:
-            return markers2d_settings.DAMAGE_TYPE.FROM_ENEMY
-        return markers2d_settings.DAMAGE_TYPE.FROM_UNKNOWN
 
 
 
@@ -562,21 +494,19 @@ def init():
     registerEvent(DynSquadFunctional, 'updateVehiclesInfo')(_DynSquadFunctional_updateVehiclesInfo)
     registerEvent(DamagePanel, '_updateDeviceState')(_DamagePanel_updateDeviceState)
     registerEvent(ArenaVehiclesPlugin, '_setInAoI')(_ArenaVehiclesPlugin_setInAoI)
-    overrideMethod(SharedPage, 'as_setPostmortemTipsVisibleS')(_SharedPage_as_setPostmortemTipsVisibleS)
+    if hasattr(SharedPage, 'as_onPostmortemActiveS'):
+        overrideMethod(SharedPage, 'as_onPostmortemActiveS')(_SharedPage_as_handlePostmortemTips)
+    else:
+        overrideMethod(SharedPage, 'as_setPostmortemTipsVisibleS')(_SharedPage_as_handlePostmortemTips)
     overrideMethod(SharedPage, '_switchToPostmortem')(_SharedPage_switchToPostmortem)
     overrideMethod(BattleStatisticsDataController, 'as_setQuestsInfoS')(_BattleStatisticsDataController_as_setQuestsInfoS)
-    overrideMethod(CommanderCameraHintPlugin, '_CommanderCameraHintPlugin__displayHint')(_CommanderCameraHintPlugin_displayHint)
-    overrideMethod(TrajectoryViewHintPlugin, '_TrajectoryViewHintPlugin__addHint')(_TrajectoryViewHintPlugin_addHint)
-    overrideMethod(SiegeIndicatorHintPlugin, '_SiegeIndicatorHintPlugin__updateHint')(_SiegeIndicatorHintPlugin__updateHint)
-    overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayQuestHint')(_PreBattleHintPlugin__canDisplayQuestHint)
-    overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayVehicleHelpHint')(_PreBattleHintPlugin__canDisplayVehicleHelpHint)
-    overrideMethod(PreBattleHintPlugin, '_PreBattleHintPlugin__canDisplayBattleCommunicationHint')(_PreBattleHintPlugin__canDisplayBattleCommunicationHint)
-    overrideMethod(RadarHintPlugin, '_RadarHintPlugin__areOtherIndicatorsShown')(_RadarHintPlugin__areOtherIndicatorsShown)
-    overrideMethod(RoleHelpPlugin, '_RoleHelpPlugin__handleBattleLoading')(_RoleHelpPlugin__handleBattleLoading)
-    overrideMethod(MapsTrainingHelpHintPlugin, '_canDisplayCustomHelpHint')(_MapsTrainingHelpHintPlugin_canDisplayCustomHelpHint)
+    overrideMethod(hint_panel_plugins, 'createPlugins')(_hint_panel_plugins_createPlugins)
     overrideMethod(PostmortemPanel, 'onDogTagKillerInPlaySound')(_PostmortemPanel_onDogTagKillerInPlaySound)
     overrideMethod(PostmortemPanel, '_PostmortemPanel__onKillerDogTagSet')(_PostmortemPanel__onKillerDogTagSet)
-    overrideMethod(PlayersPanelMeta, 'as_setPanelHPBarVisibilityStateS')(_PlayersPanelMetaas_setPanelHPBarVisibilityStateS)
+    overrideMethod(PlayersPanel, 'as_setPanelHPBarVisibilityStateS')(_PlayersPanel_as_setPanelHPBarVisibilityStateS)
+    
+    if IS_WG:
+        overrideMethod(DogTagsController, '_DogTagsController__canShowMarkers')(_DogTagsController__canShowMarkers)
 
 
 def fini():

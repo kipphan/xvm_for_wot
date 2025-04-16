@@ -1,3 +1,8 @@
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2025 XVM Contributors
+"""
+
 from Avatar import PlayerAvatar
 from BigWorld import player, cancelCallback, callback
 from Vehicle import Vehicle
@@ -178,7 +183,7 @@ def Vehicle_showShooting(self, burstCount, gunIndex, isPredictedShot=False):
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
-def showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
+def showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, *args, **kwargs):
     global numberShotsReceived, numberHitsReceived
     if battle.isBattleTypeSupported and self.isPlayerVehicle and self.isAlive:
         numberShotsReceived += 1
@@ -275,7 +280,7 @@ def BattleRibbonsPanel__onRibbonAdded(self, ribbon):
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
+def onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID, *args, **kwargs):
     global enemiesHealth, numberHitsDealt, damageReceived, numberDamagesDealt, numberDamagedVehicles, dmgAlly, damageKind, damagesSquad
     if not battle.isBattleTypeSupported:
         return

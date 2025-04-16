@@ -1,3 +1,8 @@
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) ktulho
+"""
+
 # Addons: "DamageLog"
 # ktulho <https://kr.cm/f/p/17624/>
 
@@ -13,9 +18,8 @@ from gui.Scaleform.daapi.view.battle.shared.damage_log_panel import DamageLogPan
 from gui.Scaleform.daapi.view.meta.DamagePanelMeta import DamagePanelMeta
 from gui.shared.utils.TimeInterval import TimeInterval
 from helpers import dependency
-from items import _xml#, vehicles
+from items import _xml, vehicles
 from skeletons.gui.battle_session import IBattleSessionProvider
-from skeletons.gui.game_control import IBootcampController
 from vehicle_systems.tankStructure import TankPartIndexes, TankPartNames
 
 from xfw.events import registerEvent, overrideMethod
@@ -24,6 +28,7 @@ from xfw_actionscript.python import *
 import xvm_battle.python.battle as battle
 import xvm_main.python.config as config
 import xvm_main.python.userprefs as userprefs
+import xvm_main.python.vehinfo_short as vehinfo_short
 from xvm_main.python.logger import *
 from xvm_main.python.stats import _stat
 
@@ -33,7 +38,7 @@ on_fire = 0
 isDownAlt = False
 damageLogConfig = {}
 macros = None
-chooseRating = None
+chooseRating = []
 isImpact = False
 isShowDamageLog = True
 
@@ -57,21 +62,40 @@ ATTACK_REASONS = {
     16: 'none',
     17: 'spawned_bot_explosion',
     18: 'berserker_eq',
-    19: 'spawned_bot_ram',
-    20: 'smoke'
+    19: 'smoke',
+    20: 'corrodingShot',
+    21: 'AdaptationHealthRestore',
+    22: 'thunderStrike',
+    23: 'fireCircle',
+    24: 'clingBrander',
+    25: 'ram_cling_brander',
+    26: 'ram_brander',
+    27: 'fort_artillery_eq',
+    28: 'static_deathzone',
+    29: 'cgf_world',
+    30: 'vehicle_explosion',
+    31: 'bunker_destroyed',
+    32: 'minefield_zone',
+    33: 'battleship',
+    34: 'destroyer',
+    35: 'damage_zone',
+    36: 'none',
+    #WG event
+    37: 'redirected_damage_from_bot',
+    38: 'slave_bot_damaged',
+    39: 'damage_by_blizzard_ability',
+    40: 'damage_by_snowstorm',
+    41: 'base_defender_bonus',
+    42: 'ability_assist_flare',
+    43: 'ability_assist_blizzard',
+    44: 'ability_assist_buff',
+    45: 'rage'
 }
 
 SHOT_EFFECTS_INDEXES = {
-    # 41: 9,
-    # 42: 9,
-    # 43: 11,
-    # 44: 9,
-    # 45: 11
-    35: 9,
-    36: 9,
-    37: 11,
-    38: 9,
-    39: 11
+    index: (9 if 'artilleryID' in effect else 11)
+    for index, effect in enumerate(vehicles.g_cache.shotEffects)
+    if 'artilleryID' in effect or 'airstrikeID' in effect
 }
 
 VEHICLE_CLASSES_SHORT = {
@@ -189,6 +213,7 @@ class GROUP_DAMAGE(object):
     RAMMING_COLLISION = 'groupDamagesFromRamming_WorldCollision'
     FIRE = 'groupDamagesFromFire'
     ART_AND_AIRSTRIKE = 'groupDamageFromArtAndAirstrike'
+    SHOTS = 'groupDamageFromShots'
 
 
 class EVENTS_NAMES(object):
@@ -270,7 +295,6 @@ def readyConfig(section):
 
 class Data(object):
     sessionProvider = dependency.descriptor(IBattleSessionProvider)
-    bootcampController = dependency.descriptor(IBootcampController)
 
     def __init__(self):
         self.reset()
@@ -303,6 +327,7 @@ class Data(object):
                      'shellKind': 'not_shell',
                      'teamDmg': 'unknown',
                      'attackerVehicleType': 'not_vehicle',
+                     'userString': '',
                      'shortUserString': '',
                      'name': '',
                      'clanAbbrev': '',
@@ -326,8 +351,6 @@ class Data(object):
                      }
 
     def updateData(self):
-        if self.bootcampController.isInBootcamp():
-            return
         player = BigWorld.player()
         self.data['dmgRatio'] = self.data['damage'] * 100 // self.data['maxHealth']
         attackerID = self.data['attackerID']
@@ -348,6 +371,7 @@ class Data(object):
         self.data['teamDmg'] = 'unknown'
         self.data['attackerVehicleType'] = 'not_vehicle'
         self.data['attackerVehicleName'] = ''
+        self.data['userString'] = ''
         self.data['shortUserString'] = ''
         self.data['name'] = ''
         self.data['clanAbbrev'] = ''
@@ -362,7 +386,18 @@ class Data(object):
                     _type = vehicleType.type
                     self.data['attackerVehicleName'] = vehicleType.name.replace(':', '-', 1) if vehicleType.name else ''
                     self.data['attackerVehicleType'] = list(_type.tags.intersection(VEHICLE_CLASSES))[0]
-                    self.data['shortUserString'] = _type.shortUserString
+                    vehicleNames = _config.get('vehicleNames/' + self.data['attackerVehicleName'])
+                    if vehicleNames:
+                        self.data['userString'] = vehicleNames['name'] if vehicleNames['name'] is not None else _type.shortUserString
+                        if vehicleNames['short'] is None:
+                            self.data['shortUserString'] = vehinfo_short.getShortName(vehicleType.name, vehicleType.level,self.data['attackerVehicleType'])
+                        else:
+                            self.data['shortUserString'] = vehicleNames['short']
+                    else:
+                        self.data['userString'] = _type.shortUserString
+                        self.data['shortUserString'] = vehinfo_short.getShortName(vehicleType.name, vehicleType.level,self.data['attackerVehicleType'])
+                    if self.data['shortUserString'] is None:
+                        self.data['shortUserString'] = self.data['userString']
                     self.data['level'] = vehicleType.level
                     self.data['nation'] = nations.NAMES[_type.customizationNationID]
                     if self.data['attackReasonID'] == 2:
@@ -398,17 +433,25 @@ class Data(object):
         attacker = player.arena.vehicles.get(self.data['attackerID'])
         if (attacker is None) or not attacker['vehicleType']:
             return
+        suitable_shell = None
         for shot in attacker['vehicleType'].gun.shots:
             _shell = shot.shell
             if effectsIndex == _shell.effectsIndex:
-                self.data['shellKind'] = str(_shell.kind).lower() if not _shell.hasStun else 'high_explosive_stun'
-                self.data['caliber'] = _shell.caliber
-                self.data['shellDamage'] = _shell.damage[0]
-                _id = _shell.id
-                nation = nations.NAMES[_id[0]]
-                self.data['costShell'] = 'gold-shell' if _id[1] in self.shells[nation] else 'silver-shell'
-                self.data['shells_stunning'] = _id[1] in self.shells_stunning[nation]
                 break
+            # workaround
+            if suitable_shell is None or abs(suitable_shell.effectsIndex - effectsIndex) > abs(_shell.effectsIndex - effectsIndex):
+                suitable_shell = _shell
+        else:
+            _shell = suitable_shell
+        shellKind = str(_shell.kind).lower()
+        self.data['shellKind'] = 'high_explosive_stun' if shellKind == 'high_explosive' and _shell.hasStun else shellKind
+        self.data['caliber'] = _shell.caliber
+        self.data['shellDamage'] = _shell.armorDamage[0] if hasattr(_shell, 'armorDamage') else _shell.damage[0]
+        _id = _shell.id
+        nation = nations.NAMES[_id[0]]
+        self.data['costShell'] = 'gold-shell' if _id[1] in self.shells[nation] else 'silver-shell'
+        self.data['shells_stunning'] = _id[1] in self.shells_stunning[nation]
+
 
     def timeReload(self, attackerID):
         player = BigWorld.player()
@@ -463,8 +506,9 @@ class Data(object):
         self.data['splashHit'] = 'no-splash'
         self.data['attackReasonID'] = 0
         self.data['numCrits'] = 0
+        self.data['shellDamage'] = None
 
-    def showDamageFromShot(self, vehicle, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
+    def showDamageFromShot(self, vehicle, attackerID, points, effectsIndex, damageFactor, *args, **kwargs):
         if not vehicle.isStarted:
             return
         collisionComponent = vehicle.appearance.collisions
@@ -499,7 +543,7 @@ class Data(object):
 
         self.hitShell(attackerID, effectsIndex, damageFactor)
 
-    def showDamageFromExplosion(self, vehicle, attackerID, center, effectsIndex, damageFactor):
+    def showDamageFromExplosion(self, vehicle, attackerID, center, effectsIndex, damageFactor, *args, **kwargs):
         self.data['splashHit'] = 'splash'
         # self.data['criticalHit'] = False
         if damageFactor == 0:
@@ -598,6 +642,7 @@ class _Base(object):
         self.S_GROUP_DAMAGE_RAMMING_COLLISION = section + GROUP_DAMAGE.RAMMING_COLLISION
         self.S_GROUP_DAMAGE_FIRE = section + GROUP_DAMAGE.FIRE
         self.S_GROUP_DAMAGE_ART_AND_AIRSTRIKE = section + GROUP_DAMAGE.ART_AND_AIRSTRIKE
+        self.S_GROUP_DAMAGE_SHOTS = section + GROUP_DAMAGE.SHOTS
         self.S_SHADOW = section + SHADOW
         self.SHADOW_DISTANCE = self.S_SHADOW + SHADOW_OPTIONS.DISTANCE
         self.SHADOW_ANGLE = self.S_SHADOW + SHADOW_OPTIONS.ANGLE
@@ -616,6 +661,8 @@ class _Base(object):
         self.dictVehicle = {}
         self.shadow = {}
         self._data = None
+        self.x = 0
+        self.y = 0
 
     def reset(self):
         self.dictVehicle = {}
@@ -656,7 +703,8 @@ class _Base(object):
             xwtr = value.get('xwtr', None)
             xeff = value.get('xeff', None)
             xwgr = value.get('xwgr', None)
-            macros = {'vehicle': value['shortUserString'],
+            macros = {'vehicle': value['userString'],
+                      'vehicle-short': value['shortUserString'],
                       'name': value['name'],
                       'clannb': value['clanAbbrev'],
                       'clan': ''.join(['[', value['clanAbbrev'], ']']) if value['clanAbbrev'] else '',
@@ -702,8 +750,8 @@ class _Base(object):
                        'vtype': conf['vehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackerVehicleType']], ''),
                        'c:costShell': conf['c_Shell'][value['costShell']],
                        'costShell': conf['costShell'].get(value['costShell'], 'unknown'),
-                       'c:dmg-kind': conf['c_typeHit'][ATTACK_REASONS[value['attackReasonID']]],
-                       'dmg-kind': conf['typeHit'].get(ATTACK_REASONS[value['attackReasonID']], 'reason: %s' % value['attackReasonID']),
+                       'c:dmg-kind': conf['c_typeHit'].get(ATTACK_REASONS.get(value['attackReasonID']), '#CCCCCC'),
+                       'dmg-kind': conf['typeHit'].get(ATTACK_REASONS.get(value['attackReasonID']), 'reason: %s' % value['attackReasonID']),
                        'c:vtype': conf['c_VehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackerVehicleType']], '#CCCCCC'),
                        'comp-name': conf['compNames'].get(value['compName'], 'unknown'),
                        'splash-hit': conf['splashHit'].get(value['splashHit'], 'unknown'),
@@ -735,6 +783,14 @@ class _Base(object):
                 SHADOW_OPTIONS.QUALITY: parser(_config.get(self.SHADOW_QUALITY))
                 }
 
+    def isGroupDmg(self):
+        attackReasonID = data.data['attackReasonID']
+        isGroupRamming_WorldCollision = (attackReasonID in [2, 3]) and _config.get(self.S_GROUP_DAMAGE_RAMMING_COLLISION)
+        isGroupFire = (attackReasonID == 1) and _config.get(self.S_GROUP_DAMAGE_FIRE)
+        isGroupArtAndAirstrike = (attackReasonID in [24, 25]) and _config.get(self.S_GROUP_DAMAGE_ART_AND_AIRSTRIKE)
+        isGroupShots = (attackReasonID == 0) and _config.get(self.S_GROUP_DAMAGE_SHOTS)
+        return isGroupRamming_WorldCollision or isGroupFire or isGroupArtAndAirstrike or isGroupShots
+
 
 class DamageLog(_Base):
 
@@ -758,7 +814,7 @@ class DamageLog(_Base):
         self.section = section
         self.callEvent = True
 
-    def reset(self, section):
+    def reset(self, section=None):
         super(DamageLog, self).reset()
         self.listLog = []
         self.scrollList = []
@@ -857,13 +913,6 @@ class DamageLog(_Base):
             self.dictVehicle[attackerID] = {}
         self.addLine(attackerID, attackReasonID)
 
-    def isGroupDmg(self):
-        attackReasonID = data.data['attackReasonID']
-        isGroupRamming_WorldCollision = (attackReasonID in [2, 3]) and _config.get(self.S_GROUP_DAMAGE_RAMMING_COLLISION)
-        isGroupFire = (attackReasonID == 1) and _config.get(self.S_GROUP_DAMAGE_FIRE)
-        isGroupArtAndAirstrike = (attackReasonID in [24, 25]) and _config.get(self.S_GROUP_DAMAGE_ART_AND_AIRSTRIKE)
-        return isGroupRamming_WorldCollision or isGroupFire or isGroupArtAndAirstrike
-
     def output(self):
         if _config.get(self.S_SHOW_HIT_NO_DAMAGE) or data.data['isDamage']:
             self.reset_scrolling()
@@ -942,21 +991,12 @@ class LastHit(_Base):
                     dataLog['dmgRatio'] = key['damage'] * 100 // dataLog['maxHealth']
                     dataLog['fireDuration'] = BigWorld.time() - key['startAction'] if (attackReasonID == 1) and (key['startAction'] is not None) else None
                     dataLog['hitTime'] = key['hitTime']
-            else:
-                self.dictVehicle[attackerID][attackReasonID] = self.initGroupedValues(dataLog['damage'], dataLog['numCrits'], dataLog['hitTime'], attackReasonID)
-                dataLog['fireDuration'] = 0 if attackReasonID == 1 else None
+                    return dataLog
         else:
             self.dictVehicle[attackerID] = {}
-            self.dictVehicle[attackerID][attackReasonID] = self.initGroupedValues(dataLog['damage'], dataLog['numCrits'], dataLog['hitTime'], attackReasonID)
-            dataLog['fireDuration'] = 0 if attackReasonID == 1 else None
+        self.dictVehicle[attackerID][attackReasonID] = self.initGroupedValues(dataLog['damage'], dataLog['numCrits'], dataLog['hitTime'], attackReasonID)
+        dataLog['fireDuration'] = 0 if attackReasonID == 1 else None
         return dataLog
-
-    def isGroupDmg(self):
-        attackReasonID = data.data['attackReasonID']
-        isGroupRamming_WorldCollision = (attackReasonID in [2, 3]) and _config.get(self.S_GROUP_DAMAGE_RAMMING_COLLISION)
-        isGroupFire = (attackReasonID == 1) and _config.get(self.S_GROUP_DAMAGE_FIRE)
-        isGroupArtAndAirstrike = (attackReasonID in [24, 25]) and _config.get(self.S_GROUP_DAMAGE_ART_AND_AIRSTRIKE)
-        return isGroupRamming_WorldCollision or isGroupFire or isGroupArtAndAirstrike
 
     def output(self):
         if _config.get(self.S_SHOW_HIT_NO_DAMAGE) or data.data['isDamage']:
@@ -1031,7 +1071,7 @@ def as_updateSummaryStunValueS(base, self, value):
 
 
 @registerEvent(Vehicle, 'onHealthChanged')
-def Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID):
+def Vehicle_onHealthChanged(self, newHealth, oldHealth, attackerID, attackReasonID, *args, **kwargs):
     global on_fire, isImpact
     if not isImpact and self.isPlayerVehicle:
         isImpact = True
@@ -1096,23 +1136,23 @@ def _Vehicle__onAppearanceReady(self, appearance):
 
 
 @registerEvent(Vehicle, 'showDamageFromShot')
-def Vehicle_showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield):
+def Vehicle_showDamageFromShot(self, *args, **kwargs):
     global isImpact
     if not isImpact and self.isPlayerVehicle:
         isImpact = True
         as_event(EVENTS_NAMES.ON_IMPACT)
     if self.isPlayerVehicle and data.data['isAlive'] and isShowDamageLog:
-        data.showDamageFromShot(self, attackerID, points, effectsIndex, damageFactor, lastMaterialIsShield)
+        data.showDamageFromShot(self, *args, **kwargs)
 
 
 @registerEvent(Vehicle, 'showDamageFromExplosion')
-def Vehicle_showDamageFromExplosion(self, attackerID, center, effectsIndex, damageFactor):
+def Vehicle_showDamageFromExplosion(self, *args, **kwargs):
     global isImpact
     if not isImpact and self.isPlayerVehicle:
         isImpact = True
         as_event(EVENTS_NAMES.ON_IMPACT)
     if self.isPlayerVehicle and data.data['isAlive'] and isShowDamageLog:
-        data.showDamageFromExplosion(self, attackerID, center, effectsIndex, damageFactor)
+        data.showDamageFromExplosion(self, *args, **kwargs)
 
 
 @registerEvent(Vehicle, 'updateStunInfo')

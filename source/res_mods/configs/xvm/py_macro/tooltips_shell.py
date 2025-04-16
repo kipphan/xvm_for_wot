@@ -1,13 +1,18 @@
+"""
+SPDX-License-Identifier: GPL-3.0-or-later
+Copyright (c) 2013-2025 XVM Contributors
+"""
+
 import ResMgr
 import nations
+from gui.Scaleform.daapi.view.common.vehicle_carousel.carousel_data_provider import CarouselDataProvider
+from gui.shared.formatters import text_styles
+from gui.shared.tooltips import formatters
+from gui.shared.tooltips.shell import CommonStatsBlockConstructor
 from helpers import dependency
 from helpers.i18n import makeString
 from constants import ITEM_DEFS_PATH
 from skeletons.gui.shared import IItemsCache
-from gui.shared.tooltips.shell import CommonStatsBlockConstructor
-from gui.shared.tooltips import formatters
-from gui.shared.formatters import text_styles
-from gui.Scaleform.daapi.view.common.vehicle_carousel.carousel_data_provider import CarouselDataProvider
 
 from xvm_main.python.logger import *
 from xfw import *
@@ -38,6 +43,9 @@ def getGuns():
         i18n_veh = v_v['userString'].asString
         xmlPath = '%svehicles/%s/%s.xml' % (ITEM_DEFS_PATH, nation, veh)
         vehicle = ResMgr.openSection(xmlPath)
+        if vehicle is None:
+            warn('py_macro/tooltips_shell: %s is present in nation\'s list.xml but missing in VFS!' % xmlPath)
+            continue
         turrets0 = vehicle['turrets0']
         result.update({gun: (result.get(gun, set()) | {makeString(i18n_veh)}) for turret in turrets0.values() for gun in turret['guns'].keys()})
     return result

@@ -1,6 +1,6 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2013-2022 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
@@ -12,8 +12,8 @@ from gui.battle_control import avatar_getter
 
 # XVM Main
 import xvm_main.python.minimap_circles as minimap_circles
-import xvm_main.python.utils as utils
 import xvm_main.python.vehinfo as vehinfo
+import xvm_main.python.utils as utils
 
 
 

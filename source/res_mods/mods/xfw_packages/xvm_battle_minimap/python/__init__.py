@@ -1,12 +1,13 @@
 """
 SPDX-License-Identifier: GPL-3.0-or-later
-Copyright (c) 2016-2022 XVM Contributors
+Copyright (c) 2013-2025 XVM Contributors
 """
 
 #
 # Imports
 #
 
+# XVM Battle Minimap
 import minimap
 
 
@@ -22,7 +23,7 @@ def xfw_module_init():
     if not __initialized:
         minimap.init()
         __initialized = True
-    
+
 
 def xfw_module_fini():
     global __initialized
