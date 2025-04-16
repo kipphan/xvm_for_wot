@@ -2,7 +2,7 @@
     "id": "com.modxvm.xvm.battle.replay",
     "name": "XVM Battle Replay",
     "description": "XVM Battle Replay module",
-    "version": "12.2.0.0015",
+    "version": "12.3.0.0011",
     "dependencies": [
         "com.modxvm.xfw.libraries",
         "com.modxvm.xvm",
