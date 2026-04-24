@@ -13,7 +13,7 @@
       {
         // Background image.
         "x": -1.5,
-        "y": 51,
+        "y": 66,
         "screenHAlign": "right",
         "format": "<img src='xvm://res/icons/clock/clockBg.png'>"
       },
@@ -22,7 +22,7 @@
         // Horizontal position.
         "x": -10,
         // Vertical position.
-        "y": 38,
+        "y": 53,
         // Width.
         "width": 200,
         // Height.

@@ -33,8 +33,6 @@
     "showLootboxesWidget": true,
     // true - show event tournaments widget in hangar.
     "showEventTournamentWidget": true,
-    // true - show elite levels widget in the hangar.
-    "showHangarPrestigeWidget": true,
     // true - show elite levels widget in the profile for vehicle statistics.
     "showProfilePrestigeWidget": true,
     // true - show reward window for unlocking new achievements.
@@ -138,8 +136,8 @@
       // Update interval, in ms.
       "updateInterval": 10000,
       // Axis field coordinates.
-      "x": 85,
-      "y": 52,
+      "x": 50,
+      "y": 70,
       // Horizontal alignment of field at screen ("left", "center", "right").
       "hAlign": "left",
       // Vertical alignment of field at screen ("top", "center", "bottom").
@@ -216,10 +214,10 @@
       // true - enable display online of servers.
       "enabled": false,
       // Axis field coordinates.
-      "x": -3,
-      "y": 51,
+      "x": 50,
+      "y": 108,
       // Horizontal alignment of field at screen ("left", "center", "right").
-      "hAlign": "right",
+      "hAlign": "left",
       // Vertical alignment of field at screen ("top", "center", "bottom").
       "vAlign": "top",
       // Transparency (from 0 to 100).
@@ -263,8 +261,6 @@
           "poor":  "0xFE7903",
           "bad":   "0xFE0E00"
         },
-        // Mark current server in the list, possible options: "none" (don't mark), "normal", "bold", "italic", "underline".
-        "markCurrentServer": "bold",
         // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value.
         "serverColor": ""
       },

@@ -4,7 +4,7 @@
 {
   // Definitions (extended format supported, see extra-field.txt).
   "def": {
-    // Enemy spotted status marker definition.
+    // Enemy spotted status marker.
     "enemySpottedMarker": {
       // false - disable.
       "enabled": true,

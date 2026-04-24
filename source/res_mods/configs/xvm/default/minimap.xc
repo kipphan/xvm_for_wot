@@ -2,7 +2,7 @@
  * General parameters for minimap.
  *
  * A video on some aspects of editing:
- * https://www.youtube.com/watch?feature=player_embedded&v=NBJcqWuEoLo
+ *   https://www.youtube.com/watch?feature=player_embedded&v=NBJcqWuEoLo
  */
 {
   "minimap": {
