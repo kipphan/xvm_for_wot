@@ -70,15 +70,6 @@
       "textFormat": { "font": "xvm", "size": 9, "color": "0xFFBB00" },
       "format": "{{x-spotted?&#x70;&nbsp;}}{{x-overturned?&#x112;}}"
     },
-    // HP spotted.
-    "hp-ratioSpotted" : {
-      "$ref": { "path":"def.defaultItem" },
-      "x": -9,
-        "y": -11,
-      "flags": [ "ally", "enemy", "squadman", "teamKiller", "spotted", "alive" ],
-        "textFormat": { "font": "dynamic2", "size": 19 },
-      "format": "<font color='{{.minimap.labelsData.colors.dot.{{sys-color-key}}}}'>{{hp-ratio%.335a|&#x1B3;}}</font>"
-    },
     // Vehicle type, missing.
     "vtypeLost": {
       "$ref": { "path":"def.defaultItem" },
@@ -111,17 +102,6 @@
       "layer": "bottom",
       "textFormat": { "size": 8 },
       "format": "<font color='{{.minimap.labelsData.colors.txt.{{sys-color-key}}}}'><i>{{name%.7s~..}}</i></font>"
-    },
-    // HP Ratio Lost
-    "hp-ratioLost" : {
-        "$ref": { "path":"def.defaultItem" },
-      "x": -9,
-        "y": -11,
-        "alpha": 85,
-        "flags": [ "ally", "enemy", "squadman", "teamKiller", "lost", "alive" ],
-        "layer": "bottom",
-        "textFormat": { "font": "dynamic2", "size": 19 },
-      "format": "<font color='{{.minimap.labelsData.colors.lostDot.{{sys-color-key}}}}'>{{hp-ratio%.335a|&#x1B3;}}</font>"
     },
     // Vehicle type, dead.
     "vtypeDead": {

@@ -12,6 +12,7 @@ Legend:
 ┌────────────────────────────┬───┬───┬─────────────────────────────────
 │ macro                      │ C │ W │ Description
 ├────────────────────────────┼───┼───┼─────────────────────────────────
+│ {{hangar}}                 │   │ X │ is currenly in hangar or no (boolean)
 │ {{battletype-key}}         │ X │ X │ selected battle type
 │ {{v.vehId}}                │ X │   │ vehicle id
 │ {{v.battles}}              │ X │ X │ total battles count for current vehicle
@@ -36,6 +37,8 @@ Legend:
 │ {{v.nation}}               │ X │ X │ vehicle nation
 │ {{v.premium}}              │ X │ X │ value 'premium' for premium, empty - for normal vehicle
 │ {{v.special}}              │ X │ X │ value 'special' for reward vehicle, empty - for normal vehicle
+│ {{v.role}}                 │ X │ X │ vehicle role in role_vehicleType_vehicleRole format
+│ {{v.role_l}}               │ X │ X │ vehicle role (text substitution from locale)
 │ {{v.elite}}                │ X │ X │ value 'elite' for elite, empty - for normal vehicle
 │ {{v.rent}}                 │ X │ X │ value 'rent' for rented, empty - for normal vehicle
 │ {{v.multiNation}}          │ X │ X │ value 'multi' for vehicle on which it is possible to change the nation, empty - for normal vehicle
@@ -75,6 +78,7 @@ Legend:
 │ {{v.camouflageDesert}}     │ X │ X │ value 'desert' if desert camouflage installed, empty - if not
 │ {{v.camouflageCount}}      │ X │ X │ count of camouflages installed
 │ {{v.crystalEarned}}        │ X │ X │ number of bonds earned (from weekly limit) from 0 to 100, empty - for vehicles that can't earn bonds
+│ {{v.battlePassPoints}}     │ X │ X │ number of battle pass points earned, empty - if battle pass is not available or vehicle can't earn BP points
 │ {{v.equipment1}}           │ . │ . │ small icon of equipment in 1st slot
 │ {{v.equipment2}}           │ . │ . │ small icon of equipment in 2nd slot
 │ {{v.equipment3}}           │ . │ . │ small icon of equipment in 3rd slot

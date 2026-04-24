@@ -33,8 +33,6 @@
     "showLootboxesWidget": true,
     // true - show event tournaments widget in hangar.
     "showEventTournamentWidget": true,
-    // true - show elite levels widget in the hangar.
-    "showHangarPrestigeWidget": true,
     // true - show elite levels widget in the profile for vehicle statistics.
     "showProfilePrestigeWidget": true,
     // true - show reward window for unlocking new achievements.
@@ -263,8 +261,6 @@
           "poor":  "0xFE7903",
           "bad":   "0xFE0E00"
         },
-        // Mark current server in the list, possible options: "none" (don't mark), "normal", "bold", "italic", "underline".
-        "markCurrentServer": "bold",
         // Color for server name and delimiter (for example, "0x8080FF"). Empty string "" - use same color as online value.
         "serverColor": ""
       },
