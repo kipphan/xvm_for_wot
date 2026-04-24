@@ -23,18 +23,19 @@ from skeletons.gui.battle_session import IBattleSessionProvider
 from vehicle_systems.tankStructure import TankPartIndexes
 from realm import CURRENT_REALM
 
-import xvm_battle.python.battle as battle
-import xvm_main.python.config as config
-import xvm_main.python.userprefs as userprefs
-import xvm_main.python.vehinfo_short as vehinfo_short
-from xfw.events import registerEvent
-from xfw_actionscript.python import *
-from xvm_main.python.logger import *
-from xvm_main.python.stats import _stat
-from xvm_main.python.xvm import l10n
+from xfw import *
+from xvm_actionscript import *
+
+import xvm_battle.battle as battle
+import xvm_main.config as config
+import xvm_main.userprefs as userprefs
+import xvm_main.vehinfo_short as vehinfo_short
+from xvm_main.logger import *
+from xvm_main.stats import _stat
+from xvm_main.utils import l10n
 
 import parser_addon
-from xvm.damageLog import keyLower, ATTACK_REASONS, RATINGS, VEHICLE_CLASSES_SHORT, ConfigCache
+from xvm.damageLog import keyLower, ATTACK_REASONS_VALUES, RATINGS, VEHICLE_CLASSES_SHORT, ConfigCache
 
 # WG 1.24.1 only
 WINBACK = 31
@@ -374,12 +375,13 @@ class DataHitLog(object):
             self.data['teamDmg'] = 'ally-dmg' if vehicle.isPlayerTeam else 'enemy-dmg'
         self.updateData()
 
-    def showDamageFromShot(self, vehicle, attackerID, points, *args, **kwargs):
-        maxComponentIdx = TankPartIndexes.ALL[-1]
-        wheelsConfig = vehicle.appearance.typeDescriptor.chassis.generalWheelsAnimatorConfig
-        if wheelsConfig:
-            maxComponentIdx += wheelsConfig.getWheelsCount()
-        decodedPoints = DamageFromShotDecoder.decodeHitPoints(points, vehicle.appearance.collisions, maxComponentIdx)
+    def showDamageFromShot(self, vehicle, attackerID, hitPoints, *args, **kwargs):
+        collisionComponent = vehicle.appearance.collisions
+        if IS_WG:
+            decodedPoints = DamageFromShotDecoder.parseHitPoints(hitPoints, collisionComponent)
+        else:
+            maxComponentIdx = vehicle.calcMaxComponentIdx()
+            decodedPoints = DamageFromShotDecoder.decodeHitPoints(hitPoints, collisionComponent, maxComponentIdx)
         if decodedPoints:
             maxPriorityHitPoint = decodedPoints[-1]
             maxHitEffectCode = maxPriorityHitPoint.hitEffectCode
@@ -509,16 +511,18 @@ class GroupHit(object):
         conf = self.readyConfig()
         player = self.players[self.vehID]
         value = g_dataHitLog.data
+        vehicleClass = VEHICLE_CLASSES_SHORT[value['attackedVehicleType']]
+        attackReason = ATTACK_REASONS_VALUES.get(value['attackReasonID'])
 
         data['c:team-dmg'] = conf['c_teamDmg'].get(value['teamDmg'], '#FFFFFF')
         data['team-dmg'] = conf['teamDmg'].get(value['teamDmg'], '')
-        data['vtype'] = conf['vehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackedVehicleType']], '')
+        data['vtype'] = conf['vehicleClass'].get(vehicleClass, '')
         data['c:costShell'] = conf['c_shell'].get(value['costShell'], None)
         data['costShell'] = conf['costShell'].get(value['costShell'], None)
-        data['c:dmg-kind'] = conf['c_dmg-kind'][ATTACK_REASONS[value['attackReasonID']]]
-        data['dmg-kind'] = conf['dmg-kind'].get(ATTACK_REASONS[value['attackReasonID']], 'reason: %s' % value['attackReasonID'])
-        data['dmg-kind-player'] = ''.join([conf['dmg-kind-player'].get(ATTACK_REASONS[i], None) for i in player.get('dmg-kind-player', [])])
-        data['c:vtype'] = conf['c_vehicleClass'].get(VEHICLE_CLASSES_SHORT[value['attackedVehicleType']], '#CCCCCC')
+        data['c:dmg-kind'] = conf['c_dmg-kind'].get(attackReason, '#CCCCCC')
+        data['dmg-kind'] = conf['dmg-kind'].get(attackReason, 'reason: %s!' % value['attackReasonID'])
+        data['dmg-kind-player'] = ''.join([conf['dmg-kind-player'].get(ATTACK_REASONS_VALUES.get(attackReasonID, 'unknown')) for attackReasonID in player.get('dmg-kind-player', [])])
+        data['c:vtype'] = conf['c_vehicleClass'].get(vehicleClass, '#CCCCCC')
         data['comp-name'] = conf['compNames'].get(value['compName'], None)
         data['type-shell'] = conf['typeShell'].get(value['shellKind'], 'not_shell')
         data['type-shell-key'] = value['shellKind'] if value['shellKind'] is not None else 'not_shell'
